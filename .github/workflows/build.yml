@@ -3,6 +3,7 @@ name: Build PDF Notebook
 on:
   push:
     branches: [ main ]
+  workflow_dispatch: # Permite ejecutar manualmente
 
 jobs:
   build:
@@ -14,20 +15,36 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install deps
+      - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright (Chromium)
+      - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
       - name: Build HTML + PDF
-        run: npm run build:pdf
+        run: npm run build
 
-      - name: Upload artifact
+      - name: Verify build output
+        run: |
+          echo "📁 Build output:"
+          ls -la dist/
+          echo "📄 Generated files:"
+          if [ -f dist/notebook.html ]; then echo "✅ HTML generated"; else echo "❌ HTML missing"; fi
+          if [ -f dist/notebook.pdf ]; then echo "✅ PDF generated"; else echo "❌ PDF missing"; fi
+
+      - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
-          name: algonotes-pdf
+          name: testigos-de-turing-notebook-pdf
           path: dist/notebook.pdf
+          if-no-files-found: warn
+
+      - name: Upload HTML artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: testigos-de-turing-notebook-html
+          path: dist/notebook.html
+          if-no-files-found: error
 
   pages:
     runs-on: ubuntu-latest
@@ -35,17 +52,33 @@ jobs:
     permissions:
       pages: write
       id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm ci && npx playwright install --with-deps chromium && npm run build:pdf
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        
+      - name: Build for Pages
+        run: npm run build
+        
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload artifact to Pages
+        
+      - name: Upload to Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+          
       - name: Deploy to Pages
+        id: deployment
         uses: actions/deploy-pages@v4
