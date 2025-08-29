@@ -1,0 +1,34 @@
+{
+  "name": "testigos-de-turing---notebook",
+  "version": "1.0.0",
+  "description": "Este repositorio contiene los notebooks utilizados por el equipo \"Testigos de Turing\" en la competencia ICPC.",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "playwright install chromium",
+    "build:pdf": "node src/generate.js",
+    "preview": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IvanTicona/TestigosDeTuring-Notebook.git"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.2",
+    "glob": "^11.0.0",
+    "gray-matter": "^4.0.3",
+    "handlebars": "^4.7.8",
+    "shiki": "^1.22.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0"
+  },
+  "keywords": [],
+  "author": "Ivan Ticona",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/IvanTicona/TestigosDeTuring-Notebook/issues"
+  },
+  "homepage": "https://github.com/IvanTicona/TestigosDeTuring-Notebook#readme"
+}

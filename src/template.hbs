@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Algonotes – Compendio</title>
+  <style>{{{css}}}</style>
+</head>
+<body>
+  <section class="cover page">
+    <h1>Algonotes</h1>
+    <p>Compendio de algoritmos (.cpp) del repositorio</p>
+    <p class="muted">Generado: {{generatedAt}}</p>
+  </section>
+
+  <section class="toc page">
+    <h2>Tabla de contenidos</h2>
+    <ol>
+      {{#each categories}}
+        <li>
+          <span class="cat">{{name}}</span>
+          <ol>
+            {{#each files}}
+              <li><a href="#{{id}}">{{title}} <span class="path">({{path}})</span></a></li>
+            {{/each}}
+          </ol>
+        </li>
+      {{/each}}
+    </ol>
+  </section>
+
+  {{#each categories}}
+    <section class="category-splash page"><h2>{{name}}</h2></section>
+
+    {{#each files}}
+      <article class="page" id="{{id}}">
+        <header>
+          <h3>{{title}}</h3>
+          <p class="meta">
+            {{#if ../name}}<span class="pill">{{../name}}</span>{{/if}}
+            {{#if author}}<span class="pill">Autor: {{author}}</span>{{/if}}
+            <span class="path">{{path}}</span>
+          </p>
+        </header>
+        <div class="code shiki-container">
+          {{{codeHtml}}}
+        </div>
+      </article>
+    {{/each}}
+  {{/each}}
+</body>
+</html>
