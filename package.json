@@ -12,7 +12,7 @@
     "build:pdf": "node src/generate.js",
     "build": "node src/generate-safe.js",
     "build:with-script": "bash build.sh",
-    "build:simple": "node src/generate.js",
+    "build:simple": "node src/generate-safe.js",
     "start": "node src/server.js",
     "preview": "node src/server.js"
   },
@@ -26,10 +26,10 @@
     "glob": "^11.0.0",
     "gray-matter": "^4.0.3",
     "handlebars": "^4.7.8",
+    "playwright": "^1.47.0",
     "shiki": "^1.22.0"
   },
   "devDependencies": {
-    "playwright": "^1.47.0"
   },
   "keywords": [],
   "author": "Ivan Ticona",
