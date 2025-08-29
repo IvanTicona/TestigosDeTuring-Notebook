@@ -15,6 +15,15 @@ else
     echo "✅ Dependencies already installed"
 fi
 
+# Verificar que playwright está instalado y configurado
+echo "🎭 Verificando Playwright..."
+if command -v npx &> /dev/null; then
+    echo "📦 Instalando Chromium para Playwright..."
+    npx playwright install chromium --with-deps || echo "⚠️ Playwright install failed, continuing..."
+else
+    echo "⚠️ npx no disponible, saltando Playwright install"
+fi
+
 # Verificar que glob existe
 if [ ! -d "node_modules/glob" ]; then
     echo "❌ Glob missing, installing..."
