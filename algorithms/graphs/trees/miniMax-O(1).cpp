@@ -1,6 +1,6 @@
 /*
-// Complejidad C^2 + L, donde C son los nodos y L aristas
-// category: trees
+Complejidad C^2 + L, donde C son los nodos y L aristas
+category: trees
 */
 
 #include <bits/stdc++.h>
