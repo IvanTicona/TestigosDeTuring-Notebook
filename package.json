@@ -9,12 +9,8 @@
   },
   "scripts": {
     "postinstall": "npx playwright install chromium || echo 'Playwright install failed, continuing...'",
-    "build:pdf": "node src/generate.js",
     "build": "node src/generate-safe.js",
-    "build:with-script": "bash build.sh",
-    "build:simple": "node src/generate-safe.js",
-    "start": "node src/server.js",
-    "preview": "node src/server.js"
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
