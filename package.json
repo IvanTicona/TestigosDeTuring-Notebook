@@ -9,8 +9,10 @@
   },
   "scripts": {
     "postinstall": "playwright install chromium",
+    "prebuild": "npm ci",
     "build:pdf": "node src/generate.js",
-    "build": "node src/generate.js",
+    "build": "chmod +x build.sh && ./build.sh",
+    "build:simple": "node src/generate.js",
     "start": "node src/server.js",
     "preview": "node src/server.js"
   },
