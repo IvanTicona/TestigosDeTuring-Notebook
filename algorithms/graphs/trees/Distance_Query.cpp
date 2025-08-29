@@ -1,10 +1,11 @@
-/*
 ---
 title: Lowest Common Ancestor (LCA)
 category: trees
 author: Ivan Ticona
 note: Binary Lifting, O((N log N), O(log N))
 ---
+/*
+Lowest Common Ancestor (LCA) usando Binary Lifting
 */
 #include<bits/stdc++.h>
 

@@ -1,6 +1,11 @@
-/*
-Complejidad C^2 + L, donde C son los nodos y L aristas
+---
+title: Min Max Tree Query O(1)
 category: trees
+author: Testigos de Turing
+description: Complejidad C^2 + L, donde C son los nodos y L aristas
+---
+/*
+Min Max Tree Query - Versión optimizada O(1)
 */
 
 #include <bits/stdc++.h>

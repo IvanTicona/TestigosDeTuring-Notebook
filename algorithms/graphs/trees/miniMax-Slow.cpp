@@ -1,5 +1,10 @@
-/*
+---
+title: Min Max Tree Query (Slow)
 category: trees
+author: Testigos de Turing
+---
+/*
+Min Max Tree Query - Versión lenta
 */
 #include <bits/stdc++.h>
 
