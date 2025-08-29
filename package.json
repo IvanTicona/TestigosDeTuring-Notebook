@@ -3,9 +3,15 @@
   "version": "1.0.0",
   "description": "Este repositorio contiene los notebooks utilizados por el equipo \"Testigos de Turing\" en la competencia ICPC.",
   "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "postinstall": "playwright install chromium",
     "build:pdf": "node src/generate.js",
+    "build": "node src/generate.js",
+    "start": "node src/server.js",
     "preview": "node src/server.js"
   },
   "repository": {
