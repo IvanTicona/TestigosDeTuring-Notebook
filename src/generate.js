@@ -130,7 +130,7 @@ async function buildHtml() {
     const raw = await fsp.readFile(file, 'utf8');
     const { data, body } = extractFrontmatter(raw, file);
     const lang = pickLanguageByExt(file);
-    const codeHtml = highlighter.codeToHtml(body, { lang, theme: 'github-dark' });
+    const codeHtml = highlighter.codeToHtml(body, { lang, theme: 'catppuccin-latte' });
     console.log(data);
     entries.push({
       id: file.replace(/[\/\\]/g, '_'),
