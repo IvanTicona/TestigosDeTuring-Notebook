@@ -129,7 +129,7 @@ async function buildHtml() {
   if (createHighlighter) {
     try {
       highlighter = await createHighlighter({
-        themes: ['github-dark'],   // cargas el/los temas que vas a usar
+        themes: ['github-light'],   // tema claro de GitHub
         langs: ['cpp', 'text']
       });
       console.log('✅ Highlighter inicializado');
@@ -146,7 +146,7 @@ async function buildHtml() {
     
     let codeHtml;
     if (highlighter) {
-      codeHtml = highlighter.codeToHtml(body, { lang, theme: 'catppuccin-latte' });
+      codeHtml = highlighter.codeToHtml(body, { lang, theme: 'github-light' });
     } else {
       // Fallback sin syntax highlighting
       codeHtml = `<pre><code>${body.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;

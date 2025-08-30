@@ -121,7 +121,7 @@ async function buildHtml() {
   const files = await collectFiles();
 
   const highlighter = await createHighlighter({
-    themes: ['github-dark'],   // cargas el/los temas que vas a usar
+    themes: ['github-light'],   // tema claro de GitHub
     langs: ['cpp', 'text']
   });
 
@@ -130,7 +130,7 @@ async function buildHtml() {
     const raw = await fsp.readFile(file, 'utf8');
     const { data, body } = extractFrontmatter(raw, file);
     const lang = pickLanguageByExt(file);
-    const codeHtml = highlighter.codeToHtml(body, { lang, theme: 'catppuccin-latte' });
+    const codeHtml = highlighter.codeToHtml(body, { lang, theme: 'github-light' });
     console.log(data);
     entries.push({
       id: file.replace(/[\/\\]/g, '_'),
