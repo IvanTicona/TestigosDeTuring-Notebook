@@ -146,7 +146,7 @@ async function buildHtml() {
     
     let codeHtml;
     if (highlighter) {
-      codeHtml = highlighter.codeToHtml(body, { lang, theme: 'github-dark' });
+      codeHtml = highlighter.codeToHtml(body, { lang, theme: 'github-light' });
     } else {
       // Fallback sin syntax highlighting
       codeHtml = `<pre><code>${body.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;
