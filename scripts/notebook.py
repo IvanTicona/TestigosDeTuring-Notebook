@@ -460,7 +460,7 @@ def render_contents(sections: list[Section]) -> str:
     out: list[str] = ["% Generado por scripts/notebook.py tex; no editar."]
     for sec in sections:
         out.append(rf"\section{{{texify(sec.title)}}}")
-        out.append(r"\begin{multicols}{2}")
+        out.append(r"\begin{multicols*}{2}")
         for e in sec.items:
             if e.kind == "tex":
                 if e.title:
@@ -471,7 +471,7 @@ def render_contents(sections: list[Section]) -> str:
                 out.append(rf"\subsection{{{t}}}")
                 out.append(rf"\NBpath{{{texify(e.path)}}}")
                 out.append(rf"\lstinputlisting[style=cpp]{{{e.path}}}")
-        out.append(r"\end{multicols}")
+        out.append(r"\end{multicols*}")
         out.append(r"\clearpage")
         out.append("")
     return "\n".join(out)

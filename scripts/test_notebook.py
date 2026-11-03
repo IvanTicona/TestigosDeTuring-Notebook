@@ -425,8 +425,8 @@ class RenderTests(Fixture):
         self.assertIn(r"\NBpath{template/template.cpp}", out)
         self.assertNotIn("caption", out)
         self.assertEqual(out.count(r"\clearpage"), 3)
-        self.assertEqual(out.count(r"\begin{multicols}{2}"), 3)
-        self.assertEqual(out.count(r"\end{multicols}"), 3)
+        self.assertEqual(out.count(r"\begin{multicols*}{2}"), 3)
+        self.assertEqual(out.count(r"\end{multicols*}"), 3)
 
     def test_quarantined_not_rendered(self):
         secs = self.sections(self.BASE + "[Uno]\nsrc/a/foo.cpp | Foo\n")
