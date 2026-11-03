@@ -16,7 +16,7 @@ HAS_GXX = shutil.which("g++") is not None
 GOOD_SNIPPET = """/**
  * Usage: foo(x)
  * Complexity: O(1)
- * Status: ok
+ * Status: untested
  */
 int foo(int x) { return x; }
 """
@@ -135,7 +135,7 @@ class HeaderTests(unittest.TestCase):
     def test_parse_fields(self):
         meta = nb.parse_header(GOOD_SNIPPET)
         self.assertTrue(meta.has_header)
-        self.assertEqual(meta.fields["Status"], "ok")
+        self.assertEqual(meta.fields["Status"], "untested")
         self.assertEqual(meta.lines["Status"], 4)
         self.assertEqual(nb.header_diagnostics("src/x.cpp", meta), ([], []))
 
@@ -216,7 +216,8 @@ class ValidateTests(Fixture):
     def test_clean(self):
         self.write("src/a/foo.cpp", GOOD_SNIPPET)
         r = self.validate("[Template]\ntemplate/template.cpp | Template\n[A]\nsrc/a/foo.cpp | Foo\n")
-        self.assertEqual((r.errors, r.warnings, r.infos), ([], [], []))
+        self.assertEqual((r.errors, r.warnings), ([], []))
+        self.assertEqual(r.infos, ["INFO untested: 1 snippet(s)"])
 
     def test_missing_file_S2_1(self):
         r = self.validate("[A]\nsrc/graphs/foo.cpp | Foo\n")
@@ -232,7 +233,7 @@ class ValidateTests(Fixture):
         self.assertIn("orphan", r.errors[0])
 
     def test_quarantine_is_info_S2_3(self):
-        self.write("src/graphs/flow/dinic.cpp", GOOD_SNIPPET.replace("Status: ok", "Status: broken"))
+        self.write("src/graphs/flow/dinic.cpp", GOOD_SNIPPET.replace("Status: untested", "Status: broken"))
         r = self.validate("[Template]\ntemplate/template.cpp | Template\n")
         self.assertEqual(r.errors, [])
         self.assertEqual(len(r.infos), 1)
@@ -240,7 +241,7 @@ class ValidateTests(Fixture):
         self.assertIn("src/graphs/flow/dinic.cpp", r.infos[0])
 
     def test_broken_listed_is_error_S2_4(self):
-        self.write("src/a/foo.cpp", GOOD_SNIPPET.replace("Status: ok", "Status: broken"))
+        self.write("src/a/foo.cpp", GOOD_SNIPPET.replace("Status: untested", "Status: broken"))
         r = self.validate("[A]\nsrc/a/foo.cpp | Foo\n")
         self.assertEqual(len(r.errors), 1)
         self.assertIn("broken", r.errors[0])
@@ -260,7 +261,7 @@ class ValidateTests(Fixture):
         self.assertTrue(all("invalid name" in e for e in r.errors))
 
     def test_lint_in_listed_snippet_S1_1(self):
-        self.write("src/a/foo.cpp", "/**\n * Usage: x\n * Complexity: O(1)\n * Status: ok\n */\n#include <vector>\nint main(){}\n")
+        self.write("src/a/foo.cpp", "/**\n * Usage: x\n * Complexity: O(1)\n * Status: untested\n */\n#include <vector>\nint main(){}\n")
         r = self.validate("[A]\nsrc/a/foo.cpp | Foo\n")
         self.assertEqual(len(r.errors), 2)
         self.assertIn("src/a/foo.cpp:6:", r.errors[0])
@@ -279,7 +280,7 @@ class ValidateTests(Fixture):
         self.assertIn("Status", r.errors[0])
 
     def test_missing_complexity_warns_S1_4(self):
-        self.write("src/a/foo.cpp", "/**\n * Usage: x\n * Status: ok\n */\nint foo(){return 1;}\n")
+        self.write("src/a/foo.cpp", "/**\n * Usage: x\n * Status: untested\n */\nint foo(){return 1;}\n")
         r = self.validate("[A]\nsrc/a/foo.cpp | Foo\n")
         self.assertEqual(r.errors, [])
         self.assertEqual(len(r.warnings), 1)
@@ -290,6 +291,68 @@ class ValidateTests(Fixture):
         self.assertIn("tex/theory/x.tex", r.errors[0])
         self.write("tex/theory/x.tex", "hola\n")
         r = self.validate("[T]\n!tex tex/theory/x.tex | X\n")
+        self.assertEqual(r.errors, [])
+
+    # --- status <-> stress test linkage (R2.8-R2.10) ---
+    OK_SNIPPET = GOOD_SNIPPET.replace("Status: untested", "Status: ok")
+    STRESS_STUB = "int main() {}\n"
+
+    def test_ok_without_stress_test_is_error_R2_8(self):
+        self.write("src/a/foo.cpp", self.OK_SNIPPET)
+        r = self.validate("[A]\nsrc/a/foo.cpp | Foo\n")
+        self.assertEqual(len(r.errors), 1)
+        self.assertIn("src/a/foo.cpp:4:", r.errors[0])
+        self.assertIn("tests/stress/a/foo.cpp", r.errors[0])
+
+    def test_ok_with_stress_test_is_clean_R2_8(self):
+        self.write("src/a/foo.cpp", self.OK_SNIPPET)
+        self.write("tests/stress/a/foo.cpp", self.STRESS_STUB)
+        r = self.validate("[A]\nsrc/a/foo.cpp | Foo\n")
+        self.assertEqual((r.errors, r.warnings, r.infos), ([], [], []))
+
+    def test_untested_without_stress_test_is_not_error_R2_8(self):
+        self.write("src/a/foo.cpp", GOOD_SNIPPET)
+        r = self.validate("[A]\nsrc/a/foo.cpp | Foo\n")
+        self.assertEqual(r.errors, [])
+
+    def test_untested_count_info_R2_9(self):
+        self.write("src/a/foo.cpp", GOOD_SNIPPET)
+        self.write("src/a/bar.cpp", GOOD_SNIPPET)
+        self.write("src/a/baz.cpp", self.OK_SNIPPET)
+        self.write("tests/stress/a/baz.cpp", self.STRESS_STUB)
+        r = self.validate("[A]\nsrc/a/foo.cpp | Foo\nsrc/a/bar.cpp | Bar\nsrc/a/baz.cpp | Baz\n")
+        self.assertEqual(r.errors, [])
+        self.assertEqual(r.infos, ["INFO untested: 2 snippet(s)"])
+
+    def test_no_untested_info_when_zero_R2_9(self):
+        self.write("src/a/baz.cpp", self.OK_SNIPPET)
+        self.write("tests/stress/a/baz.cpp", self.STRESS_STUB)
+        r = self.validate("[A]\nsrc/a/baz.cpp | Baz\n")
+        self.assertEqual(r.infos, [])
+
+    def test_quarantined_not_counted_as_untested_R2_9(self):
+        self.write("src/a/dinic.cpp", GOOD_SNIPPET.replace("Status: untested", "Status: broken"))
+        r = self.validate("[Template]\ntemplate/template.cpp | Template\n")
+        self.assertEqual(len(r.infos), 1)
+        self.assertIn("quarantine", r.infos[0])
+
+    def test_orphan_stress_test_is_error_R2_10(self):
+        self.write("tests/stress/a/bar.cpp", self.STRESS_STUB)
+        r = self.validate("[Template]\ntemplate/template.cpp | Template\n")
+        self.assertEqual(len(r.errors), 1)
+        self.assertIn("tests/stress/a/bar.cpp", r.errors[0])
+        self.assertIn("src/a/bar.cpp", r.errors[0])
+
+    def test_stress_test_for_quarantined_snippet_allowed_R2_10(self):
+        self.write("src/a/dinic.cpp", GOOD_SNIPPET.replace("Status: untested", "Status: broken"))
+        self.write("tests/stress/a/dinic.cpp", self.STRESS_STUB)
+        r = self.validate("[Template]\ntemplate/template.cpp | Template\n")
+        self.assertEqual(r.errors, [])
+
+    def test_common_header_and_non_cpp_ignored_R2_10(self):
+        self.write("tests/stress/common.h", "// helpers\n")
+        self.write("tests/stress/a/notes.txt", "x\n")
+        r = self.validate("[Template]\ntemplate/template.cpp | Template\n")
         self.assertEqual(r.errors, [])
 
     def test_discover_snippets(self):

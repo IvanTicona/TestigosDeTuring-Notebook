@@ -274,6 +274,7 @@ def validate(root: Path, sections: list[Section]) -> Report:
     report = Report()
     seen: dict[str, int] = {}
     listed: set[str] = set()
+    n_untested = 0
 
     for sec in sections:
         for e in sec.items:
@@ -303,6 +304,23 @@ def validate(root: Path, sections: list[Section]) -> Report:
                 )
             report.errors += lint_snippet(e.path, text)
             report.errors += latin1_diagnostics(e.path, text)
+            status = meta.fields.get("Status")
+            if status == "untested":
+                n_untested += 1
+            elif status == "ok":
+                test_rel = stress_test_for(e.path)
+                if not (root / test_rel).is_file():
+                    report.errors.append(
+                        f"{e.path}:{meta.lines['Status']}: Status: ok requires a stress test: {test_rel} not found"
+                    )
+
+    if n_untested:
+        report.infos.append(f"INFO untested: {n_untested} snippet(s)")
+
+    # A stress test must match an existing snippet (quarantined ones count).
+    for rel in discover_stress(root):
+        if not (root / snippet_for_stress(rel)).is_file():
+            report.errors.append(f"{rel}:1: orphan stress test: {snippet_for_stress(rel)} not found")
 
     for rel in discover_snippets(root):
         if not SNIPPET_PATH_RE.match(rel):
@@ -451,6 +469,16 @@ def discover_stress(root: Path) -> list[str]:
 def stress_name(rel: str) -> str:
     """tests/stress/dp/lcs.cpp -> dp/lcs"""
     return rel[len(STRESS_DIR) + 1 : -len(".cpp")]
+
+
+def stress_test_for(snippet_rel: str) -> str:
+    """src/dp/lcs.cpp -> tests/stress/dp/lcs.cpp"""
+    return f"{STRESS_DIR}/{snippet_rel[len('src/'):]}"
+
+
+def snippet_for_stress(stress_rel: str) -> str:
+    """tests/stress/dp/lcs.cpp -> src/dp/lcs.cpp"""
+    return f"src/{stress_name(stress_rel)}.cpp"
 
 
 def filter_stress(rels: list[str], filters: list[str]) -> list[str]:
