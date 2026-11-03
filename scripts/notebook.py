@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Testigos de Turing notebook tooling (stdlib only).
 
-Usage: python scripts/notebook.py <check [--jobs N] | tex | pdf [--theme read|print|both]>
+Usage: python scripts/notebook.py <check [--jobs N] | test [filters] [--jobs N] [--timeout S] [--sanitize] [--seed N]
+                                   | tex | pdf [--theme read|print|both]>
 
 Exit codes: 0 OK; 1 validation/compilation failure; 2 usage or environment error (g++/latexmk missing).
 """
@@ -13,6 +14,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -425,6 +427,143 @@ def check(root: Path = ROOT, jobs: int | None = None) -> int:
 
 
 # --------------------------------------------------------------------------
+# Stress tests
+# --------------------------------------------------------------------------
+STRESS_DIR = "tests/stress"
+STRESS_BUILD = "build/stress"
+STRESS_COMPILE_TIMEOUT = 180
+STRESS_TAIL_LINES = 40
+STRESS_FLAGS = ["-std=gnu++17", "-O2", "-Wall", "-Wextra"]
+SANITIZE_FLAGS = [
+    "-fsanitize=address,undefined", "-fno-sanitize-recover=all",
+    "-fno-omit-frame-pointer", "-g", "-D_GLIBCXX_DEBUG",
+]
+
+
+def discover_stress(root: Path) -> list[str]:
+    """All tests/stress/**/*.cpp as posix paths relative to root (sorted)."""
+    base = root / STRESS_DIR
+    if not base.is_dir():
+        return []
+    return sorted(p.relative_to(root).as_posix() for p in base.rglob("*.cpp"))
+
+
+def stress_name(rel: str) -> str:
+    """tests/stress/dp/lcs.cpp -> dp/lcs"""
+    return rel[len(STRESS_DIR) + 1 : -len(".cpp")]
+
+
+def filter_stress(rels: list[str], filters: list[str]) -> list[str]:
+    if not filters:
+        return list(rels)
+    return [r for r in rels if any(f in r for f in filters)]
+
+
+def stress_exe(root: Path, rel: str) -> Path:
+    suffix = ".exe" if sys.platform == "win32" else ""
+    return root / STRESS_BUILD / (stress_name(rel) + suffix)
+
+
+def stress_cmd(gxx: str, root: Path, rel: str, out: str, sanitize: bool) -> list[str]:
+    cmd = [gxx, *STRESS_FLAGS, f"-I{root.resolve().as_posix()}"]
+    if sanitize:
+        cmd += SANITIZE_FLAGS
+    cmd += ["-o", out, _abs_posix(root, rel)]
+    return cmd
+
+
+def is_mingw(gxx: str) -> bool:
+    proc = subprocess.run(
+        [gxx, "-dumpmachine"], capture_output=True, text=True, encoding="utf-8", errors="replace"
+    )
+    return "mingw" in (proc.stdout or "").lower()
+
+
+def _tail(root: Path, text: str, limit: int = STRESS_TAIL_LINES) -> str:
+    lines = _relativize(root, text).strip().splitlines()
+    return "\n".join(lines[-limit:])
+
+
+def run_stress_one(
+    gxx: str, root: Path, rel: str, timeout: float, sanitize: bool, seed: int | None
+) -> tuple[bool, str, float]:
+    """Compile + run one stress test. Returns (ok, detail, seconds)."""
+    start = time.monotonic()
+    exe = stress_exe(root, rel)
+    exe.parent.mkdir(parents=True, exist_ok=True)
+    text_args = dict(capture_output=True, text=True, encoding="utf-8", errors="replace")
+    try:
+        comp = subprocess.run(
+            stress_cmd(gxx, root, rel, exe.resolve().as_posix(), sanitize),
+            cwd=str(root), timeout=STRESS_COMPILE_TIMEOUT, **text_args,
+        )
+    except subprocess.TimeoutExpired:
+        return False, f"compile timeout ({STRESS_COMPILE_TIMEOUT}s)", time.monotonic() - start
+    cout = (comp.stdout or "") + (comp.stderr or "")
+    if comp.returncode != 0:
+        return False, "compile error\n" + _tail(root, cout), time.monotonic() - start
+
+    env = dict(os.environ)
+    if seed is not None:
+        env["SEED"] = str(seed)
+    try:
+        proc = subprocess.run(
+            [str(exe.resolve())], cwd=str(exe.parent), env=env, timeout=timeout,
+            stdin=subprocess.DEVNULL, **text_args,
+        )
+    except subprocess.TimeoutExpired:
+        return False, f"timeout after {timeout:g}s", time.monotonic() - start
+    elapsed = time.monotonic() - start
+    out = (proc.stdout or "") + (proc.stderr or "")
+    if proc.returncode != 0:
+        return False, f"exit code {proc.returncode}\n" + _tail(root, out), elapsed
+    return True, "", elapsed
+
+
+def run_stress(
+    root: Path = ROOT,
+    filters: list[str] | None = None,
+    jobs: int | None = None,
+    timeout: float = 20.0,
+    sanitize: bool = False,
+    seed: int | None = None,
+) -> int:
+    filters = filters or []
+    all_tests = discover_stress(root)
+    tests = filter_stress(all_tests, filters)
+    if filters and not tests:
+        print(f"test: no stress test matches {filters} ({len(all_tests)} available)")
+        return 2
+    gxx = shutil.which("g++")
+    # Fail fast on an unsupported --sanitize even when there is nothing to run.
+    if sanitize and gxx is not None and is_mingw(gxx):
+        print("--sanitize is not supported on a MinGW toolchain (no ASan/UBSan runtime); run it on Linux/CI")
+        return 2
+    if not tests:
+        print(f"test: no stress tests found in {STRESS_DIR}/")
+        return 0
+    if gxx is None:
+        print("g++ not found in PATH (install MinGW g++ or build-essential)")
+        return 2
+
+    workers = jobs if jobs and jobs > 0 else (os.cpu_count() or 2)
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        results = list(
+            pool.map(lambda r: (r, *run_stress_one(gxx, root, r, timeout, sanitize, seed)), tests)
+        )
+    n_ok = n_fail = 0
+    for rel, ok, detail, secs in results:
+        if ok:
+            n_ok += 1
+            print(f"PASS {stress_name(rel)} ({secs:.1f}s)")
+        else:
+            n_fail += 1
+            print(f"FAIL {stress_name(rel)} ({secs:.1f}s): {detail}")
+    print(f"Stress summary: {n_ok} passed / {n_fail} failed")
+    return 1 if n_fail else 0
+
+
+# --------------------------------------------------------------------------
 # LaTeX generation
 # --------------------------------------------------------------------------
 BUILD_DIR = "build"
@@ -591,6 +730,12 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("check", help="validate the manifest and compile snippets")
     c.add_argument("--jobs", type=int, default=None, help="parallel compilations")
+    t = sub.add_parser("test", help="compile and run stress tests (tests/stress/)")
+    t.add_argument("filters", nargs="*", help="run only tests whose path contains any filter")
+    t.add_argument("--jobs", type=int, default=None, help="parallel tests")
+    t.add_argument("--timeout", type=float, default=20.0, help="per-run timeout in seconds")
+    t.add_argument("--sanitize", action="store_true", help="build with ASan+UBSan (not on MinGW)")
+    t.add_argument("--seed", type=int, default=None, help="sets the SEED env var of the tests")
     sub.add_parser("tex", help="generate build/contents.tex and build/meta.tex")
     d = sub.add_parser("pdf", help="generate the PDFs with latexmk")
     d.add_argument("--theme", choices=["read", "print", "both"], default="both")
@@ -609,6 +754,8 @@ def main(argv: list[str] | None = None) -> int:
         return 2 if e.code not in (0, None) else 0
     if args.cmd == "check":
         return check(ROOT, args.jobs)
+    if args.cmd == "test":
+        return run_stress(ROOT, args.filters, args.jobs, args.timeout, args.sanitize, args.seed)
     if args.cmd == "tex":
         return tex(ROOT)
     if args.cmd == "pdf":
