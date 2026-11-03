@@ -103,6 +103,58 @@ ruta/al/snippet.cpp | Titulo           # snippet: RUTA | Titulo (ruta relativa a
 g++ -std=gnu++17 -I. tests/demo/dp/lcs.cpp -o lcs && ./lcs
 ```
 
+## CI, Release y Google Drive
+
+El workflow `.github/workflows/build.yml` corre en cada push a `main` (y a mano con
+`workflow_dispatch`): tests unitarios, `check`, instala TeX Live, `pdf --theme both`, sube los
+PDF como artifact, actualiza el Release `latest` (`--clobber`) y actualiza el PDF en Drive.
+Si `check` o `pdf` fallan no se publica nada (y se suben los logs de LaTeX como artifact).
+
+Descargas estables: Releases -> `latest` -> `testigos-de-turing-teambook.pdf` (color) y
+`testigos-de-turing-teambook-print.pdf` (impresion).
+
+### Secrets (Settings -> Secrets and variables -> Actions)
+
+| Secret | Uso |
+|---|---|
+| `GDRIVE_FILE_ID` | id del archivo PDF ya existente en Drive (de su URL). Sin el, el paso Drive se omite (el workflow sigue verde y el Release se publica). |
+| `GDRIVE_SA_JSON` | JSON completo de la key de la service account (auth primaria). |
+| `GDRIVE_OAUTH_CLIENT_ID`, `GDRIVE_OAUTH_CLIENT_SECRET`, `GDRIVE_OAUTH_REFRESH_TOKEN` | Fallback OAuth, usado solo si no hay `GDRIVE_SA_JSON`. |
+
+### Preparar Drive (una vez)
+
+1. Crear un proyecto en Google Cloud y habilitar la **Google Drive API**.
+2. Crear una **service account** y una key JSON; guardar su contenido en `GDRIVE_SA_JSON`.
+3. En Drive, compartir el PDF con el `client_email` de la service account como **Editor**.
+4. Copiar el fileId de la URL del archivo a `GDRIVE_FILE_ID`.
+5. Probar en local, sin subir nada:
+
+```
+pip install -r scripts/requirements-drive.txt
+python scripts/drive_upload.py --check      # exit 0 si canEdit=true
+```
+
+El script actualiza solo el contenido (PATCH media-only), asi que el fileId, el nombre
+`testigos-de-turing-teambook.pdf` y los enlaces compartidos no cambian. Nunca imprime secretos.
+
+### Errores comunes
+
+| Mensaje | Causa y arreglo |
+|---|---|
+| `403 insufficientFilePermissions` | El archivo no esta compartido como Editor con el `client_email`. |
+| `403 storageQuotaExceeded` | Una service account no tiene cuota propia para ser duena de contenido: usar el **fallback OAuth**. |
+| `404` | `GDRIVE_FILE_ID` incorrecto o archivo no compartido con la service account. |
+| `401` | Credenciales invalidas o expiradas. |
+
+### Fallback OAuth (solo si aparece `storageQuotaExceeded`)
+
+1. En el mismo proyecto de Cloud, crear un OAuth client de tipo **Desktop**.
+2. **Publicar** la app (en modo "Testing" el refresh token expira a los 7 dias).
+3. Obtener el refresh token una vez en local (p. ej. con `google-auth-oauthlib`, fuera de CI)
+   con scope `https://www.googleapis.com/auth/drive`.
+4. Guardar `GDRIVE_OAUTH_CLIENT_ID`, `GDRIVE_OAUTH_CLIENT_SECRET` y `GDRIVE_OAUTH_REFRESH_TOKEN`
+   como secrets; la cuenta OAuth debe poder editar el archivo. Verificar con `--check`.
+
 ## Notas
 
 - Windows: `latexmk` (perl) requiere comillas literales en `-usepretex`; el script ya lo maneja.
