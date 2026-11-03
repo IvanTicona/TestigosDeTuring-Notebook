@@ -405,7 +405,7 @@ class TexifyTests(unittest.TestCase):
 
     def test_csharp_and_accents_untouched(self):
         self.assertEqual(nb.texify("C#"), r"C\#")
-        s = "Teoría de números: Euclides (ñandú) Achá"
+        s = "Number theory: Euclid (ñandú) Achá"
         self.assertEqual(nb.texify(s), s)
 
 
