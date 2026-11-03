@@ -380,5 +380,126 @@ class CheckCommandTests(Fixture):
             self.assertEqual(nb.main([]), 2)
 
 
+class TexifyTests(unittest.TestCase):
+    def test_special_chars_single_pass(self):
+        self.assertEqual(nb.texify("\\"), r"\textbackslash{}")
+        self.assertEqual(nb.texify("{}"), r"\{\}")
+        self.assertEqual(nb.texify("$&#_%"), r"\$\&\#\_\%")
+        self.assertEqual(nb.texify("^"), r"\textasciicircum{}")
+        self.assertEqual(nb.texify("~"), r"\textasciitilde{}")
+
+    def test_no_double_escape(self):
+        # backslash replacement must not be re-escaped (braces of \textbackslash{})
+        self.assertEqual(nb.texify("a\\b{"), r"a\textbackslash{}b\{")
+
+    def test_title_union_find(self):
+        self.assertEqual(nb.texify("Union_Find #1 & 100%"), r"Union\_Find \#1 \& 100\%")
+
+    def test_csharp_and_accents_untouched(self):
+        self.assertEqual(nb.texify("C#"), r"C\#")
+        s = "Teoría de números: Euclides (ñandú) Achá"
+        self.assertEqual(nb.texify(s), s)
+
+
+class RenderTests(Fixture):
+    BASE = "[Plantilla]\ntemplate/template.cpp | Plantilla\n"
+
+    def sections(self, text):
+        self.write("src/a/foo.cpp", GOOD_SNIPPET)
+        self.write("src/a/bar.cpp", GOOD_SNIPPET)
+        self.write("tex/theory/euclid.tex", "hola\n")
+        m = self.write("contents.txt", text)
+        secs, errs = nb.parse_manifest(m)
+        self.assertEqual(errs, [])
+        return secs
+
+    def test_order_and_template_first(self):
+        secs = self.sections(
+            self.BASE + "[Uno]\nsrc/a/foo.cpp | Foo\n[Dos]\nsrc/a/bar.cpp | Bar\n"
+        )
+        out = nb.render_contents(secs)
+        order = [out.index(x) for x in ("{Plantilla}", "{Uno}", "{Dos}")]
+        self.assertEqual(order, sorted(order))
+        self.assertIn(r"\lstinputlisting[style=cpp,caption={Plantilla}]{template/template.cpp}", out)
+        self.assertIn(r"\lstinputlisting[style=cpp,caption={Foo}]{src/a/foo.cpp}", out)
+        self.assertEqual(out.count(r"\clearpage"), 3)
+        self.assertEqual(out.count(r"\begin{multicols}{2}"), 3)
+        self.assertEqual(out.count(r"\end{multicols}"), 3)
+
+    def test_quarantined_not_rendered(self):
+        secs = self.sections(self.BASE + "[Uno]\nsrc/a/foo.cpp | Foo\n")
+        self.write("src/a/q.cpp", GOOD_SNIPPET.replace("ok", "broken"))
+        self.assertNotIn("q.cpp", nb.render_contents(secs))
+
+    def test_tex_entry_becomes_input(self):
+        secs = self.sections(
+            self.BASE + "[Teoria]\n!tex tex/theory/euclid.tex | Euclides (ñandú)\n"
+        )
+        out = nb.render_contents(secs)
+        self.assertIn(r"\input{tex/theory/euclid.tex}", out)
+        self.assertIn(r"\subsection{Euclides (ñandú)}", out)
+
+    def test_titles_escaped(self):
+        secs = self.sections(self.BASE + "[A_B & C#]\nsrc/a/foo.cpp | Union_Find#1 & 100%\n")
+        out = nb.render_contents(secs)
+        self.assertIn(r"\section{A\_B \& C\#}", out)
+        self.assertIn(r"\subsection{Union\_Find\#1 \& 100\%}", out)
+        self.assertIn(r"caption={Union\_Find\#1 \& 100\%}", out)
+
+
+class MetaAndTexCommandTests(Fixture):
+    def test_spanish_date(self):
+        import datetime
+        meta = nb.render_meta(datetime.date(2026, 11, 3))
+        self.assertIn(r"\newcommand{\NBdate}{3 de noviembre de 2026}", meta)
+        self.assertIn("pdftitle", meta)
+
+    def test_all_months(self):
+        import datetime
+        for m, name in enumerate(nb.MESES, 1):
+            self.assertIn(f"1 de {name} de 2026", nb.render_meta(datetime.date(2026, m, 1)))
+
+    def test_tex_command_writes_files(self):
+        self.write("src/a/foo.cpp", GOOD_SNIPPET)
+        self.write("contents.txt", "[Plantilla]\ntemplate/template.cpp | Plantilla\n[A]\nsrc/a/foo.cpp | Foo\n")
+        with contextlib.redirect_stdout(io.StringIO()):
+            code = nb.tex(self.root)
+        self.assertEqual(code, 0)
+        self.assertTrue((self.root / "build" / "contents.tex").is_file())
+        self.assertTrue((self.root / "build" / "meta.tex").is_file())
+
+    def test_tex_command_bad_manifest_exit_1(self):
+        self.write("contents.txt", "[A]\nsrc/a/foo.cpp\tFoo\n")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(nb.tex(self.root), 1)
+
+    def test_pdf_without_latexmk_exit_2(self):
+        self.write("contents.txt", "[Plantilla]\ntemplate/template.cpp | Plantilla\n")
+        out = io.StringIO()
+        with mock.patch.object(nb.shutil, "which", return_value=None), contextlib.redirect_stdout(out):
+            self.assertEqual(nb.pdf(self.root, "both"), 2)
+        self.assertIn("latexmk no encontrado", out.getvalue())
+
+    def test_latexmk_command_themes(self):
+        read = nb.latexmk_cmd("latexmk", "read")
+        self.assertIn("-outdir=build/read", read)
+        self.assertIn("-jobname=notebook-read", read)
+        self.assertFalse(any("usepretex" in a for a in read))
+        pr = nb.latexmk_cmd("latexmk", "print")
+        self.assertIn("-outdir=build/print", pr)
+        self.assertIn(nb.pretex_arg(), pr)
+        self.assertEqual(pr[-1], "tex/notebook.tex")
+
+    def test_pretex_arg_quoting_per_platform(self):
+        self.assertEqual(nb.pretex_arg("win32"), r'-usepretex="\def\PRINTMODE{1}"')
+        self.assertEqual(nb.pretex_arg("linux"), r"-usepretex=\def\PRINTMODE{1}")
+
+    def test_pdf_parser_theme_choices(self):
+        a = nb.build_parser().parse_args(["pdf"])
+        self.assertEqual(a.theme, "both")
+        with contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(nb.main(["pdf", "--theme", "x"]), 2)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Testigos de Turing notebook tooling (stdlib only).
 
-Uso: python scripts/notebook.py check [--jobs N]
+Uso: python scripts/notebook.py <check [--jobs N] | tex | pdf [--theme read|print|both]>
 
-Exit codes: 0 OK; 1 fallo de validacion/compilacion; 2 uso o entorno (falta g++).
+Exit codes: 0 OK; 1 fallo de validacion/compilacion; 2 uso o entorno (falta g++/latexmk).
 """
 from __future__ import annotations
 
@@ -425,6 +425,164 @@ def check(root: Path = ROOT, jobs: int | None = None) -> int:
 
 
 # --------------------------------------------------------------------------
+# LaTeX generation
+# --------------------------------------------------------------------------
+BUILD_DIR = "build"
+MESES = (
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+)
+PDF_NAMES = {
+    "read": "testigos-de-turing-teambook.pdf",
+    "print": "testigos-de-turing-teambook-print.pdf",
+}
+_TEX_ESCAPES = {
+    "\\": r"\textbackslash{}",
+    "{": r"\{",
+    "}": r"\}",
+    "$": r"\$",
+    "&": r"\&",
+    "#": r"\#",
+    "_": r"\_",
+    "%": r"\%",
+    "^": r"\textasciicircum{}",
+    "~": r"\textasciitilde{}",
+}
+
+
+def texify(s: str) -> str:
+    """Escape LaTeX specials in a single pass (no double escaping)."""
+    return "".join(_TEX_ESCAPES.get(ch, ch) for ch in s)
+
+
+def render_contents(sections: list[Section]) -> str:
+    """Un bloque multicols por seccion, seguido de clearpage."""
+    out: list[str] = ["% Generado por scripts/notebook.py tex; no editar."]
+    for sec in sections:
+        out.append(rf"\section{{{texify(sec.title)}}}")
+        out.append(r"\begin{multicols}{2}")
+        for e in sec.items:
+            if e.kind == "tex":
+                if e.title:
+                    out.append(rf"\subsection{{{texify(e.title)}}}")
+                out.append(rf"\input{{{e.path}}}")
+            else:
+                t = texify(e.title)
+                out.append(rf"\subsection{{{t}}}")
+                out.append(rf"\lstinputlisting[style=cpp,caption={{{t}}}]{{{e.path}}}")
+        out.append(r"\end{multicols}")
+        out.append(r"\clearpage")
+        out.append("")
+    return "\n".join(out)
+
+
+def render_meta(today=None) -> str:
+    import datetime
+
+    d = today or datetime.date.today()
+    date = f"{d.day} de {MESES[d.month - 1]} de {d.year}"
+    return "\n".join(
+        [
+            "% Generado por scripts/notebook.py tex; no editar.",
+            rf"\newcommand{{\NBdate}}{{{date}}}",
+            r"\hypersetup{pdftitle={Testigos de Turing - ICPC Team Notebook},"
+            r"pdfauthor={Testigos de Turing},"
+            r"pdfsubject={Notebook de programación competitiva}}",
+            "",
+        ]
+    )
+
+
+def _write(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8", newline="\n")
+
+
+def tex(root: Path = ROOT) -> int:
+    manifest = root / MANIFEST_NAME
+    if not manifest.is_file():
+        print(f"{MANIFEST_NAME}: no encontrado en {root.as_posix()}")
+        return 1
+    sections, errors = parse_manifest(manifest)
+    if errors:
+        for e in errors:
+            print(f"ERROR {e}")
+        return 1
+    _write(root / BUILD_DIR / "contents.tex", render_contents(sections))
+    _write(root / BUILD_DIR / "meta.tex", render_meta())
+    print(f"tex: {BUILD_DIR}/contents.tex y {BUILD_DIR}/meta.tex generados")
+    return 0
+
+
+def pretex_arg(platform: str | None = None) -> str:
+    r"""Argumento -usepretex que define \PRINTMODE.
+
+    En Windows latexmk (perl) elimina backslashes y llaves si el valor no va
+    entre comillas literales; en POSIX las comillas literales sobrarian.
+    """
+    value = r"\def\PRINTMODE{1}"
+    if (platform or sys.platform) == "win32":
+        return f'-usepretex="{value}"'
+    return f"-usepretex={value}"
+
+
+def latexmk_cmd(latexmk: str, theme: str) -> list[str]:
+    cmd = [
+        latexmk, "-pdf", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error",
+        f"-outdir={BUILD_DIR}/{theme}", f"-jobname=notebook-{theme}",
+    ]
+    if theme == "print":
+        cmd.append(pretex_arg())
+    cmd.append("tex/notebook.tex")
+    return cmd
+
+
+def _log_excerpt(log: Path, limit: int = 40) -> str:
+    if not log.is_file():
+        return "(sin log)"
+    lines = log.read_text(encoding="utf-8", errors="replace").splitlines()
+    err = re.compile(r"^(!|[^\s:]+:\d+: )")
+    hits = [i for i, l in enumerate(lines) if err.match(l)]
+    if not hits:
+        return "\n".join(lines[-limit:])
+    start = hits[0]
+    return "\n".join(lines[start : start + limit])
+
+
+def run_latexmk(root: Path, latexmk: str, theme: str) -> int:
+    print(f"pdf[{theme}]: latexmk ...")
+    proc = subprocess.run(
+        latexmk_cmd(latexmk, theme), cwd=root, stdin=subprocess.DEVNULL,
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
+    )
+    outdir = root / BUILD_DIR / theme
+    built = outdir / f"notebook-{theme}.pdf"
+    if proc.returncode != 0 or not built.is_file():
+        print(f"ERROR latexmk fallo (tema {theme}, exit {proc.returncode}); log relevante:")
+        print(_log_excerpt(outdir / f"notebook-{theme}.log"))
+        return 1
+    dest = root / BUILD_DIR / PDF_NAMES[theme]
+    shutil.copyfile(built, dest)
+    print(f"pdf[{theme}]: {dest.relative_to(root).as_posix()}")
+    return 0
+
+
+def pdf(root: Path = ROOT, theme: str = "both") -> int:
+    latexmk = shutil.which("latexmk")
+    if latexmk is None:
+        print("latexmk no encontrado en PATH (instalar TeX Live/MiKTeX con latexmk)")
+        return 2
+    code = tex(root)
+    if code:
+        return code
+    themes = ["read", "print"] if theme == "both" else [theme]
+    for t in themes:
+        if run_latexmk(root, latexmk, t):
+            return 1
+    return 0
+
+
+# --------------------------------------------------------------------------
 # CLI
 # --------------------------------------------------------------------------
 def build_parser() -> argparse.ArgumentParser:
@@ -432,6 +590,9 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("check", help="validar manifiesto y compilar snippets")
     c.add_argument("--jobs", type=int, default=None, help="compilaciones en paralelo")
+    sub.add_parser("tex", help="generar build/contents.tex y build/meta.tex")
+    d = sub.add_parser("pdf", help="generar los PDF con latexmk")
+    d.add_argument("--theme", choices=["read", "print", "both"], default="both")
     return p
 
 
@@ -447,6 +608,10 @@ def main(argv: list[str] | None = None) -> int:
         return 2 if e.code not in (0, None) else 0
     if args.cmd == "check":
         return check(ROOT, args.jobs)
+    if args.cmd == "tex":
+        return tex(ROOT)
+    if args.cmd == "pdf":
+        return pdf(ROOT, args.theme)
     return 2
 
 
