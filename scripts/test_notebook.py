@@ -420,8 +420,10 @@ class RenderTests(Fixture):
         out = nb.render_contents(secs)
         order = [out.index(x) for x in ("{Plantilla}", "{Uno}", "{Dos}")]
         self.assertEqual(order, sorted(order))
-        self.assertIn(r"\lstinputlisting[style=cpp,caption={Plantilla}]{template/template.cpp}", out)
-        self.assertIn(r"\lstinputlisting[style=cpp,caption={Foo}]{src/a/foo.cpp}", out)
+        self.assertIn(r"\lstinputlisting[style=cpp]{template/template.cpp}", out)
+        self.assertIn(r"\lstinputlisting[style=cpp]{src/a/foo.cpp}", out)
+        self.assertIn(r"\NBpath{template/template.cpp}", out)
+        self.assertNotIn("caption", out)
         self.assertEqual(out.count(r"\clearpage"), 3)
         self.assertEqual(out.count(r"\begin{multicols}{2}"), 3)
         self.assertEqual(out.count(r"\end{multicols}"), 3)
@@ -444,7 +446,8 @@ class RenderTests(Fixture):
         out = nb.render_contents(secs)
         self.assertIn(r"\section{A\_B \& C\#}", out)
         self.assertIn(r"\subsection{Union\_Find\#1 \& 100\%}", out)
-        self.assertIn(r"caption={Union\_Find\#1 \& 100\%}", out)
+        self.assertNotIn("caption", out)
+        self.assertIn(r"\NBpath{src/a/foo.cpp}", out)
 
 
 class MetaAndTexCommandTests(Fixture):

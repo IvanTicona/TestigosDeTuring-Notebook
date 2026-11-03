@@ -32,8 +32,9 @@
 
 % Nombres en espanol (sin babel)
 \renewcommand{\contentsname}{Índice}
-\renewcommand{\lstlistingname}{Código}
-\renewcommand{\lstlistlistingname}{Lista de algoritmos}
+
+% Ruta del snippet (gris, compacta, a la derecha bajo el titulo)
+\newcommand{\NBpath}[1]{{\nopagebreak\hfill\fontsize{5}{6}\ttfamily\color{NBNumber}#1\par}}
 
 % Equipo (portada y cabecera)
 \newcommand{\NBteam}{Testigos de Turing}
@@ -45,10 +46,10 @@
 \input{build/meta.tex}
 
 % Indice compacto
-\renewcommand\cftsecfont{\fontsize{8}{9}\bfseries}
-\renewcommand\cftsecpagefont{\fontsize{8}{9}\mdseries}
-\renewcommand\cftsubsecfont{\fontsize{6.5}{7.5}\mdseries}
-\renewcommand\cftsubsecpagefont{\fontsize{6.5}{7.5}\mdseries}
+\renewcommand\cftsecfont{\fontsize{10}{12}\bfseries}
+\renewcommand\cftsecpagefont{\fontsize{10}{12}\mdseries}
+\renewcommand\cftsubsecfont{\fontsize{8.5}{10.5}\mdseries}
+\renewcommand\cftsubsecpagefont{\fontsize{8.5}{10.5}\mdseries}
 \setlength{\cftbeforesecskip}{0.6ex}
 \setlength{\cftbeforesubsecskip}{0pt}
 \setlength{\cftbeforeloftitleskip}{0pt}
@@ -100,8 +101,6 @@
   rulecolor=\color{CodeRule},
   framesep=3pt,
   backgroundcolor=\color{CodeBg},
-  belowcaptionskip=0.5\baselineskip,
-  captionpos=t,
 }
 \lstset{style=cpp}
 
@@ -117,34 +116,28 @@
 
 \begin{document}
 
-% ---------- Portada (estilo UMSS): titulo/integrantes arriba; logo | indice ----------
+% ---------- Portada (estilo UMSS): logo centrado, datos, indice en 2 columnas ----------
 \pagestyle{empty}
 \begin{center}
-  \vspace*{0.6cm}
-  {\LARGE\bfseries ICPC Team Notebook\par}
+  \includegraphics[height=3.4cm]{tex/assets/logo-upb.png}\par
   \vspace{0.5cm}
+  {\LARGE\bfseries ICPC Team Notebook\par}
+  \vspace{0.15cm}
   {\Large\bfseries \NBteam\par}
-  \vspace{0.2cm}
   {\large \NBuniversity\par}
-  \vspace{0.4cm}
-  {\normalsize \NBmembers\par}
-  \vspace{0.3cm}
-  {\normalsize Coach: \NBcoach\par}
-  \vspace{0.2cm}
-  {\normalsize \NBdate\par}
+  \vspace{0.15cm}
+  {\small \NBmembers\par}
+  \vspace{0.1cm}
+  {\small Coach: \NBcoach \quad--\quad \NBdate\par}
 \end{center}
 \vspace{0.3cm}
-\setlength{\columnseprule}{0.6pt}
+\begingroup
+\setlength{\columnseprule}{0.4pt}
+\small
 \begin{multicols}{2}
-  \vspace*{0.8cm}
-  \centering
-  \includegraphics[width=0.92\columnwidth]{tex/assets/logo-upb.png}
-  \columnbreak
-  \begingroup\small\tableofcontents\endgroup
-  \vspace{1ex}
-  \begingroup\small\lstlistoflistings\endgroup
+\tableofcontents
 \end{multicols}
-\setlength{\columnseprule}{0pt}
+\endgroup
 \clearpage
 \pagestyle{fancy}
 

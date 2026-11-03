@@ -469,7 +469,8 @@ def render_contents(sections: list[Section]) -> str:
             else:
                 t = texify(e.title)
                 out.append(rf"\subsection{{{t}}}")
-                out.append(rf"\lstinputlisting[style=cpp,caption={{{t}}}]{{{e.path}}}")
+                out.append(rf"\NBpath{{{texify(e.path)}}}")
+                out.append(rf"\lstinputlisting[style=cpp]{{{e.path}}}")
         out.append(r"\end{multicols}")
         out.append(r"\clearpage")
         out.append("")
