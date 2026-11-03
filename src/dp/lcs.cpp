@@ -1,6 +1,8 @@
-#include <bits/stdc++.h>
-using namespace std;
-
+/**
+ * Uso: LCS(X, Y) -> longitud de la subsecuencia comun mas larga; getLCS(X, Y) -> la subsecuencia
+ * Complejidad: O(n * m) tiempo y memoria
+ * Status: untested
+ */
 // Función para calcular LCS
 int LCS(const string &X, const string &Y) {
     int n = X.size();
@@ -42,14 +44,4 @@ string getLCS(const string &X, const string &Y) {
     }
     reverse(lcs.begin(), lcs.end());
     return lcs;
-}
-
-int main() {
-    string X = "AGGTAB";
-    string Y = "GXTXAYB";
-
-    cout << "Length of LCS: " << LCS(X, Y) << "\n";
-    cout << "LCS: " << getLCS(X, Y) << "\n";
-
-    return 0;
 }

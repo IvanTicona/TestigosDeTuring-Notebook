@@ -1,16 +1,9 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int n, X;
-    cin >> n >> X;
-
-    vector<int> a(n);
-    for (int i = 0; i < n; i++) cin >> a[i];
-
+/**
+ * Uso: subsetSum1d(X, a) -> true si algun subconjunto de a suma X
+ * Complejidad: O(n * X) tiempo, O(X) memoria
+ * Status: untested
+ */
+bool subsetSum1d(int X, const vector<int> &a) {
     vector<bool> dp(X+1, false);
     dp[0] = true; // siempre se puede formar suma 0
 
@@ -20,6 +13,5 @@ int main() {
         }
     }
 
-    if (dp[X]) cout << "Sí, existe un subconjunto con suma " << X << "\n";
-    else cout << "No existe subconjunto con suma " << X << "\n";
+    return dp[X];
 }

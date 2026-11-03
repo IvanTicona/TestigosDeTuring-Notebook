@@ -1,9 +1,11 @@
-#include <bits/stdc++.h>
-using namespace std;
-
+/**
+ * Uso: setear s = to_string(N), n = s.size(), memset(dp, -1, sizeof(dp)); solve(0, 0, true, false)
+ * Complejidad: O(n * S * 10), S = suma maxima de digitos (dp[20][200])
+ * Status: untested
+ */
 string s; // número N como string
 int n;
-int dp[20][200][2][2]; 
+int dp[20][200][2][2];
 // pos, suma, tight, started
 
 // retorna cantidad de números válidos desde la posición pos
@@ -28,14 +30,4 @@ int solve(int pos, int sum, bool tight, bool started) {
         res += solve(pos + 1, nextSum, nextTight, nextStarted);
     }
     return res;
-}
-
-int main() {
-    long long N;
-    cin >> N;
-    s = to_string(N);
-    n = s.size();
-    memset(dp, -1, sizeof(dp));
-    cout << "Cantidad de números con suma de dígitos divisible por 3 en [0," << N << "] = "
-         << solve(0, 0, true, false) << "\n";
 }

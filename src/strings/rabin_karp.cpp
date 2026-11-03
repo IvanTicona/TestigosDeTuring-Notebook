@@ -1,7 +1,8 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-typedef long long ll;
+/**
+ * Uso: RabinKarp(text, pat) -> posiciones (0-indexadas) de las ocurrencias de pat en text; mod/base locales (hash rodante)
+ * Complejidad: O(n + m) esperado; O(n * m) en el peor caso
+ * Status: untested
+ */
 const ll mod = 1e9+7;
 const ll base = 256; // tamaño del alfabeto
 
@@ -35,15 +36,4 @@ vector<int> RabinKarp(const string &text, const string &pat) {
     }
 
     return result;
-}
-
-int main() {
-    string text = "ABABDABACDABABCABAB";
-    string pat = "ABABCABAB";
-    vector<int> pos = RabinKarp(text, pat);
-
-    cout << "Pattern found at indices: ";
-    for (int p : pos) cout << p << " ";
-    cout << "\n";
-    return 0;
 }

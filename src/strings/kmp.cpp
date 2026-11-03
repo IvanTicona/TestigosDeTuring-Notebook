@@ -1,6 +1,8 @@
-#include <bits/stdc++.h>
-using namespace std;
-
+/**
+ * Uso: KMP(text, pat) -> posiciones (0-indexadas) de todas las ocurrencias de pat en text; computeLPS(pat) arreglo de fallos
+ * Complejidad: O(n + m)
+ * Status: untested
+ */
 // Construir arreglo LPS (Longest Prefix Suffix)
 vector<int> computeLPS(const string &pat) {
     int m = pat.size();
@@ -43,15 +45,4 @@ vector<int> KMP(const string &text, const string &pat) {
         }
     }
     return positions;
-}
-
-int main() {
-    string text = "ABABDABACDABABCABAB";
-    string pat = "ABABCABAB";
-    vector<int> pos = KMP(text, pat);
-
-    cout << "Pattern found at indices: ";
-    for (int p : pos) cout << p << " ";
-    cout << "\n";
-    return 0;
 }

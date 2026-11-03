@@ -1,6 +1,8 @@
-#include <bits/stdc++.h>
-using namespace std;
-
+/**
+ * Uso: computeZ(s) -> Z[i] = longitud del mayor prefijo de s que empieza en i; para buscar patron: computeZ(pat + "$" + text)
+ * Complejidad: O(n)
+ * Status: untested
+ */
 // Función que calcula el array Z de una cadena
 vector<int> computeZ(const string &s) {
     int n = s.size();
@@ -20,27 +22,4 @@ vector<int> computeZ(const string &s) {
         }
     }
     return Z;
-}
-
-int main() {
-    string text = "ababcababc";
-    vector<int> Z = computeZ(text);
-
-    cout << "Z-array: ";
-    for (int z : Z) cout << z << " ";
-    cout << "\n";
-
-    // Ejemplo: buscar patrón "ab" en el texto
-    string pattern = "ab";
-    string concat = pattern + "$" + text; // $ separador que no aparece en pattern
-    vector<int> Z2 = computeZ(concat);
-
-    cout << "Pattern found at indices: ";
-    for (int i = 0; i < Z2.size(); i++) {
-        if (Z2[i] == pattern.size())
-            cout << (i - pattern.size() - 1) << " ";
-    }
-    cout << "\n";
-
-    return 0;
 }

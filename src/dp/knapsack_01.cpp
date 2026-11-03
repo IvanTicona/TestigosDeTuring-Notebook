@@ -1,18 +1,9 @@
-#include <bits/stdc++.h>
-using namespace std;
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int n, W;
-    cin >> n >> W;  // n = número de objetos, W = capacidad máxima
-
-    vector<int> w(n+1), v(n+1);
-    for (int i = 1; i <= n; i++) {
-        cin >> w[i] >> v[i]; // peso y valor de cada objeto
-    }
-
+/**
+ * Uso: knapsack01(n, W, w, v) con w, v indexados desde 1 (tamano n+1) -> valor maximo con capacidad W
+ * Complejidad: O(n * W) tiempo y memoria
+ * Status: untested
+ */
+int knapsack01(int n, int W, const vector<int> &w, const vector<int> &v) {
     // dp[i][j] = máximo valor con los primeros i objetos y capacidad j
     vector<vector<int>> dp(n+1, vector<int>(W+1, 0));
 
@@ -25,5 +16,5 @@ int main() {
         }
     }
 
-    cout << "Valor máximo = " << dp[n][W] << "\n";
+    return dp[n][W];
 }

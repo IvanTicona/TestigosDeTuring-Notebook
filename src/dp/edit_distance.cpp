@@ -1,6 +1,8 @@
-#include <bits/stdc++.h>
-using namespace std;
-
+/**
+ * Uso: editDistance(a, b) -> minimo de inserciones/eliminaciones/reemplazos para convertir a en b
+ * Complejidad: O(n * m) tiempo y memoria
+ * Status: untested
+ */
 int editDistance(string a, string b) {
     int n = a.size();
     int m = b.size();
@@ -28,15 +30,4 @@ int editDistance(string a, string b) {
     }
 
     return dp[n][m];
-}
-
-int main() {
-    string s1, s2;
-    cout << "Introduce el primer string: ";
-    cin >> s1;
-    cout << "Introduce el segundo string: ";
-    cin >> s2;
-
-    cout << "La distancia de edición es: " << editDistance(s1, s2) << endl;
-    return 0;
 }
