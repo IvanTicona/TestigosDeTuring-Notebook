@@ -1,49 +1,98 @@
-# .github/workflows/build.yml
-name: Build PDF Notebook
+# Testigos de Turing - ICPC Team Notebook
+# check (gate g++) -> PDFs (latexmk) -> artifact -> Release `latest` -> Google Drive
+name: Build Notebook
+
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch: # Permite ejecutar manualmente
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: notebook-publish
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Solo el id va a nivel de job (se usa en `if:`); las credenciales van por paso.
+      GDRIVE_FILE_ID: ${{ secrets.GDRIVE_FILE_ID }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '20'
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: scripts/requirements-drive.txt
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Unit tests
+        run: python -m unittest discover -s scripts -p "test_*.py" -v
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+      - name: Check snippets (compile gate)
+        run: python scripts/notebook.py check
 
-      - name: Build HTML + PDF
-        run: npm run build
-
-      - name: Verify build output
+      - name: Install TeX Live
         run: |
-          echo "📁 Build output:"
-          ls -la dist/
-          echo "📄 Generated files:"
-          if [ -f dist/notebook.html ]; then echo "✅ HTML generated"; else echo "❌ HTML missing"; fi
-          if [ -f dist/notebook.pdf ]; then echo "✅ PDF generated"; else echo "❌ PDF missing"; fi
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-latex-base texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended lmodern latexmk
 
-      - name: Upload PDF artifact
+      - name: Build PDFs (read + print)
+        run: python scripts/notebook.py pdf --theme both
+
+      - name: Upload PDFs artifact
         uses: actions/upload-artifact@v4
         with:
-          name: testigos-de-turing-notebook-pdf
-          path: dist/notebook.pdf
-          if-no-files-found: warn
-
-      - name: Upload HTML artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: testigos-de-turing-notebook-html
-          path: dist/notebook.html
+          name: testigos-de-turing-teambook-pdf
+          path: |
+            build/testigos-de-turing-teambook.pdf
+            build/testigos-de-turing-teambook-print.pdf
           if-no-files-found: error
 
-# GitHub Pages removido - usamos Render para deployment
+      - name: Upload LaTeX logs (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: latex-logs
+          path: build/*/*.log
+          if-no-files-found: ignore
+
+      - name: Publish GitHub Release (latest)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh release view latest >/dev/null 2>&1; then
+            gh release create latest \
+              --title "Teambook (latest)" \
+              --notes "Build ${GITHUB_SHA}" \
+              --target "${GITHUB_SHA}"
+          fi
+          gh release upload latest \
+            build/testigos-de-turing-teambook.pdf \
+            build/testigos-de-turing-teambook-print.pdf \
+            --clobber
+          gh release edit latest \
+            --title "Teambook (latest)" \
+            --notes "Build ${GITHUB_SHA} (${GITHUB_RUN_ID})"
+
+      - name: Drive skipped (no secrets)
+        if: env.GDRIVE_FILE_ID == ''
+        run: echo "::notice::Drive omitido - faltan secrets (GDRIVE_FILE_ID)"
+
+      - name: Update PDF in Google Drive
+        if: env.GDRIVE_FILE_ID != ''
+        env:
+          GDRIVE_SA_JSON: ${{ secrets.GDRIVE_SA_JSON }}
+          GDRIVE_OAUTH_CLIENT_ID: ${{ secrets.GDRIVE_OAUTH_CLIENT_ID }}
+          GDRIVE_OAUTH_CLIENT_SECRET: ${{ secrets.GDRIVE_OAUTH_CLIENT_SECRET }}
+          GDRIVE_OAUTH_REFRESH_TOKEN: ${{ secrets.GDRIVE_OAUTH_REFRESH_TOKEN }}
+        run: |
+          pip install -r scripts/requirements-drive.txt
+          python scripts/drive_upload.py --file build/testigos-de-turing-teambook.pdf
