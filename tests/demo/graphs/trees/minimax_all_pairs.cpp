@@ -11,7 +11,7 @@ int main(){
     cin >> C >> L >> H;
     if (!cin || (C == -1 && L == -1 && H == -1)) break;
 
-    // 1) Leer grafo
+    // 1) Read the graph
     vvpii graph(C);
     for (int i = 0; i < L; i++){
       int a, b, w; cin >> a >> b >> w;
@@ -20,10 +20,10 @@ int main(){
       graph[b].emplace_back(a, w);
     }
 
-    // 2) Para cada fuente i hacemos un "minimax-Dijkstra"
+    // 2) For each source i we run a "minimax Dijkstra"
     vvi cap = minimaxAllPairs(C, graph);
 
-    // 3) Responder consultas
+    // 3) Answer the queries
     int s, t; cin >> s >> t;
     
     cout << cap[s - 1][t - 1];

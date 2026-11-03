@@ -9,9 +9,9 @@ int main() {
     for (int z : Z) cout << z << " ";
     cout << "\n";
 
-    // Ejemplo: buscar patrón "ab" en el texto
+    // Example: search for pattern "ab" in the text
     string pattern = "ab";
-    string concat = pattern + "$" + text; // $ separador que no aparece en pattern
+    string concat = pattern + "$" + text; // $ separator that does not appear in pattern
     vector<int> Z2 = computeZ(concat);
 
     cout << "Pattern found at indices: ";

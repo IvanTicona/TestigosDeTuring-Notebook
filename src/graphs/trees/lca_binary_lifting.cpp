@@ -1,8 +1,8 @@
 /**
  * Usage: LCA T; T.init(N); T.ae(x, y); T.gen(root); T.lca(x, y); T.dist(x, y)
- * Complexity: O(N log N) construccion, O(log N) consulta
+ * Complexity: O(N log N) build, O(log N) query
  * Source: USACO Camp, KACTL
- * Note: roto - depende de macros no definidas en template.cpp (V, rsz, pb, each, FOR, F0R, R0F)
+ * Note: broken - depends on macros not defined in template.cpp (V, rsz, pb, each, FOR, F0R, R0F)
  * Status: broken
  */
 /**

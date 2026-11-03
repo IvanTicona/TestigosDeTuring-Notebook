@@ -3,11 +3,11 @@
 
 int main() {
     int n;
-    cin >> n; // tamaño del problema
+    cin >> n; // problem size
 
     backtrack(0, n);
 
-    cout << "Número de soluciones = " << solutions.size() << "\n";
+    cout << "Number of solutions = " << solutions.size() << "\n";
     for (auto &sol : solutions) {
         for (int x : sol) cout << x << " ";
         cout << "\n";

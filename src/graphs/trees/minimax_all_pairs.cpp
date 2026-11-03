@@ -1,21 +1,21 @@
 /**
- * Usage: vvi cap = minimaxAllPairs(C, graph); cap[s][t] = menor valor posible del peso maximo en un camino s -> t (graph: lista de adyacencia de (nodo, peso), 0-indexada)
- * Complexity: O(C^2 + L) segun el autor original (en realidad C Dijkstra: O(C * L log C))
+ * Usage: vvi cap = minimaxAllPairs(C, graph); cap[s][t] = smallest possible maximum edge weight on a path s -> t (graph: adjacency list of (node, weight), 0-indexed)
+ * Complexity: O(C^2 + L) per the original author (actually C Dijkstras: O(C * L log C))
  * Status: untested
  */
 typedef vector<vpii> vvpii;
 
 vvi minimaxAllPairs(int C, const vvpii &graph){
-    // Para cada fuente i hacemos un "minimax-Dijkstra"
-    // y llenamos cap[i][*]
+    // For each source i we run a "minimax Dijkstra"
+    // and fill cap[i][*]
     vvi cap(C, vi(C));
     for (int src = 0; src < C; src++){
-      // vis[v]=si ya fijamos cap[src][v]
+      // vis[v] = whether cap[src][v] is already finalized
       vector<char> vis(C, 0);
-      // pq minimo por peso máximo en el camino
+      // min-heap by maximum edge weight on the path
       priority_queue<pii, vpii, greater<pii>> pq;
 
-      // (peso_actual, nodo)
+      // (current_weight, node)
       pq.emplace(0, src);
       while (!pq.empty()){
         auto [bestW, u] = pq.top();
@@ -29,8 +29,8 @@ vvi minimaxAllPairs(int C, const vvpii &graph){
           int v = e.first, w = e.second;
           if (!vis[v])
           {
-            // el peso del camino a v es el máximo
-            // entre el acumulado y la arista (u,v)
+            // the path weight to v is the maximum
+            // of the accumulated weight and the edge (u,v)
             int newW = max(bestW, w);
             pq.emplace(newW, v);
           }

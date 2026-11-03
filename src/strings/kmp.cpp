@@ -1,9 +1,9 @@
 /**
- * Usage: KMP(text, pat) -> posiciones (0-indexadas) de todas las ocurrencias de pat en text; computeLPS(pat) arreglo de fallos
+ * Usage: KMP(text, pat) -> positions (0-indexed) of all occurrences of pat in text; computeLPS(pat) failure array
  * Complexity: O(n + m)
  * Status: untested
  */
-// Construir arreglo LPS (Longest Prefix Suffix)
+// Build the LPS (Longest Prefix Suffix) array
 vector<int> computeLPS(const string &pat) {
     int m = pat.size();
     vector<int> lps(m, 0);
@@ -26,7 +26,7 @@ vector<int> computeLPS(const string &pat) {
     return lps;
 }
 
-// Función KMP
+// KMP search
 vector<int> KMP(const string &text, const string &pat) {
     vector<int> lps = computeLPS(pat);
     vector<int> positions;

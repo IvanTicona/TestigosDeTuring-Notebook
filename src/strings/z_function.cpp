@@ -1,13 +1,13 @@
 /**
- * Usage: computeZ(s) -> Z[i] = longitud del mayor prefijo de s que empieza en i; para buscar patron: computeZ(pat + "$" + text)
+ * Usage: computeZ(s) -> Z[i] = length of the longest prefix of s starting at i; for pattern search: computeZ(pat + "$" + text)
  * Complexity: O(n)
  * Status: untested
  */
-// Función que calcula el array Z de una cadena
+// Computes the Z array of a string
 vector<int> computeZ(const string &s) {
     int n = s.size();
     vector<int> Z(n, 0);
-    int l = 0, r = 0; // [l, r] es la ventana de coincidencia más a la derecha
+    int l = 0, r = 0; // [l, r] is the rightmost match window
 
     for (int i = 1; i < n; i++) {
         if (i <= r)

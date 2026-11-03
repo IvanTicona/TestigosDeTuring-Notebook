@@ -11,6 +11,6 @@ int main() {
     vector<int> a(n);
     for (int i = 0; i < n; i++) cin >> a[i];
 
-    if (subsetSum1d(X, a)) cout << "Sí, existe un subconjunto con suma " << X << "\n";
-    else cout << "No existe subconjunto con suma " << X << "\n";
+    if (subsetSum1d(X, a)) cout << "Yes, a subset exists with sum " << X << "\n";
+    else cout << "No subset exists with sum " << X << "\n";
 }

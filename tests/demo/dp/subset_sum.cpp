@@ -6,11 +6,11 @@ int main() {
     cin.tie(nullptr);
 
     int n, X;
-    cin >> n >> X; // número de elementos y suma objetivo
+    cin >> n >> X; // number of elements and target sum
 
     vector<int> a(n);
     for (int i = 0; i < n; i++) cin >> a[i];
 
-    if (subsetSum(n, X, a)) cout << "Sí, existe un subconjunto con suma " << X << "\n";
-    else cout << "No existe subconjunto con suma " << X << "\n";
+    if (subsetSum(n, X, a)) cout << "Yes, a subset exists with sum " << X << "\n";
+    else cout << "No subset exists with sum " << X << "\n";
 }

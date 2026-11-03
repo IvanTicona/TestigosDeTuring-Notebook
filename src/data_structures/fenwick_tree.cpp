@@ -1,7 +1,7 @@
 /**
- * Usage: FenwickTree (rsq/update/select), RUPQ (update de rango, consulta puntual), RURQ (update y suma de rango); indices desde 1
- * Complexity: O(log n) por operacion; build O(n); select O(log^2 n)
- * Source: Competitive Programming 4 (segun comentarios del codigo original)
+ * Usage: FenwickTree (rsq/update/select), RUPQ (range update, point query), RURQ (range update and range sum); 1-indexed
+ * Complexity: O(log n) per operation; build O(n); select O(log^2 n)
+ * Source: Competitive Programming 4 (per the original code comments)
  * Status: untested
  */
 #define LSOne(S) ((S) & -(S))
@@ -38,7 +38,7 @@ public:
             sum += ft[j];
         return sum;
     }
-    ll rsq(int i, int j) { return rsq(j) - rsq(i - 1); } // inc/exclusion
+    ll rsq(int i, int j) { return rsq(j) - rsq(i - 1); } // inclusive/exclusive
     // updates value of the i-th element by v (v can be +ve/inc or-ve/dec)
     void update(int i, ll v)
     {

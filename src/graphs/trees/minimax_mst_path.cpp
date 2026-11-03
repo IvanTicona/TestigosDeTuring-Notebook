@@ -1,7 +1,7 @@
 /**
- * Usage: solve(V, E) lee E aristas (u v w) por scanf y devuelve el MST (Kruskal); dfs(u, v, -1) llena path con el camino en el MST; maximo peso del camino = respuesta minimax
- * Complexity: O(E log E) por MST + O(V) por consulta (sirve para una o pocas consultas)
- * Source: UnionFind de Competitive Programming 4 (Halim), misma logica que data_structures/union_find.cpp (solo cambia la indentacion)
+ * Usage: solve(V, E) reads E edges (u v w) with scanf and returns the MST (Kruskal); dfs(u, v, -1) fills path with the MST path; maximum edge weight on the path = minimax answer
+ * Complexity: O(E log E) per MST + O(V) per query (suitable for one or a few queries)
+ * Source: UnionFind from Competitive Programming 4 (Halim), same logic as data_structures/union_find.cpp (only the indentation differs)
  * Status: untested
  */
 typedef tuple<int, int, int> iii;

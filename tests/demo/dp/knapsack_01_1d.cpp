@@ -11,5 +11,5 @@ int main() {
     vector<int> w(n), v(n);
     for (int i = 0; i < n; i++) cin >> w[i] >> v[i];
 
-    cout << "Valor máximo = " << knapsack01_1d(n, W, w, v) << "\n";
+    cout << "Maximum value = " << knapsack01_1d(n, W, w, v) << "\n";
 }

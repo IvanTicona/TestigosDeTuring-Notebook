@@ -1,7 +1,7 @@
 /**
- * Usage: LCA lca(adj, root); lca.lca(u, v) -> ancestro comun mas bajo (adj: vector<vector<int>>)
- * Complexity: O(N) construccion (tour de Euler + segment tree), O(log N) por consulta
- * Note: tour de Euler + segment tree sobre alturas (no es binary lifting)
+ * Usage: LCA lca(adj, root); lca.lca(u, v) -> lowest common ancestor (adj: vector<vector<int>>)
+ * Complexity: O(N) build (Euler tour + segment tree), O(log N) per query
+ * Note: Euler tour + segment tree over depths (not binary lifting)
  * Status: untested
  */
 struct LCA {

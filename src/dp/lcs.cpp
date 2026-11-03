@@ -1,9 +1,9 @@
 /**
- * Usage: LCS(X, Y) -> longitud de la subsecuencia comun mas larga; getLCS(X, Y) -> la subsecuencia
- * Complexity: O(n * m) tiempo y memoria
+ * Usage: LCS(X, Y) -> length of the longest common subsequence; getLCS(X, Y) -> the subsequence itself
+ * Complexity: O(n * m) time and memory
  * Status: untested
  */
-// Función para calcular LCS
+// Computes the LCS length
 int LCS(const string &X, const string &Y) {
     int n = X.size();
     int m = Y.size();
@@ -21,7 +21,7 @@ int LCS(const string &X, const string &Y) {
     return dp[n][m];
 }
 
-// Función para reconstruir la subsecuencia
+// Reconstructs the subsequence
 string getLCS(const string &X, const string &Y) {
     int n = X.size();
     int m = Y.size();

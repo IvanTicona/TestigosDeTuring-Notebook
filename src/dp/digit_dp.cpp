@@ -1,17 +1,17 @@
 /**
- * Usage: setear s = to_string(N), n = s.size(), memset(dp, -1, sizeof(dp)); solve(0, 0, true, false)
- * Complexity: O(n * S * 10), S = suma maxima de digitos (dp[20][200])
+ * Usage: set s = to_string(N), n = s.size(), memset(dp, -1, sizeof(dp)); solve(0, 0, true, false)
+ * Complexity: O(n * S * 10), S = maximum digit sum (dp[20][200])
  * Status: untested
  */
-string s; // número N como string
+string s; // number N as a string
 int n;
 int dp[20][200][2][2];
-// pos, suma, tight, started
+// pos, sum, tight, started
 
-// retorna cantidad de números válidos desde la posición pos
+// returns the count of valid numbers from position pos
 int solve(int pos, int sum, bool tight, bool started) {
     if (pos == n) {
-        // condición final: suma divisible por 3
+        // final condition: sum divisible by 3
         return (started && sum % 3 == 0);
     }
 

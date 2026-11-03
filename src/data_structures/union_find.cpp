@@ -1,7 +1,7 @@
 /**
  * Usage: UnionFind UF(N); UF.unionSet(i, j); UF.isSameSet(i, j); UF.findSet(i); UF.sizeOfSet(i); UF.numDisjointSets()
- * Complexity: O(alpha(n)) amortizado por operacion (compresion de caminos + union por rango)
- * Source: Competitive Programming 4 (segun estilo del codigo original)
+ * Complexity: O(alpha(n)) amortized per operation (path compression + union by rank)
+ * Source: Competitive Programming 4 (per the original code style)
  * Status: untested
  */
 class UnionFind

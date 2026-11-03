@@ -1,10 +1,10 @@
 /**
- * Usage: RabinKarp(text, pat) -> posiciones (0-indexadas) de las ocurrencias de pat en text; mod/base locales (hash rodante)
- * Complexity: O(n + m) esperado; O(n * m) en el peor caso
+ * Usage: RabinKarp(text, pat) -> positions (0-indexed) of the occurrences of pat in text; local mod/base (rolling hash)
+ * Complexity: O(n + m) expected; O(n * m) worst case
  * Status: untested
  */
 const ll mod = 1e9+7;
-const ll base = 256; // tamaño del alfabeto
+const ll base = 256; // alphabet size
 
 vector<int> RabinKarp(const string &text, const string &pat) {
     int n = text.size();
@@ -17,7 +17,7 @@ vector<int> RabinKarp(const string &text, const string &pat) {
     // h = pow(base, m-1) % mod
     for (int i = 0; i < m-1; i++) h = (h * base) % mod;
 
-    // hash del patrón y del primer substring
+    // hash of the pattern and of the first substring
     for (int i = 0; i < m; i++) {
         patHash = (base * patHash + pat[i]) % mod;
         textHash = (base * textHash + text[i]) % mod;

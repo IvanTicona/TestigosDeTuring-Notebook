@@ -7,6 +7,6 @@ int main() {
     s = to_string(N);
     n = s.size();
     memset(dp, -1, sizeof(dp));
-    cout << "Cantidad de números con suma de dígitos divisible por 3 en [0," << N << "] = "
+    cout << "Count of numbers with digit sum divisible by 3 in [0," << N << "] = "
          << solve(0, 0, true, false) << "\n";
 }

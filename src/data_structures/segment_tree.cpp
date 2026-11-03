@@ -1,7 +1,7 @@
 /**
- * Usage: SegmentTree st(A); st.RMQ(i, j) minimo en [i, j]; st.update(i, j, val) asigna val a A[i..j] (lazy); indices desde 0
+ * Usage: SegmentTree st(A); st.RMQ(i, j) minimum in [i, j]; st.update(i, j, val) assigns val to A[i..j] (lazy); 0-indexed
  * Complexity: build O(n); RMQ y update O(log n)
- * Source: Competitive Programming 4 (segun comentarios del codigo original)
+ * Source: Competitive Programming 4 (per the original code comments)
  * Status: untested
  */
 class SegmentTree

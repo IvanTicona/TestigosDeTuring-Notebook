@@ -3,11 +3,11 @@
 
 int main() {
     string s1, s2;
-    cout << "Introduce el primer string: ";
+    cout << "Enter the first string: ";
     cin >> s1;
-    cout << "Introduce el segundo string: ";
+    cout << "Enter the second string: ";
     cin >> s2;
 
-    cout << "La distancia de edición es: " << editDistance(s1, s2) << endl;
+    cout << "The edit distance is: " << editDistance(s1, s2) << endl;
     return 0;
 }
