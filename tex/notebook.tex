@@ -6,6 +6,10 @@
 % Tema read/print: \PRINTMODE se define con -usepretex
 \newif\ifprintmode
 \ifdefined\PRINTMODE\printmodetrue\fi
+% Respaldo independiente de -usepretex (quoting segun SO): jobname notebook-print
+\edef\NBjob{\detokenize\expandafter{\jobname}}
+\edef\NBprintjob{\detokenize{notebook-print}}
+\ifx\NBjob\NBprintjob\printmodetrue\fi
 
 % Carta apaisado real (792x612 pt, sin rotacion en el visor)
 \usepackage[letterpaper,landscape,left=0.4in,right=0.4in,top=0.7in,bottom=0.4in,headheight=14pt]{geometry}
