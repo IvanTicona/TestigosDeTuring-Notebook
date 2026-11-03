@@ -1,4 +1,11 @@
 /**
+ * Uso: LCA T; T.init(N); T.ae(x, y); T.gen(root); T.lca(x, y); T.dist(x, y)
+ * Complejidad: O(N log N) construccion, O(log N) consulta
+ * Fuente: USACO Camp, KACTL
+ * Nota: roto - depende de macros no definidas en template.cpp (V, rsz, pb, each, FOR, F0R, R0F)
+ * Status: broken
+ */
+/**
  * Description: Calculates least common ancestor in tree with verts 
  	* $0\ldots N-1$ and root $R$ using binary jumping. 
  * Time: O(N\log N) build, O(\log N) query

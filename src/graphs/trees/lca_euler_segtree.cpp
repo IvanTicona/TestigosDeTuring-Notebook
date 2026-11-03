@@ -1,15 +1,9 @@
-/*
----
-title: Lowest Common Ancestor (LCA)
-category: trees
-author: Ivan Ticona
-note: Binary Lifting, O((N log N), O(log N))
----
-*/
-#include<bits/stdc++.h>
-
-using namespace std;
-
+/**
+ * Uso: LCA lca(adj, root); lca.lca(u, v) -> ancestro comun mas bajo (adj: vector<vector<int>>)
+ * Complejidad: O(N) construccion (tour de Euler + segment tree), O(log N) por consulta
+ * Nota: tour de Euler + segment tree sobre alturas (no es binary lifting)
+ * Status: untested
+ */
 struct LCA {
     vector<int> height, euler, first, segtree;
     vector<bool> visited;
@@ -73,29 +67,3 @@ struct LCA {
         return query(1, 0, euler.size() - 1, left, right);
     }
 };
-
-int main() {
-
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-
-  int n; cin >> n;
-  vector<vector<pair<int, int>>> adj(n);
-
-  for (int i = 0; i < n; i++){
-    int a, b, c; cin >> a >> b >> c;
-    --a,--b;
-    adj[a].push_back({b, c});
-    adj[b].push_back({a, c});
-  }
-  
-  // LCA lca(adj);
-
-  int q; cin >> q;
-
-  while (q--) {
-
-  }
-
-  return 0;
-}

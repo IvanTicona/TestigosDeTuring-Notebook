@@ -1,4 +1,11 @@
 /**
+ * Uso: Dinic D; D.init(N); D.ae(u, v, cap); D.maxFlow(s, t)
+ * Complejidad: O(N^2 M) flujo, O(M sqrt N) emparejamiento bipartito
+ * Fuente: GeeksForGeeks, Chilli (via USACO Camp / KACTL)
+ * Nota: roto - depende de macros no definidas en template.cpp (V, pb, rsz, each, F0R, ft)
+ * Status: broken
+ */
+/**
  * Description: Fast flow. After computing flow, edges $\{u,v\}$ such that 
 	* $lev[u] \neq -1,$ $lev[v] = -1$ are part of min cut.
 	* Use \texttt{reset} and \texttt{rcap} for Gomory-Hu.

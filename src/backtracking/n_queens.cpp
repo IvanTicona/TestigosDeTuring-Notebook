@@ -1,6 +1,8 @@
-#include <bits/stdc++.h>
-using namespace std;
-
+/**
+ * Uso: cin >> N; col.resize(N); solve(0); imprime cada tablero y cuenta en solutions
+ * Complejidad: O(N!) aproximado (poda por columna y diagonal)
+ * Status: untested
+ */
 int N;
 vector<int> col;   // col[i] = columna en la que está la reina en la fila i
 int solutions = 0;
@@ -36,11 +38,4 @@ void solve(int row) {
             solve(row + 1);
         }
     }
-}
-
-int main() {
-    cin >> N; // tamaño del tablero
-    col.resize(N);
-    solve(0);
-    cout << "Número total de soluciones = " << solutions << "\n";
 }

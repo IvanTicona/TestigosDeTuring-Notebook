@@ -1,6 +1,8 @@
-#include <bits/stdc++.h>
-using namespace std;
-
+/**
+ * Uso: backtrack(0, n) explora todas las secuencias de longitud n con candidatos 1..n; editar isValid(cand); resultados en solutions
+ * Complejidad: O(n^n) en el peor caso con isValid == true (la poda de isValid la reduce)
+ * Status: untested
+ */
 // Un estado parcial de la solución
 vector<int> current;
 
@@ -28,18 +30,5 @@ void backtrack(int pos, int n) {
             backtrack(pos + 1, n);      // exploramos la siguiente posición
             current.pop_back();         // backtrack (deshacemos la elección)
         }
-    }
-}
-
-int main() {
-    int n;
-    cin >> n; // tamaño del problema
-
-    backtrack(0, n);
-
-    cout << "Número de soluciones = " << solutions.size() << "\n";
-    for (auto &sol : solutions) {
-        for (int x : sol) cout << x << " ";
-        cout << "\n";
     }
 }
