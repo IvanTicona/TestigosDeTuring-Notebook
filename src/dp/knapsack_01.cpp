@@ -1,6 +1,6 @@
 /**
- * Uso: knapsack01(n, W, w, v) con w, v indexados desde 1 (tamano n+1) -> valor maximo con capacidad W
- * Complejidad: O(n * W) tiempo y memoria
+ * Usage: knapsack01(n, W, w, v) con w, v indexados desde 1 (tamano n+1) -> valor maximo con capacidad W
+ * Complexity: O(n * W) tiempo y memoria
  * Status: untested
  */
 int knapsack01(int n, int W, const vector<int> &w, const vector<int> &v) {

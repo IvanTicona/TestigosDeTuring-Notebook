@@ -1,6 +1,6 @@
 /**
- * Uso: vvi cap = minimaxAllPairs(C, graph); cap[s][t] = menor valor posible del peso maximo en un camino s -> t (graph: lista de adyacencia de (nodo, peso), 0-indexada)
- * Complejidad: O(C^2 + L) segun el autor original (en realidad C Dijkstra: O(C * L log C))
+ * Usage: vvi cap = minimaxAllPairs(C, graph); cap[s][t] = menor valor posible del peso maximo en un camino s -> t (graph: lista de adyacencia de (nodo, peso), 0-indexada)
+ * Complexity: O(C^2 + L) segun el autor original (en realidad C Dijkstra: O(C * L log C))
  * Status: untested
  */
 typedef vector<vpii> vvpii;

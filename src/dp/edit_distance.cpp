@@ -1,6 +1,6 @@
 /**
- * Uso: editDistance(a, b) -> minimo de inserciones/eliminaciones/reemplazos para convertir a en b
- * Complejidad: O(n * m) tiempo y memoria
+ * Usage: editDistance(a, b) -> minimo de inserciones/eliminaciones/reemplazos para convertir a en b
+ * Complexity: O(n * m) tiempo y memoria
  * Status: untested
  */
 int editDistance(string a, string b) {

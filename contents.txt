@@ -1,33 +1,33 @@
-# Manifiesto del notebook: unica fuente de orden y titulos.
-# Formato: RUTA | Titulo   (rutas relativas a la raiz del repo)
+# Notebook manifest: single source of order and titles.
+# Format: PATH | Title   (paths relative to the repo root)
 
-[Plantilla]
-template/template.cpp | Plantilla
+[Template]
+template/template.cpp | Template
 
-[Programación dinámica]
-src/dp/edit_distance.cpp | Distancia de edición
-src/dp/lcs.cpp | Subsecuencia común más larga (LCS)
-src/dp/knapsack_01.cpp | Mochila 0/1
-src/dp/knapsack_01_1d.cpp | Mochila 0/1 (memoria O(W))
-src/dp/subset_sum.cpp | Suma de subconjuntos
-src/dp/subset_sum_1d.cpp | Suma de subconjuntos (memoria O(X))
-src/dp/digit_dp.cpp | DP de dígitos
+[Dynamic Programming]
+src/dp/edit_distance.cpp | Edit Distance
+src/dp/lcs.cpp | Longest Common Subsequence (LCS)
+src/dp/knapsack_01.cpp | 0/1 Knapsack
+src/dp/knapsack_01_1d.cpp | 0/1 Knapsack (O(W) memory)
+src/dp/subset_sum.cpp | Subset Sum
+src/dp/subset_sum_1d.cpp | Subset Sum (O(X) memory)
+src/dp/digit_dp.cpp | Digit DP
 
-[Estructuras de datos]
+[Data Structures]
 src/data_structures/fenwick_tree.cpp | Fenwick Tree (BIT)
 src/data_structures/segment_tree.cpp | Segment Tree
 src/data_structures/union_find.cpp | Union-Find (DSU)
 
-[Cadenas]
-src/strings/z_function.cpp | Función Z
+[Strings]
+src/strings/z_function.cpp | Z-Function
 src/strings/kmp.cpp | KMP
 src/strings/rabin_karp.cpp | Rabin-Karp
 
 [Backtracking]
-src/backtracking/backtracking_template.cpp | Plantilla de backtracking
-src/backtracking/n_queens.cpp | N reinas
+src/backtracking/backtracking_template.cpp | Backtracking Template
+src/backtracking/n_queens.cpp | N-Queens
 
-[Grafos: árboles]
-src/graphs/trees/lca_euler_segtree.cpp | LCA (tour de Euler + Segment Tree)
-src/graphs/trees/minimax_all_pairs.cpp | Minimax entre todos los pares
-src/graphs/trees/minimax_mst_path.cpp | Minimax por camino en el MST
+[Graphs: Trees]
+src/graphs/trees/lca_euler_segtree.cpp | LCA (Euler Tour + Segment Tree)
+src/graphs/trees/minimax_all_pairs.cpp | All-Pairs Minimax
+src/graphs/trees/minimax_mst_path.cpp | Minimax Path on MST

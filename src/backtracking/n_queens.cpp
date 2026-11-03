@@ -1,6 +1,6 @@
 /**
- * Uso: cin >> N; col.resize(N); solve(0); imprime cada tablero y cuenta en solutions
- * Complejidad: O(N!) aproximado (poda por columna y diagonal)
+ * Usage: cin >> N; col.resize(N); solve(0); imprime cada tablero y cuenta en solutions
+ * Complexity: O(N!) aproximado (poda por columna y diagonal)
  * Status: untested
  */
 int N;

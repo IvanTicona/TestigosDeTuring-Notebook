@@ -1,6 +1,6 @@
 /**
- * Uso: KMP(text, pat) -> posiciones (0-indexadas) de todas las ocurrencias de pat en text; computeLPS(pat) arreglo de fallos
- * Complejidad: O(n + m)
+ * Usage: KMP(text, pat) -> posiciones (0-indexadas) de todas las ocurrencias de pat en text; computeLPS(pat) arreglo de fallos
+ * Complexity: O(n + m)
  * Status: untested
  */
 // Construir arreglo LPS (Longest Prefix Suffix)

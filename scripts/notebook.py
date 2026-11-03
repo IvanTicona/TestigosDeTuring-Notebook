@@ -24,7 +24,7 @@ TEMPLATE_REL = "template/template.cpp"
 CODE_PATH_RE = re.compile(r"^(src|template)/[a-z0-9_/]+\.cpp$")
 TEX_PATH_RE = re.compile(r"^tex/[a-z0-9_/]+\.tex$")
 SNIPPET_PATH_RE = re.compile(r"^src/[a-z0-9_/]+\.cpp$")
-HEADER_FIELD_RE = re.compile(r"^\s*\*\s*(Uso|Complejidad|Fuente|Probado|Status):\s*(.+?)\s*$")
+HEADER_FIELD_RE = re.compile(r"^\s*\*\s*(Usage|Complexity|Source|Tested|Note|Status):\s*(.+?)\s*$")
 VALID_STATUS = ("ok", "untested", "broken")
 
 GXX_FLAGS = ["-std=gnu++17", "-fsyntax-only", "-Wall", "-Wextra"]
@@ -205,7 +205,7 @@ def header_diagnostics(rel: str, meta: Meta) -> tuple[list[str], list[str]]:
         errors.append(
             f"{rel}:{meta.lines['Status']}: Status invalido '{status}' (ok|untested|broken)"
         )
-    for key in ("Uso", "Complejidad"):
+    for key in ("Usage", "Complexity"):
         if key not in meta.fields:
             warnings.append(f"{rel}:{meta.header_line}: WARNING falta '{key}:' en el header")
     return errors, warnings

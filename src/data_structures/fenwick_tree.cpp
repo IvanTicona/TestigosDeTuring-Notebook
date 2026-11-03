@@ -1,7 +1,7 @@
 /**
- * Uso: FenwickTree (rsq/update/select), RUPQ (update de rango, consulta puntual), RURQ (update y suma de rango); indices desde 1
- * Complejidad: O(log n) por operacion; build O(n); select O(log^2 n)
- * Fuente: Competitive Programming 4 (segun comentarios del codigo original)
+ * Usage: FenwickTree (rsq/update/select), RUPQ (update de rango, consulta puntual), RURQ (update y suma de rango); indices desde 1
+ * Complexity: O(log n) por operacion; build O(n); select O(log^2 n)
+ * Source: Competitive Programming 4 (segun comentarios del codigo original)
  * Status: untested
  */
 #define LSOne(S) ((S) & -(S))

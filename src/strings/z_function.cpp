@@ -1,6 +1,6 @@
 /**
- * Uso: computeZ(s) -> Z[i] = longitud del mayor prefijo de s que empieza en i; para buscar patron: computeZ(pat + "$" + text)
- * Complejidad: O(n)
+ * Usage: computeZ(s) -> Z[i] = longitud del mayor prefijo de s que empieza en i; para buscar patron: computeZ(pat + "$" + text)
+ * Complexity: O(n)
  * Status: untested
  */
 // Función que calcula el array Z de una cadena

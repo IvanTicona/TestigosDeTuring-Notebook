@@ -1,6 +1,6 @@
 /**
- * Uso: RabinKarp(text, pat) -> posiciones (0-indexadas) de las ocurrencias de pat en text; mod/base locales (hash rodante)
- * Complejidad: O(n + m) esperado; O(n * m) en el peor caso
+ * Usage: RabinKarp(text, pat) -> posiciones (0-indexadas) de las ocurrencias de pat en text; mod/base locales (hash rodante)
+ * Complexity: O(n + m) esperado; O(n * m) en el peor caso
  * Status: untested
  */
 const ll mod = 1e9+7;

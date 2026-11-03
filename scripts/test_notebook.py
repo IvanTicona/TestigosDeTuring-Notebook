@@ -14,8 +14,8 @@ REAL_ROOT = Path(__file__).resolve().parent.parent
 HAS_GXX = shutil.which("g++") is not None
 
 GOOD_SNIPPET = """/**
- * Uso: foo(x)
- * Complejidad: O(1)
+ * Usage: foo(x)
+ * Complexity: O(1)
  * Status: ok
  */
 int foo(int x) { return x; }
@@ -140,13 +140,13 @@ class HeaderTests(unittest.TestCase):
         self.assertEqual(nb.header_diagnostics("src/x.cpp", meta), ([], []))
 
     def test_missing_status_is_error_S1_3(self):
-        meta = nb.parse_header("/**\n * Uso: x\n * Complejidad: O(1)\n */\nint a;\n")
+        meta = nb.parse_header("/**\n * Usage: x\n * Complexity: O(1)\n */\nint a;\n")
         errs, _ = nb.header_diagnostics("src/x.cpp", meta)
         self.assertEqual(len(errs), 1)
         self.assertIn("Status", errs[0])
 
     def test_invalid_status_is_error_S1_3(self):
-        meta = nb.parse_header("/**\n * Uso: x\n * Complejidad: O(1)\n * Status: maybe\n */\n")
+        meta = nb.parse_header("/**\n * Usage: x\n * Complexity: O(1)\n * Status: maybe\n */\n")
         errs, _ = nb.header_diagnostics("src/x.cpp", meta)
         self.assertEqual(len(errs), 1)
         self.assertIn("maybe", errs[0])
@@ -159,11 +159,19 @@ class HeaderTests(unittest.TestCase):
         self.assertEqual(len(errs), 1)
 
     def test_missing_complexity_is_warning_S1_4(self):
-        meta = nb.parse_header("/**\n * Uso: x\n * Status: ok\n */\n")
+        meta = nb.parse_header("/**\n * Usage: x\n * Status: ok\n */\n")
         errs, warns = nb.header_diagnostics("src/x.cpp", meta)
         self.assertEqual(errs, [])
         self.assertEqual(len(warns), 1)
-        self.assertIn("Complejidad", warns[0])
+        self.assertIn("Complexity", warns[0])
+
+    def test_spanish_field_names_not_recognized(self):
+        meta = nb.parse_header("/**\n * Uso: x\n * Complejidad: O(1)\n * Status: ok\n */\n")
+        self.assertNotIn("Uso", meta.fields)
+        self.assertNotIn("Complejidad", meta.fields)
+        errs, warns = nb.header_diagnostics("src/x.cpp", meta)
+        self.assertEqual(errs, [])
+        self.assertEqual(len(warns), 2)
 
     def test_only_first_block_counts(self):
         meta = nb.parse_header("/**\n * Status: ok\n */\n/**\n * Status: broken\n */\n")
@@ -252,7 +260,7 @@ class ValidateTests(Fixture):
         self.assertTrue(all("nombre invalido" in e for e in r.errors))
 
     def test_lint_in_listed_snippet_S1_1(self):
-        self.write("src/a/foo.cpp", "/**\n * Uso: x\n * Complejidad: O(1)\n * Status: ok\n */\n#include <vector>\nint main(){}\n")
+        self.write("src/a/foo.cpp", "/**\n * Usage: x\n * Complexity: O(1)\n * Status: ok\n */\n#include <vector>\nint main(){}\n")
         r = self.validate("[A]\nsrc/a/foo.cpp | Foo\n")
         self.assertEqual(len(r.errors), 2)
         self.assertIn("src/a/foo.cpp:6:", r.errors[0])
@@ -265,13 +273,13 @@ class ValidateTests(Fixture):
         self.assertIn("U+2010", r.errors[0])
 
     def test_missing_status_in_snippet_S1_3(self):
-        self.write("src/a/foo.cpp", "/**\n * Uso: x\n * Complejidad: O(1)\n */\nint foo(){return 1;}\n")
+        self.write("src/a/foo.cpp", "/**\n * Usage: x\n * Complexity: O(1)\n */\nint foo(){return 1;}\n")
         r = self.validate("[A]\nsrc/a/foo.cpp | Foo\n")
         self.assertEqual(len(r.errors), 1)
         self.assertIn("Status", r.errors[0])
 
     def test_missing_complexity_warns_S1_4(self):
-        self.write("src/a/foo.cpp", "/**\n * Uso: x\n * Status: ok\n */\nint foo(){return 1;}\n")
+        self.write("src/a/foo.cpp", "/**\n * Usage: x\n * Status: ok\n */\nint foo(){return 1;}\n")
         r = self.validate("[A]\nsrc/a/foo.cpp | Foo\n")
         self.assertEqual(r.errors, [])
         self.assertEqual(len(r.warnings), 1)
@@ -366,7 +374,7 @@ class CheckCommandTests(Fixture):
     @unittest.skipUnless(HAS_GXX, "g++ no disponible")
     def test_quarantine_exit_0_broken_listed_exit_1(self):
         self.write("src/a/ok.cpp", GOOD_SNIPPET)
-        self.write("src/a/q.cpp", "/**\n * Uso: x\n * Complejidad: O(1)\n * Status: broken\n */\nthis does not compile\n")
+        self.write("src/a/q.cpp", "/**\n * Usage: x\n * Complexity: O(1)\n * Status: broken\n */\nthis does not compile\n")
         self.manifest(self.BASE + "src/a/ok.cpp | Ok\n")
         code, out = self.run_check()
         self.assertEqual(code, 0, out)

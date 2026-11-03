@@ -1,6 +1,6 @@
 /**
- * Uso: setear s = to_string(N), n = s.size(), memset(dp, -1, sizeof(dp)); solve(0, 0, true, false)
- * Complejidad: O(n * S * 10), S = suma maxima de digitos (dp[20][200])
+ * Usage: setear s = to_string(N), n = s.size(), memset(dp, -1, sizeof(dp)); solve(0, 0, true, false)
+ * Complexity: O(n * S * 10), S = suma maxima de digitos (dp[20][200])
  * Status: untested
  */
 string s; // número N como string

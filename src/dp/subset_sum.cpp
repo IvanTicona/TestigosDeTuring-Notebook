@@ -1,6 +1,6 @@
 /**
- * Uso: subsetSum(n, X, a) -> true si algun subconjunto de a[0..n-1] suma X
- * Complejidad: O(n * X) tiempo y memoria
+ * Usage: subsetSum(n, X, a) -> true si algun subconjunto de a[0..n-1] suma X
+ * Complexity: O(n * X) tiempo y memoria
  * Status: untested
  */
 bool subsetSum(int n, int X, const vector<int> &a) {

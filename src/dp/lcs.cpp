@@ -1,6 +1,6 @@
 /**
- * Uso: LCS(X, Y) -> longitud de la subsecuencia comun mas larga; getLCS(X, Y) -> la subsecuencia
- * Complejidad: O(n * m) tiempo y memoria
+ * Usage: LCS(X, Y) -> longitud de la subsecuencia comun mas larga; getLCS(X, Y) -> la subsecuencia
+ * Complexity: O(n * m) tiempo y memoria
  * Status: untested
  */
 // Función para calcular LCS

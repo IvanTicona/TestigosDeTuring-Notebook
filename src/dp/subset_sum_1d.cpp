@@ -1,6 +1,6 @@
 /**
- * Uso: subsetSum1d(X, a) -> true si algun subconjunto de a suma X
- * Complejidad: O(n * X) tiempo, O(X) memoria
+ * Usage: subsetSum1d(X, a) -> true si algun subconjunto de a suma X
+ * Complexity: O(n * X) tiempo, O(X) memoria
  * Status: untested
  */
 bool subsetSum1d(int X, const vector<int> &a) {

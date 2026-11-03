@@ -1,6 +1,6 @@
 /**
- * Uso: backtrack(0, n) explora todas las secuencias de longitud n con candidatos 1..n; editar isValid(cand); resultados en solutions
- * Complejidad: O(n^n) en el peor caso con isValid == true (la poda de isValid la reduce)
+ * Usage: backtrack(0, n) explora todas las secuencias de longitud n con candidatos 1..n; editar isValid(cand); resultados en solutions
+ * Complexity: O(n^n) en el peor caso con isValid == true (la poda de isValid la reduce)
  * Status: untested
  */
 // Un estado parcial de la solución
