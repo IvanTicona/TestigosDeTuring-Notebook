@@ -451,16 +451,16 @@ class RenderTests(Fixture):
 
 
 class MetaAndTexCommandTests(Fixture):
-    def test_spanish_date(self):
+    def test_english_date(self):
         import datetime
         meta = nb.render_meta(datetime.date(2026, 11, 3))
-        self.assertIn(r"\newcommand{\NBdate}{3 de noviembre de 2026}", meta)
+        self.assertIn(r"\newcommand{\NBdate}{November 3, 2026}", meta)
         self.assertIn("pdftitle", meta)
 
     def test_all_months(self):
         import datetime
-        for m, name in enumerate(nb.MESES, 1):
-            self.assertIn(f"1 de {name} de 2026", nb.render_meta(datetime.date(2026, m, 1)))
+        for m, name in enumerate(nb.MONTHS, 1):
+            self.assertIn(f"{name} 1, 2026", nb.render_meta(datetime.date(2026, m, 1)))
 
     def test_tex_command_writes_files(self):
         self.write("src/a/foo.cpp", GOOD_SNIPPET)

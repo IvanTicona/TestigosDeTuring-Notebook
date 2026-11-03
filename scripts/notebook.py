@@ -428,9 +428,9 @@ def check(root: Path = ROOT, jobs: int | None = None) -> int:
 # LaTeX generation
 # --------------------------------------------------------------------------
 BUILD_DIR = "build"
-MESES = (
-    "enero", "febrero", "marzo", "abril", "mayo", "junio",
-    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+MONTHS = (
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
 )
 PDF_NAMES = {
     "read": "testigos-de-turing-teambook.pdf",
@@ -481,14 +481,14 @@ def render_meta(today=None) -> str:
     import datetime
 
     d = today or datetime.date.today()
-    date = f"{d.day} de {MESES[d.month - 1]} de {d.year}"
+    date = f"{MONTHS[d.month - 1]} {d.day}, {d.year}"
     return "\n".join(
         [
             "% Generado por scripts/notebook.py tex; no editar.",
             rf"\newcommand{{\NBdate}}{{{date}}}",
-            r"\hypersetup{pdftitle={Testigos de Turing - ICPC Team Notebook},"
-            r"pdfauthor={Testigos de Turing},"
-            r"pdfsubject={Notebook de programación competitiva}}",
+            r"\hypersetup{pdftitle={Team Notebook for Regional 2026 - Testigos De Turing},"
+            r"pdfauthor={Testigos De Turing},"
+            r"pdfsubject={Competitive programming team notebook}}",
             "",
         ]
     )

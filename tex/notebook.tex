@@ -35,16 +35,14 @@
 \renewcommand*{\ttdefault}{lmtt}
 
 % Nombres en espanol (sin babel)
-\renewcommand{\contentsname}{Índice}
+\renewcommand{\contentsname}{Contents}
 
 % Ruta del snippet (gris, compacta, a la derecha bajo el titulo)
 \newcommand{\NBpath}[1]{{\nopagebreak\hfill\fontsize{5}{6}\ttfamily\color{NBNumber}#1\par}}
 
 % Equipo (portada y cabecera)
-\newcommand{\NBteam}{Testigos de Turing}
-\newcommand{\NBuniversity}{Universidad Privada Boliviana}
-\newcommand{\NBmembers}{Dorian Ivan Ticona Vega \\[0.4ex] Pablo Achá \\[0.4ex] Camilo Raphael Zuleta Wolff}
-\newcommand{\NBcoach}{Paul Landaeta}
+\newcommand{\NBteam}{Testigos De Turing}
+\newcommand{\NBtitle}{Team Notebook for Regional 2026 -- \NBteam}
 
 % Fecha y metadatos PDF generados (\NBdate, \hypersetup)
 \input{build/meta.tex}
@@ -120,27 +118,28 @@
 
 \begin{document}
 
-% ---------- Portada (estilo UMSS): logo centrado, datos, indice en 2 columnas ----------
+% ---------- Portada: arriba los datos; abajo logo (col. izq.) e indice (col. der.) ----------
+% El indice arranca en la columna derecha y, si no entra, sigue en la pagina 2 a 2 columnas.
 \pagestyle{empty}
 \begin{center}
-  \includegraphics[height=3.4cm]{tex/assets/logo-upb.png}\par
-  \vspace{0.5cm}
-  {\LARGE\bfseries ICPC Team Notebook\par}
-  \vspace{0.15cm}
-  {\Large\bfseries \NBteam\par}
-  {\large \NBuniversity\par}
-  \vspace{0.15cm}
-  {\small \NBmembers\par}
-  \vspace{0.1cm}
-  {\small Coach: \NBcoach \quad--\quad \NBdate\par}
+  \vspace*{0.4cm}
+  {\LARGE\bfseries \NBtitle\par}
+  \vspace{0.35cm}
+  {\large \NBdate\par}
 \end{center}
-\vspace{0.3cm}
+\vspace{0.6cm}
 \begingroup
 \setlength{\columnseprule}{0.4pt}
 \small
-\begin{multicols}{2}
-\tableofcontents
-\end{multicols}
+\begin{multicols*}{2}
+  \vspace*{\fill}
+  \begin{center}
+    \includegraphics[width=0.85\columnwidth]{tex/assets/logo-upb.png}
+  \end{center}
+  \vspace*{\fill}
+  \columnbreak
+  \tableofcontents
+\end{multicols*}
 \endgroup
 \clearpage
 \pagestyle{fancy}
