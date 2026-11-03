@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-"""Sube el PDF del notebook a un archivo de Google Drive ya existente.
+"""Upload the notebook PDF to an existing Google Drive file.
 
-Actualiza el CONTENIDO del archivo (PATCH media-only) para conservar fileId,
-nombre y enlaces compartidos. Nunca imprime secretos ni tokens.
+Updates the file CONTENT (media-only PATCH) to preserve the fileId, name
+and shared links. Never prints secrets or tokens.
 
-Entorno:
-  GDRIVE_FILE_ID                      id del archivo en Drive (obligatorio)
-  GDRIVE_SA_JSON                      JSON de la service account (auth primaria)
+Environment:
+  GDRIVE_FILE_ID                      Drive file id (required)
+  GDRIVE_SA_JSON                      service account JSON (primary auth)
   GDRIVE_OAUTH_CLIENT_ID / _SECRET / _REFRESH_TOKEN
-                                      fallback OAuth si no hay GDRIVE_SA_JSON
+                                      OAuth fallback if GDRIVE_SA_JSON is not set
 
-Uso:
+Usage:
   python scripts/drive_upload.py --file build/testigos-de-turing-teambook.pdf
-  python scripts/drive_upload.py --check     # solo verifica permisos (no sube)
+  python scripts/drive_upload.py --check     # only verifies permissions (no upload)
 
-Exit: 0 ok u omitido por falta de secretos (solo subida); 1 fallo.
-google-auth y requests se importan de forma perezosa (ver requirements-drive.txt).
+Exit: 0 ok, or skipped for missing secrets (upload only); 1 failure.
+google-auth and requests are imported lazily (see requirements-drive.txt).
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 EXPECTED_NAME = "testigos-de-turing-teambook.pdf"
-SCOPE = "https://www.googleapis.com/auth/drive"  # drive.file no sirve: el archivo no lo creo la app
+SCOPE = "https://www.googleapis.com/auth/drive"  # drive.file does not work: the file was not created by the app
 TOKEN_URI = "https://oauth2.googleapis.com/token"
 UPLOAD_URL = (
     "https://www.googleapis.com/upload/drive/v3/files/{id}"
@@ -39,31 +39,31 @@ CHECK_URL = (
     "?supportsAllDrives=true&fields=id,name,owners,capabilities/canEdit"
 )
 OAUTH_VARS = ("GDRIVE_OAUTH_CLIENT_ID", "GDRIVE_OAUTH_CLIENT_SECRET", "GDRIVE_OAUTH_REFRESH_TOKEN")
-SKIP_MESSAGE = "Drive omitido: faltan secrets"
+SKIP_MESSAGE = "Drive skipped: missing secrets"
 
 
 class DriveError(Exception):
-    """Fallo de Drive con mensaje seguro (sin secretos)."""
+    """Drive failure with a safe message (no secrets)."""
 
 
 # --------------------------------------------------------------------------
-# Logica pura
+# Pure logic
 # --------------------------------------------------------------------------
 def has_oauth(env: Mapping[str, str]) -> bool:
     return all(env.get(k) for k in OAUTH_VARS)
 
 
 def skip_reason(env: Mapping[str, str]) -> str | None:
-    """Mensaje de omision si faltan secretos; None si se puede continuar."""
+    """Skip message if secrets are missing; None if it can proceed."""
     if not env.get("GDRIVE_FILE_ID"):
         return f"{SKIP_MESSAGE} (GDRIVE_FILE_ID)"
     if not env.get("GDRIVE_SA_JSON") and not has_oauth(env):
-        return f"{SKIP_MESSAGE} (GDRIVE_SA_JSON o GDRIVE_OAUTH_*)"
+        return f"{SKIP_MESSAGE} (GDRIVE_SA_JSON or GDRIVE_OAUTH_*)"
     return None
 
 
 def sa_client_email(env: Mapping[str, str]) -> str | None:
-    """client_email de la SA (unico dato de la SA que se puede mostrar)."""
+    """client_email of the SA (the only SA field that may be shown)."""
     raw = env.get("GDRIVE_SA_JSON")
     if not raw:
         return None
@@ -75,7 +75,7 @@ def sa_client_email(env: Mapping[str, str]) -> str | None:
 
 
 def error_reason(body: Any) -> str:
-    """Extrae error.errors[0].reason de un cuerpo de error de la API."""
+    """Extract error.errors[0].reason from an API error body."""
     try:
         return str(body["error"]["errors"][0]["reason"])
     except (KeyError, IndexError, TypeError):
@@ -83,37 +83,37 @@ def error_reason(body: Any) -> str:
     try:
         return str(body["error"]["status"])
     except (KeyError, TypeError):
-        return "desconocido"
+        return "unknown"
 
 
 def map_error(status: int, reason: str, client_email: str | None = None) -> str:
-    """Mensaje accionable para un HTTP no 2xx (funcion pura)."""
-    who = client_email or "la cuenta usada"
+    """Actionable message for a non-2xx HTTP status (pure function)."""
+    who = client_email or "the account in use"
     head = f"Drive HTTP {status} ({reason}): "
     if status == 401:
-        return head + "credenciales invalidas o expiradas (revisar GDRIVE_SA_JSON / GDRIVE_OAUTH_*)"
+        return head + "invalid or expired credentials (check GDRIVE_SA_JSON / GDRIVE_OAUTH_*)"
     if status == 403 and reason == "insufficientFilePermissions":
-        return head + f"compartir el archivo con {who} como Editor"
+        return head + f"share the file with {who} as Editor"
     if status == 403 and reason == "storageQuotaExceeded":
         return head + (
-            "la service account no tiene cuota de almacenamiento; "
-            "usar el fallback OAuth (GDRIVE_OAUTH_CLIENT_ID/SECRET/REFRESH_TOKEN)"
+            "the service account has no storage quota; "
+            "use the OAuth fallback (GDRIVE_OAUTH_CLIENT_ID/SECRET/REFRESH_TOKEN)"
         )
     if status == 404:
-        return head + f"fileId incorrecto o no compartido con {who}"
-    return head + "error inesperado de la API de Drive"
+        return head + f"wrong fileId or not shared with {who}"
+    return head + "unexpected Drive API error"
 
 
 # --------------------------------------------------------------------------
-# Red (se sustituye en los tests)
+# Network (replaced in tests)
 # --------------------------------------------------------------------------
 def get_access_token(env: Mapping[str, str]) -> str:
-    """Obtiene un access token (SA con scope drive; si no, refresh token OAuth)."""
+    """Get an access token (SA with drive scope; otherwise an OAuth refresh token)."""
     try:
         from google.auth.transport.requests import Request
     except ImportError as exc:
         raise DriveError(
-            "falta google-auth: pip install -r scripts/requirements-drive.txt"
+            "missing google-auth: pip install -r scripts/requirements-drive.txt"
         ) from exc
     try:
         if env.get("GDRIVE_SA_JSON"):
@@ -136,10 +136,10 @@ def get_access_token(env: Mapping[str, str]) -> str:
         creds.refresh(Request())
     except DriveError:
         raise
-    except Exception as exc:  # no incluir str(exc): podria traer datos de credenciales
+    except Exception as exc:  # do not include str(exc): it could carry credential data
         raise DriveError(
-            f"Drive: no se pudo autenticar ({type(exc).__name__}); "
-            "revisar GDRIVE_SA_JSON / GDRIVE_OAUTH_*"
+            f"Drive: authentication failed ({type(exc).__name__}); "
+            "check GDRIVE_SA_JSON / GDRIVE_OAUTH_*"
         ) from None
     return creds.token
 
@@ -149,7 +149,7 @@ def http_request(method: str, url: str, headers: dict, data: bytes | None = None
         import requests
     except ImportError as exc:
         raise DriveError(
-            "falta requests: pip install -r scripts/requirements-drive.txt"
+            "missing requests: pip install -r scripts/requirements-drive.txt"
         ) from exc
     return requests.request(method, url, headers=headers, data=data, timeout=120)
 
@@ -162,12 +162,12 @@ def _body(resp) -> Any:
 
 
 # --------------------------------------------------------------------------
-# Operaciones
+# Operations
 # --------------------------------------------------------------------------
 def check(env: Mapping[str, str]) -> int:
     file_id = env.get("GDRIVE_FILE_ID")
     if not file_id or not (env.get("GDRIVE_SA_JSON") or has_oauth(env)):
-        print("ERROR --check requiere GDRIVE_FILE_ID y GDRIVE_SA_JSON (o GDRIVE_OAUTH_*)")
+        print("ERROR --check requires GDRIVE_FILE_ID and GDRIVE_SA_JSON (or GDRIVE_OAUTH_*)")
         return 1
     email = sa_client_email(env)
     token = get_access_token(env)
@@ -178,12 +178,12 @@ def check(env: Mapping[str, str]) -> int:
         return 1
     name = body.get("name")
     can_edit = bool(body.get("capabilities", {}).get("canEdit"))
-    print(f"Drive: archivo '{name}' (id {body.get('id')}), canEdit={str(can_edit).lower()}")
+    print(f"Drive: file '{name}' (id {body.get('id')}), canEdit={str(can_edit).lower()}")
     if not can_edit:
         print("ERROR " + map_error(403, "insufficientFilePermissions", email))
         return 1
     if name != EXPECTED_NAME:
-        print(f"WARNING el nombre es '{name}', se esperaba '{EXPECTED_NAME}'")
+        print(f"WARNING the name is '{name}', expected '{EXPECTED_NAME}'")
     return 0
 
 
@@ -193,12 +193,12 @@ def upload(env: Mapping[str, str], pdf: Path) -> int:
         print(reason)
         return 0
     if not pdf.is_file():
-        print(f"ERROR no existe el PDF: {pdf.as_posix()}")
+        print(f"ERROR PDF not found: {pdf.as_posix()}")
         return 1
     email = sa_client_email(env)
     token = get_access_token(env)
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/pdf"}
-    # media-only: sin cuerpo de metadata, para que Drive conserve id y nombre
+    # media-only: no metadata body, so Drive keeps the id and name
     resp = http_request(
         "PATCH", UPLOAD_URL.format(id=env["GDRIVE_FILE_ID"]), headers, pdf.read_bytes()
     )
@@ -207,16 +207,16 @@ def upload(env: Mapping[str, str], pdf: Path) -> int:
         print("ERROR " + map_error(resp.status_code, error_reason(body), email))
         return 1
     name = body.get("name")
-    print(f"Drive: actualizado '{name}' (id {body.get('id')}, modificado {body.get('modifiedTime')})")
+    print(f"Drive: updated '{name}' (id {body.get('id')}, modified {body.get('modifiedTime')})")
     if name != EXPECTED_NAME:
-        print(f"WARNING el nombre es '{name}', se esperaba '{EXPECTED_NAME}'")
+        print(f"WARNING the name is '{name}', expected '{EXPECTED_NAME}'")
     return 0
 
 
 def main(argv: list[str] | None = None, env: Mapping[str, str] | None = None) -> int:
-    p = argparse.ArgumentParser(description="Actualiza el PDF del notebook en Google Drive")
-    p.add_argument("--file", default="build/testigos-de-turing-teambook.pdf", help="PDF a subir")
-    p.add_argument("--check", action="store_true", help="solo verificar acceso (no sube)")
+    p = argparse.ArgumentParser(description="Update the notebook PDF in Google Drive")
+    p.add_argument("--file", default="build/testigos-de-turing-teambook.pdf", help="PDF to upload")
+    p.add_argument("--check", action="store_true", help="only verify access (no upload)")
     args = p.parse_args(argv)
     env = os.environ if env is None else env
     try:

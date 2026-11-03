@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # Solo el id va a nivel de job (se usa en `if:`); las credenciales van por paso.
+      # Only the id is set at job level (used in `if:`); credentials are set per step.
       GDRIVE_FILE_ID: ${{ secrets.GDRIVE_FILE_ID }}
     steps:
       - name: Checkout
@@ -82,7 +82,7 @@ jobs:
 
       - name: Drive skipped (no secrets)
         if: env.GDRIVE_FILE_ID == ''
-        run: echo "::notice::Drive omitido - faltan secrets (GDRIVE_FILE_ID)"
+        run: echo "::notice::Drive skipped - missing secrets (GDRIVE_FILE_ID)"
 
       - name: Update PDF in Google Drive
         if: env.GDRIVE_FILE_ID != ''

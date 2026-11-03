@@ -1,4 +1,4 @@
-"""Tests de drive_upload.py con HTTP y token simulados (sin google-auth ni red)."""
+"""Tests for drive_upload.py with mocked HTTP and token (no google-auth, no network)."""
 
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ def err(status: int, reason: str) -> FakeResp:
 
 
 def run(argv, env, resp=None):
-    """Ejecuta main con token y HTTP simulados; devuelve (exit, salida, mock_http)."""
+    """Run main with a mocked token and HTTP; returns (exit, output, mock_http)."""
     out = io.StringIO()
     with mock.patch.object(du, "get_access_token", return_value="tok") as _tok, \
          mock.patch.object(du, "http_request", return_value=resp) as http, \
@@ -48,24 +48,24 @@ class SkipTests(unittest.TestCase):
     def test_missing_everything_skips_with_exit_0(self):
         code, out, http = run([], {})
         self.assertEqual(code, 0)
-        self.assertIn("Drive omitido: faltan secrets", out)
+        self.assertIn("Drive skipped: missing secrets", out)
         http.assert_not_called()
 
     def test_missing_file_id_skips(self):
         code, out, _ = run([], {"GDRIVE_SA_JSON": SA})
         self.assertEqual(code, 0)
-        self.assertIn("Drive omitido", out)
+        self.assertIn("Drive skipped", out)
 
     def test_missing_credentials_skips(self):
         code, out, _ = run([], {"GDRIVE_FILE_ID": "x"})
         self.assertEqual(code, 0)
-        self.assertIn("Drive omitido", out)
+        self.assertIn("Drive skipped", out)
 
     def test_partial_oauth_trio_skips(self):
         env = {"GDRIVE_FILE_ID": "x", "GDRIVE_OAUTH_CLIENT_ID": "a", "GDRIVE_OAUTH_CLIENT_SECRET": "b"}
         code, out, _ = run([], env)
         self.assertEqual(code, 0)
-        self.assertIn("Drive omitido", out)
+        self.assertIn("Drive skipped", out)
 
     def test_full_oauth_trio_does_not_skip(self):
         env = {
@@ -77,7 +77,7 @@ class SkipTests(unittest.TestCase):
     def test_check_without_secrets_fails_not_skips(self):
         code, out, _ = run(["--check"], {})
         self.assertEqual(code, 1)
-        self.assertNotIn("omitido", out)
+        self.assertNotIn("skipped", out)
 
 
 class CheckTests(unittest.TestCase):
@@ -102,7 +102,7 @@ class CheckTests(unittest.TestCase):
     def test_check_404(self):
         code, out, _ = run(["--check"], ENV, err(404, "notFound"))
         self.assertEqual(code, 1)
-        self.assertIn("fileId incorrecto", out)
+        self.assertIn("wrong fileId", out)
 
 
 class UploadTests(unittest.TestCase):
@@ -122,7 +122,7 @@ class UploadTests(unittest.TestCase):
         self.assertIn("uploadType=media", url)
         self.assertIn("supportsAllDrives=true", url)
         self.assertEqual(headers["Content-Type"], "application/pdf")
-        self.assertEqual(data, b"%PDF-1.5 fake")  # solo bytes del PDF, sin metadata JSON
+        self.assertEqual(data, b"%PDF-1.5 fake")  # PDF bytes only, no JSON metadata
         self.assertNotIn("WARNING", out)
 
     def test_name_mismatch_warns_but_succeeds(self):
@@ -151,18 +151,18 @@ class UploadTests(unittest.TestCase):
     def test_insufficient_permissions_names_client_email(self):
         code, out, _ = run(["--file", str(self.pdf)], ENV, err(403, "insufficientFilePermissions"))
         self.assertEqual(code, 1)
-        self.assertIn("compartir el archivo con bot@proj.iam.gserviceaccount.com como Editor", out)
+        self.assertIn("share the file with bot@proj.iam.gserviceaccount.com as Editor", out)
 
     def test_404_wrong_file_id_message(self):
         code, out, _ = run(["--file", str(self.pdf)], ENV, err(404, "notFound"))
         self.assertEqual(code, 1)
-        self.assertIn("fileId incorrecto o no compartido con bot@proj.iam.gserviceaccount.com", out)
+        self.assertIn("wrong fileId or not shared with bot@proj.iam.gserviceaccount.com", out)
         self.assertNotIn(SECRET, out)
 
     def test_401_invalid_credentials(self):
         code, out, _ = run(["--file", str(self.pdf)], ENV, err(401, "authError"))
         self.assertEqual(code, 1)
-        self.assertIn("credenciales invalidas", out)
+        self.assertIn("invalid or expired credentials", out)
 
     def test_non_json_error_body_does_not_crash(self):
         code, out, _ = run(["--file", str(self.pdf)], ENV, FakeResp(502, None))
@@ -179,18 +179,18 @@ class MapErrorTests(unittest.TestCase):
     def test_pure_mapping(self):
         self.assertIn("OAuth", du.map_error(403, "storageQuotaExceeded"))
         self.assertIn("a@b", du.map_error(403, "insufficientFilePermissions", "a@b"))
-        self.assertIn("fileId incorrecto", du.map_error(404, "notFound", "a@b"))
-        self.assertIn("credenciales", du.map_error(401, "x"))
+        self.assertIn("wrong fileId", du.map_error(404, "notFound", "a@b"))
+        self.assertIn("credentials", du.map_error(401, "x"))
 
     def test_error_reason_extraction(self):
         self.assertEqual(du.error_reason({"error": {"errors": [{"reason": "r"}]}}), "r")
         self.assertEqual(du.error_reason({"error": {"status": "S"}}), "S")
-        self.assertEqual(du.error_reason({}), "desconocido")
+        self.assertEqual(du.error_reason({}), "unknown")
 
 
 class AuthTests(unittest.TestCase):
     def test_token_failure_does_not_leak_secret(self):
-        # sin google-auth instalado -> DriveError con mensaje de instalacion; con el, fallo de auth
+        # without google-auth installed -> DriveError with an install message; with it, an auth failure
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             code = du.main(["--check"], ENV)

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Testigos de Turing notebook tooling (stdlib only).
 
-Uso: python scripts/notebook.py <check [--jobs N] | tex | pdf [--theme read|print|both]>
+Usage: python scripts/notebook.py <check [--jobs N] | tex | pdf [--theme read|print|both]>
 
-Exit codes: 0 OK; 1 fallo de validacion/compilacion; 2 uso o entorno (falta g++/latexmk).
+Exit codes: 0 OK; 1 validation/compilation failure; 2 usage or environment error (g++/latexmk missing).
 """
 from __future__ import annotations
 
@@ -102,7 +102,7 @@ def parse_manifest(path: Path, label: str | None = None) -> tuple[list[Section],
     try:
         text = path.read_text(encoding="utf-8")
     except UnicodeDecodeError as e:
-        return [], [f"{label}:1: el manifiesto no es UTF-8 valido ({e.reason})"]
+        return [], [f"{label}:1: the manifest is not valid UTF-8 ({e.reason})"]
 
     def err(n: int, msg: str) -> None:
         errors.append(f"{label}:{n}: {msg}")
@@ -115,20 +115,20 @@ def parse_manifest(path: Path, label: str | None = None) -> tuple[list[Section],
         bad = non_latin1(line)
         if bad:
             _, col, cp = bad[0]
-            err(n, f"caracter fuera de Latin-1 {_cp(cp)} (columna {col})")
+            err(n, f"character outside Latin-1 {_cp(cp)} (column {col})")
             continue
         if "\t" in line:
-            err(n, "formato invalido: TAB no permitido, el separador es ' | '")
+            err(n, "invalid format: TAB not allowed, the separator is ' | '")
             continue
 
         # Section header
         if line.startswith("["):
             if not line.endswith("]"):
-                err(n, "seccion sin ']' de cierre")
+                err(n, "section missing closing ']'")
                 continue
             title = line[1:-1].strip()
             if not title:
-                err(n, "titulo de seccion vacio")
+                err(n, "empty section title")
                 continue
             sections.append(Section(title, n))
             continue
@@ -137,40 +137,40 @@ def parse_manifest(path: Path, label: str | None = None) -> tuple[list[Section],
         if line.startswith("!tex"):
             rest = line[4:]
             if not rest.startswith(" "):
-                err(n, "formato invalido: se espera '!tex RUTA_TEX [ | Titulo]'")
+                err(n, "invalid format: expected '!tex TEX_PATH [ | Title]'")
                 continue
             rest = rest.strip()
             if " | " in rest:
                 path_s, title = rest.split(" | ", 1)
                 path_s, title = path_s.strip(), title.strip()
                 if not title:
-                    err(n, "titulo vacio")
+                    err(n, "empty title")
                     continue
             else:
                 path_s, title = rest, ""
             if not TEX_PATH_RE.match(path_s):
-                err(n, f"ruta invalida '{path_s}' (se espera ^tex/[a-z0-9_/]+\\.tex$)")
+                err(n, f"invalid path '{path_s}' (expected ^tex/[a-z0-9_/]+\\.tex$)")
                 continue
             entry = Entry("tex", path_s, title, n)
         else:
             m = re.match(r"^(\S+) \| (.*)$", line)
             if not m:
                 if line.endswith("|"):
-                    err(n, "titulo vacio")
+                    err(n, "empty title")
                 else:
-                    err(n, "formato invalido: se espera 'RUTA | Titulo' (separador ' | ')")
+                    err(n, "invalid format: expected 'PATH | Title' (separator ' | ')")
                 continue
             path_s, title = m.group(1), m.group(2).strip()
             if not title:
-                err(n, "titulo vacio")
+                err(n, "empty title")
                 continue
             if not CODE_PATH_RE.match(path_s):
-                err(n, f"ruta invalida '{path_s}' (se espera ^(src|template)/[a-z0-9_/]+\\.cpp$)")
+                err(n, f"invalid path '{path_s}' (expected ^(src|template)/[a-z0-9_/]+\\.cpp$)")
                 continue
             entry = Entry("code", path_s, title, n)
 
         if not sections:
-            err(n, "entrada fuera de una seccion ([Titulo])")
+            err(n, "entry outside a section ([Title])")
             continue
         sections[-1].items.append(entry)
     return sections, errors
@@ -200,14 +200,14 @@ def header_diagnostics(rel: str, meta: Meta) -> tuple[list[str], list[str]]:
     errors, warnings = [], []
     status = meta.fields.get("Status")
     if status is None:
-        errors.append(f"{rel}:{meta.header_line}: falta 'Status:' en el header (ok|untested|broken)")
+        errors.append(f"{rel}:{meta.header_line}: missing 'Status:' in header (ok|untested|broken)")
     elif status not in VALID_STATUS:
         errors.append(
-            f"{rel}:{meta.lines['Status']}: Status invalido '{status}' (ok|untested|broken)"
+            f"{rel}:{meta.lines['Status']}: invalid Status '{status}' (ok|untested|broken)"
         )
     for key in ("Usage", "Complexity"):
         if key not in meta.fields:
-            warnings.append(f"{rel}:{meta.header_line}: WARNING falta '{key}:' en el header")
+            warnings.append(f"{rel}:{meta.header_line}: WARNING missing '{key}:' in header")
     return errors, warnings
 
 
@@ -231,9 +231,9 @@ def lint_snippet(rel: str, text: str) -> list[str]:
     errors = []
     code = _blank_comments(text)
     rules = [
-        (re.compile(r"^\s*#\s*include\b"), "#include no permitido en snippets (lo provee template)"),
-        (re.compile(r"\busing\s+namespace\s+std\b"), "'using namespace std' no permitido (lo provee template)"),
-        (re.compile(r"\bmain\s*\("), "'main(' no permitido (los demos van en tests/demo/)"),
+        (re.compile(r"^\s*#\s*include\b"), "#include not allowed in snippets (provided by the template)"),
+        (re.compile(r"\busing\s+namespace\s+std\b"), "'using namespace std' not allowed (provided by the template)"),
+        (re.compile(r"\bmain\s*\("), "'main(' not allowed (demos go in tests/demo/)"),
     ]
     for lineno, ln in enumerate(code.split("\n"), 1):
         for rx, msg in rules:
@@ -244,7 +244,7 @@ def lint_snippet(rel: str, text: str) -> list[str]:
 
 def latin1_diagnostics(rel: str, text: str) -> list[str]:
     return [
-        f"{rel}:{ln}: caracter fuera de Latin-1 {_cp(cp)} (columna {col})"
+        f"{rel}:{ln}: character outside Latin-1 {_cp(cp)} (column {col})"
         for ln, col, cp in non_latin1(text)
     ]
 
@@ -264,7 +264,7 @@ def _read_snippet(root: Path, rel: str, report: Report) -> str | None:
     try:
         return (root / rel).read_text(encoding="utf-8")
     except UnicodeDecodeError:
-        report.errors.append(f"{rel}:1: el archivo no es UTF-8 valido")
+        report.errors.append(f"{rel}:1: the file is not valid UTF-8")
         return None
 
 
@@ -278,13 +278,13 @@ def validate(root: Path, sections: list[Section]) -> Report:
             listed.add(e.path)
             if e.path in seen:
                 report.errors.append(
-                    f"{MANIFEST_NAME}:{e.line}: entrada duplicada '{e.path}' (ya listada en la linea {seen[e.path]})"
+                    f"{MANIFEST_NAME}:{e.line}: duplicate entry '{e.path}' (already listed on line {seen[e.path]})"
                 )
                 continue
             seen[e.path] = e.line
             if not (root / e.path).is_file():
-                kind = "archivo .tex" if e.kind == "tex" else "archivo"
-                report.errors.append(f"{MANIFEST_NAME}:{e.line}: {kind} inexistente: {e.path}")
+                kind = "tex file" if e.kind == "tex" else "file"
+                report.errors.append(f"{MANIFEST_NAME}:{e.line}: {kind} not found: {e.path}")
                 continue
             if e.kind != "code" or not e.path.startswith("src/"):
                 continue
@@ -297,14 +297,14 @@ def validate(root: Path, sections: list[Section]) -> Report:
             report.warnings += hwarn
             if meta.fields.get("Status") == "broken":
                 report.errors.append(
-                    f"{e.path}:{meta.lines['Status']}: Status: broken pero listado en {MANIFEST_NAME}:{e.line}"
+                    f"{e.path}:{meta.lines['Status']}: Status: broken but listed in {MANIFEST_NAME}:{e.line}"
                 )
             report.errors += lint_snippet(e.path, text)
             report.errors += latin1_diagnostics(e.path, text)
 
     for rel in discover_snippets(root):
         if not SNIPPET_PATH_RE.match(rel):
-            report.errors.append(f"{rel}:1: nombre invalido (cada segmento debe cumplir [a-z0-9_])")
+            report.errors.append(f"{rel}:1: invalid name (each segment must match [a-z0-9_])")
             continue
         if rel in listed:
             continue
@@ -313,9 +313,9 @@ def validate(root: Path, sections: list[Section]) -> Report:
             continue
         meta = parse_header(text)
         if meta.fields.get("Status") == "broken":
-            report.infos.append(f"INFO cuarentena: {rel} (Status: broken, fuera del manifiesto)")
+            report.infos.append(f"INFO quarantine: {rel} (Status: broken, not in manifest)")
         else:
-            report.errors.append(f"{rel}:1: huerfano: no figura en {MANIFEST_NAME}")
+            report.errors.append(f"{rel}:1: orphan: not listed in {MANIFEST_NAME}")
     return report
 
 
@@ -359,7 +359,7 @@ def compile_one(gxx: str, root: Path, rel: str) -> tuple[bool, str]:
 def check(root: Path = ROOT, jobs: int | None = None) -> int:
     manifest = root / MANIFEST_NAME
     if not manifest.is_file():
-        print(f"{MANIFEST_NAME}: no encontrado en {root.as_posix()}")
+        print(f"{MANIFEST_NAME}: not found in {root.as_posix()}")
         return 1
 
     sections, perrors = parse_manifest(manifest)
@@ -375,18 +375,18 @@ def check(root: Path = ROOT, jobs: int | None = None) -> int:
 
     gxx = shutil.which("g++")
     if gxx is None:
-        print("g++ no encontrado en PATH (instalar MinGW g++ o build-essential)")
+        print("g++ not found in PATH (install MinGW g++ or build-essential)")
         # Lint errors take precedence: exit 1 means "fix your sources".
         return 1 if report.errors else 2
 
     # Template first; abort if it fails.
     tpl = root / TEMPLATE_REL
     if not tpl.is_file():
-        print(f"ERROR {TEMPLATE_REL}: plantilla inexistente")
+        print(f"ERROR {TEMPLATE_REL}: template not found")
         return 1
     ok, out = compile_tu(gxx, root, [TEMPLATE_REL])
     if not ok:
-        print(f"ERROR {TEMPLATE_REL}: la plantilla no compila; se aborta sin compilar snippets")
+        print(f"ERROR {TEMPLATE_REL}: the template does not compile; aborting without compiling snippets")
         print(out)
         return 1
     if out:
@@ -414,11 +414,11 @@ def check(root: Path = ROOT, jobs: int | None = None) -> int:
                 print(f"WARNING {rel}:\n{out}")
         else:
             n_fail += 1
-            print(f"ERROR compilacion fallida: {rel}\n{out}")
+            print(f"ERROR compilation failed: {rel}\n{out}")
 
-    print(f"Resumen compilacion: {n_ok} ok / {n_fail} fallidos")
+    print(f"Compilation summary: {n_ok} ok / {n_fail} failed")
     if report.errors or n_fail:
-        print(f"check: FALLO ({len(report.errors)} errores de validacion, {n_fail} compilaciones fallidas)")
+        print(f"check: FAIL ({len(report.errors)} validation errors, {n_fail} failed compilations)")
         return 1
     print("check: OK")
     return 0
@@ -456,8 +456,8 @@ def texify(s: str) -> str:
 
 
 def render_contents(sections: list[Section]) -> str:
-    """Un bloque multicols por seccion, seguido de clearpage."""
-    out: list[str] = ["% Generado por scripts/notebook.py tex; no editar."]
+    """One multicols block per section, followed by clearpage."""
+    out: list[str] = ["% Generated by scripts/notebook.py tex; do not edit."]
     for sec in sections:
         out.append(rf"\section{{{texify(sec.title)}}}")
         out.append(r"\begin{multicols*}{2}")
@@ -484,7 +484,7 @@ def render_meta(today=None) -> str:
     date = f"{MONTHS[d.month - 1]} {d.day}, {d.year}"
     return "\n".join(
         [
-            "% Generado por scripts/notebook.py tex; no editar.",
+            "% Generated by scripts/notebook.py tex; do not edit.",
             rf"\newcommand{{\NBdate}}{{{date}}}",
             r"\hypersetup{pdftitle={Team Notebook for Regional 2026 - Testigos De Turing},"
             r"pdfauthor={Testigos De Turing},"
@@ -502,7 +502,7 @@ def _write(path: Path, text: str) -> None:
 def tex(root: Path = ROOT) -> int:
     manifest = root / MANIFEST_NAME
     if not manifest.is_file():
-        print(f"{MANIFEST_NAME}: no encontrado en {root.as_posix()}")
+        print(f"{MANIFEST_NAME}: not found in {root.as_posix()}")
         return 1
     sections, errors = parse_manifest(manifest)
     if errors:
@@ -511,15 +511,15 @@ def tex(root: Path = ROOT) -> int:
         return 1
     _write(root / BUILD_DIR / "contents.tex", render_contents(sections))
     _write(root / BUILD_DIR / "meta.tex", render_meta())
-    print(f"tex: {BUILD_DIR}/contents.tex y {BUILD_DIR}/meta.tex generados")
+    print(f"tex: generated {BUILD_DIR}/contents.tex and {BUILD_DIR}/meta.tex")
     return 0
 
 
 def pretex_arg(platform: str | None = None) -> str:
-    r"""Argumento -usepretex que define \PRINTMODE.
+    r"""-usepretex argument that defines \PRINTMODE.
 
-    En Windows latexmk (perl) elimina backslashes y llaves si el valor no va
-    entre comillas literales; en POSIX las comillas literales sobrarian.
+    On Windows, latexmk (perl) strips backslashes and braces unless the value
+    is wrapped in literal quotes; on POSIX the literal quotes would be wrong.
     """
     value = r"\def\PRINTMODE{1}"
     if (platform or sys.platform) == "win32":
@@ -540,7 +540,7 @@ def latexmk_cmd(latexmk: str, theme: str) -> list[str]:
 
 def _log_excerpt(log: Path, limit: int = 40) -> str:
     if not log.is_file():
-        return "(sin log)"
+        return "(no log)"
     lines = log.read_text(encoding="utf-8", errors="replace").splitlines()
     err = re.compile(r"^(!|[^\s:]+:\d+: )")
     hits = [i for i, l in enumerate(lines) if err.match(l)]
@@ -559,7 +559,7 @@ def run_latexmk(root: Path, latexmk: str, theme: str) -> int:
     outdir = root / BUILD_DIR / theme
     built = outdir / f"notebook-{theme}.pdf"
     if proc.returncode != 0 or not built.is_file():
-        print(f"ERROR latexmk fallo (tema {theme}, exit {proc.returncode}); log relevante:")
+        print(f"ERROR latexmk failed (theme {theme}, exit {proc.returncode}); relevant log:")
         print(_log_excerpt(outdir / f"notebook-{theme}.log"))
         return 1
     dest = root / BUILD_DIR / PDF_NAMES[theme]
@@ -571,7 +571,7 @@ def run_latexmk(root: Path, latexmk: str, theme: str) -> int:
 def pdf(root: Path = ROOT, theme: str = "both") -> int:
     latexmk = shutil.which("latexmk")
     if latexmk is None:
-        print("latexmk no encontrado en PATH (instalar TeX Live/MiKTeX con latexmk)")
+        print("latexmk not found in PATH (install TeX Live/MiKTeX with latexmk)")
         return 2
     code = tex(root)
     if code:
@@ -589,10 +589,10 @@ def pdf(root: Path = ROOT, theme: str = "both") -> int:
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="notebook.py", description="Testigos de Turing notebook")
     sub = p.add_subparsers(dest="cmd", required=True)
-    c = sub.add_parser("check", help="validar manifiesto y compilar snippets")
-    c.add_argument("--jobs", type=int, default=None, help="compilaciones en paralelo")
-    sub.add_parser("tex", help="generar build/contents.tex y build/meta.tex")
-    d = sub.add_parser("pdf", help="generar los PDF con latexmk")
+    c = sub.add_parser("check", help="validate the manifest and compile snippets")
+    c.add_argument("--jobs", type=int, default=None, help="parallel compilations")
+    sub.add_parser("tex", help="generate build/contents.tex and build/meta.tex")
+    d = sub.add_parser("pdf", help="generate the PDFs with latexmk")
     d.add_argument("--theme", choices=["read", "print", "both"], default="both")
     return p
 

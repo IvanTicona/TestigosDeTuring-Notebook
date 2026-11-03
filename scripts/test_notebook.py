@@ -54,28 +54,28 @@ class Fixture(unittest.TestCase):
 class ParseManifestTests(Fixture):
     def test_basic_sections_and_entries(self):
         secs, errs = self.parse(
-            "[Plantilla]\ntemplate/template.cpp | Plantilla\n\n[DP]\nsrc/dp/lcs.cpp | LCS\n"
+            "[Template]\ntemplate/template.cpp | Template\n\n[DP]\nsrc/dp/lcs.cpp | LCS\n"
         )
         self.assertEqual(errs, [])
-        self.assertEqual([s.title for s in secs], ["Plantilla", "DP"])
+        self.assertEqual([s.title for s in secs], ["Template", "DP"])
         self.assertEqual(secs[1].items[0].path, "src/dp/lcs.cpp")
         self.assertEqual(secs[1].items[0].title, "LCS")
         self.assertEqual(secs[1].items[0].line, 5)
 
     def test_comment_suffix_and_hash_in_title_S2_5(self):
-        secs, errs = self.parse("[M]\nsrc/math/c.cpp | Cuenta C# y A_B  # nota\n")
+        secs, errs = self.parse("[M]\nsrc/math/c.cpp | Count C# and A_B  # note\n")
         self.assertEqual(errs, [])
-        self.assertEqual(secs[0].items[0].title, "Cuenta C# y A_B")
+        self.assertEqual(secs[0].items[0].title, "Count C# and A_B")
 
     def test_comment_and_blank_lines_ignored_S2_9(self):
-        secs, errs = self.parse("# comentario\n\n   # otro\n[A]\n\nsrc/a/b.cpp | T\n")
+        secs, errs = self.parse("# comment\n\n   # other\n[A]\n\nsrc/a/b.cpp | T\n")
         self.assertEqual(errs, [])
         self.assertEqual(len(secs[0].items), 1)
 
     def test_accents_and_enie_S2_8(self):
-        secs, errs = self.parse("[A]\nsrc/a/b.cpp | Arbol de expansion minima (ñandú)\n")
+        secs, errs = self.parse("[A]\nsrc/a/b.cpp | Minimum spanning tree (ñandú)\n")
         self.assertEqual(errs, [])
-        self.assertEqual(secs[0].items[0].title, "Arbol de expansion minima (ñandú)")
+        self.assertEqual(secs[0].items[0].title, "Minimum spanning tree (ñandú)")
 
     def test_special_chars_in_title(self):
         secs, errs = self.parse("[A]\nsrc/a/b.cpp | A_B & 100% $x\n")
@@ -103,7 +103,7 @@ class ParseManifestTests(Fixture):
         self.assertEqual(len(errs), 1)
 
     def test_missing_separator_rejected(self):
-        _, errs = self.parse("[A]\nsrc/a/b.cpp Titulo\n")
+        _, errs = self.parse("[A]\nsrc/a/b.cpp Title\n")
         self.assertEqual(len(errs), 1)
 
     def test_non_latin1_in_title_rejected_S2_7(self):
@@ -196,7 +196,7 @@ class LintTests(unittest.TestCase):
         self.assertTrue(errs[0].startswith("src/x.cpp:3:"))
 
     def test_clean_snippet_and_comments_ok(self):
-        body = "// main( es un demo, #include aparte\n/* using namespace std */\nint domain(int x){return x;}\nint a=0;\n"
+        body = "// main( is a demo, #include aside\n/* using namespace std */\nint domain(int x){return x;}\nint a=0;\n"
         self.assertEqual(nb.lint_snippet("src/x.cpp", body), [])
 
     def test_latin1(self):
@@ -215,7 +215,7 @@ class ValidateTests(Fixture):
 
     def test_clean(self):
         self.write("src/a/foo.cpp", GOOD_SNIPPET)
-        r = self.validate("[Plantilla]\ntemplate/template.cpp | Plantilla\n[A]\nsrc/a/foo.cpp | Foo\n")
+        r = self.validate("[Template]\ntemplate/template.cpp | Template\n[A]\nsrc/a/foo.cpp | Foo\n")
         self.assertEqual((r.errors, r.warnings, r.infos), ([], [], []))
 
     def test_missing_file_S2_1(self):
@@ -226,17 +226,17 @@ class ValidateTests(Fixture):
 
     def test_orphan_S2_2(self):
         self.write("src/math/extra.cpp", GOOD_SNIPPET)
-        r = self.validate("[Plantilla]\ntemplate/template.cpp | Plantilla\n")
+        r = self.validate("[Template]\ntemplate/template.cpp | Template\n")
         self.assertEqual(len(r.errors), 1)
         self.assertIn("src/math/extra.cpp", r.errors[0])
-        self.assertIn("huerfano", r.errors[0])
+        self.assertIn("orphan", r.errors[0])
 
     def test_quarantine_is_info_S2_3(self):
         self.write("src/graphs/flow/dinic.cpp", GOOD_SNIPPET.replace("Status: ok", "Status: broken"))
-        r = self.validate("[Plantilla]\ntemplate/template.cpp | Plantilla\n")
+        r = self.validate("[Template]\ntemplate/template.cpp | Template\n")
         self.assertEqual(r.errors, [])
         self.assertEqual(len(r.infos), 1)
-        self.assertIn("cuarentena", r.infos[0])
+        self.assertIn("quarantine", r.infos[0])
         self.assertIn("src/graphs/flow/dinic.cpp", r.infos[0])
 
     def test_broken_listed_is_error_S2_4(self):
@@ -250,14 +250,14 @@ class ValidateTests(Fixture):
         r = self.validate("[A]\nsrc/a/foo.cpp | Foo\n[B]\nsrc/a/foo.cpp | Foo otra vez\n")
         self.assertEqual(len(r.errors), 1)
         self.assertIn("contents.txt:4:", r.errors[0])
-        self.assertIn("duplicad", r.errors[0])
+        self.assertIn("duplicate", r.errors[0])
 
     def test_invalid_names_on_disk_S1_2(self):
         self.write("src/graphs/Max Flow (v2).cpp", GOOD_SNIPPET)
         self.write("src/dp/Knapsack.cpp", GOOD_SNIPPET)
-        r = self.validate("[Plantilla]\ntemplate/template.cpp | Plantilla\n")
+        r = self.validate("[Template]\ntemplate/template.cpp | Template\n")
         self.assertEqual(len(r.errors), 2)
-        self.assertTrue(all("nombre invalido" in e for e in r.errors))
+        self.assertTrue(all("invalid name" in e for e in r.errors))
 
     def test_lint_in_listed_snippet_S1_1(self):
         self.write("src/a/foo.cpp", "/**\n * Usage: x\n * Complexity: O(1)\n * Status: ok\n */\n#include <vector>\nint main(){}\n")
@@ -300,7 +300,7 @@ class ValidateTests(Fixture):
 
 
 class CheckCommandTests(Fixture):
-    BASE = "[Plantilla]\ntemplate/template.cpp | Plantilla\n[A]\n"
+    BASE = "[Template]\ntemplate/template.cpp | Template\n[A]\n"
 
     def test_missing_manifest(self):
         code, out = self.run_check()
@@ -313,7 +313,7 @@ class CheckCommandTests(Fixture):
         with mock.patch.object(nb.shutil, "which", return_value=None):
             code, out = self.run_check()
         self.assertEqual(code, 2)
-        self.assertIn("g++ no encontrado", out)
+        self.assertIn("g++ not found", out)
 
     def test_lints_run_without_gxx(self):
         self.write("src/a/foo.cpp", GOOD_SNIPPET + "int main(){}\n")
@@ -323,16 +323,16 @@ class CheckCommandTests(Fixture):
         self.assertEqual(code, 1)
         self.assertIn("main(", out)
 
-    @unittest.skipUnless(HAS_GXX, "g++ no disponible")
+    @unittest.skipUnless(HAS_GXX, "g++ not available")
     def test_clean_tree_ok_S3_1_S3_4(self):
         # uses ll/vi defined only in template
         self.write("src/a/foo.cpp", GOOD_SNIPPET + "ll bar(vi v) { return sz(v); }\n")
         self.manifest(self.BASE + "src/a/foo.cpp | Foo\n")
         code, out = self.run_check()
         self.assertEqual(code, 0, out)
-        self.assertIn("1 ok / 0 fallidos", out)
+        self.assertIn("1 ok / 0 failed", out)
 
-    @unittest.skipUnless(HAS_GXX, "g++ no disponible")
+    @unittest.skipUnless(HAS_GXX, "g++ not available")
     def test_syntax_error_reported_others_continue_S3_2(self):
         self.write("src/a/good.cpp", GOOD_SNIPPET)
         self.write("src/a/bad.cpp", GOOD_SNIPPET.replace("return x;", "return x"))
@@ -340,9 +340,9 @@ class CheckCommandTests(Fixture):
         code, out = self.run_check()
         self.assertEqual(code, 1)
         self.assertRegex(out, r"src/a/bad\.cpp:\d+:\d+")
-        self.assertIn("1 ok / 1 fallidos", out)
+        self.assertIn("1 ok / 1 failed", out)
 
-    @unittest.skipUnless(HAS_GXX, "g++ no disponible")
+    @unittest.skipUnless(HAS_GXX, "g++ not available")
     def test_warning_not_fatal_S3_3(self):
         self.write("src/a/foo.cpp", GOOD_SNIPPET.replace("return x;", "int unused; return x;"))
         self.manifest(self.BASE + "src/a/foo.cpp | Foo\n")
@@ -350,7 +350,7 @@ class CheckCommandTests(Fixture):
         self.assertEqual(code, 0, out)
         self.assertIn("unused", out)
 
-    @unittest.skipUnless(HAS_GXX, "g++ no disponible")
+    @unittest.skipUnless(HAS_GXX, "g++ not available")
     def test_conflicting_typedef_fails_identical_passes_S3_5(self):
         self.write("src/a/same.cpp", GOOD_SNIPPET + "typedef long long ll;\n")
         self.manifest(self.BASE + "src/a/same.cpp | Same\n")
@@ -361,7 +361,7 @@ class CheckCommandTests(Fixture):
         self.assertEqual(code, 1)
         self.assertIn("src/a/same.cpp", out)
 
-    @unittest.skipUnless(HAS_GXX, "g++ no disponible")
+    @unittest.skipUnless(HAS_GXX, "g++ not available")
     def test_broken_template_aborts_S3_7(self):
         self.write("template/template.cpp", "int broken(\n")
         self.write("src/a/foo.cpp", GOOD_SNIPPET)
@@ -369,16 +369,16 @@ class CheckCommandTests(Fixture):
         code, out = self.run_check()
         self.assertEqual(code, 1)
         self.assertIn("template/template.cpp", out)
-        self.assertNotIn("Resumen compilacion", out)
+        self.assertNotIn("Compilation summary", out)
 
-    @unittest.skipUnless(HAS_GXX, "g++ no disponible")
+    @unittest.skipUnless(HAS_GXX, "g++ not available")
     def test_quarantine_exit_0_broken_listed_exit_1(self):
         self.write("src/a/ok.cpp", GOOD_SNIPPET)
         self.write("src/a/q.cpp", "/**\n * Usage: x\n * Complexity: O(1)\n * Status: broken\n */\nthis does not compile\n")
         self.manifest(self.BASE + "src/a/ok.cpp | Ok\n")
         code, out = self.run_check()
         self.assertEqual(code, 0, out)
-        self.assertIn("INFO cuarentena: src/a/q.cpp", out)
+        self.assertIn("INFO quarantine: src/a/q.cpp", out)
         self.manifest(self.BASE + "src/a/ok.cpp | Ok\nsrc/a/q.cpp | Q\n")
         code, out = self.run_check()
         self.assertEqual(code, 1)
@@ -410,7 +410,7 @@ class TexifyTests(unittest.TestCase):
 
 
 class RenderTests(Fixture):
-    BASE = "[Plantilla]\ntemplate/template.cpp | Plantilla\n"
+    BASE = "[Template]\ntemplate/template.cpp | Template\n"
 
     def sections(self, text):
         self.write("src/a/foo.cpp", GOOD_SNIPPET)
@@ -423,10 +423,10 @@ class RenderTests(Fixture):
 
     def test_order_and_template_first(self):
         secs = self.sections(
-            self.BASE + "[Uno]\nsrc/a/foo.cpp | Foo\n[Dos]\nsrc/a/bar.cpp | Bar\n"
+            self.BASE + "[One]\nsrc/a/foo.cpp | Foo\n[Two]\nsrc/a/bar.cpp | Bar\n"
         )
         out = nb.render_contents(secs)
-        order = [out.index(x) for x in ("{Plantilla}", "{Uno}", "{Dos}")]
+        order = [out.index(x) for x in ("{Template}", "{One}", "{Two}")]
         self.assertEqual(order, sorted(order))
         self.assertIn(r"\lstinputlisting[style=cpp]{template/template.cpp}", out)
         self.assertIn(r"\lstinputlisting[style=cpp]{src/a/foo.cpp}", out)
@@ -437,17 +437,17 @@ class RenderTests(Fixture):
         self.assertEqual(out.count(r"\end{multicols*}"), 3)
 
     def test_quarantined_not_rendered(self):
-        secs = self.sections(self.BASE + "[Uno]\nsrc/a/foo.cpp | Foo\n")
+        secs = self.sections(self.BASE + "[One]\nsrc/a/foo.cpp | Foo\n")
         self.write("src/a/q.cpp", GOOD_SNIPPET.replace("ok", "broken"))
         self.assertNotIn("q.cpp", nb.render_contents(secs))
 
     def test_tex_entry_becomes_input(self):
         secs = self.sections(
-            self.BASE + "[Teoria]\n!tex tex/theory/euclid.tex | Euclides (ñandú)\n"
+            self.BASE + "[Theory]\n!tex tex/theory/euclid.tex | Euclid (ñandú)\n"
         )
         out = nb.render_contents(secs)
         self.assertIn(r"\input{tex/theory/euclid.tex}", out)
-        self.assertIn(r"\subsection{Euclides (ñandú)}", out)
+        self.assertIn(r"\subsection{Euclid (ñandú)}", out)
 
     def test_titles_escaped(self):
         secs = self.sections(self.BASE + "[A_B & C#]\nsrc/a/foo.cpp | Union_Find#1 & 100%\n")
@@ -472,7 +472,7 @@ class MetaAndTexCommandTests(Fixture):
 
     def test_tex_command_writes_files(self):
         self.write("src/a/foo.cpp", GOOD_SNIPPET)
-        self.write("contents.txt", "[Plantilla]\ntemplate/template.cpp | Plantilla\n[A]\nsrc/a/foo.cpp | Foo\n")
+        self.write("contents.txt", "[Template]\ntemplate/template.cpp | Template\n[A]\nsrc/a/foo.cpp | Foo\n")
         with contextlib.redirect_stdout(io.StringIO()):
             code = nb.tex(self.root)
         self.assertEqual(code, 0)
@@ -485,11 +485,11 @@ class MetaAndTexCommandTests(Fixture):
             self.assertEqual(nb.tex(self.root), 1)
 
     def test_pdf_without_latexmk_exit_2(self):
-        self.write("contents.txt", "[Plantilla]\ntemplate/template.cpp | Plantilla\n")
+        self.write("contents.txt", "[Template]\ntemplate/template.cpp | Template\n")
         out = io.StringIO()
         with mock.patch.object(nb.shutil, "which", return_value=None), contextlib.redirect_stdout(out):
             self.assertEqual(nb.pdf(self.root, "both"), 2)
-        self.assertIn("latexmk no encontrado", out.getvalue())
+        self.assertIn("latexmk not found", out.getvalue())
 
     def test_latexmk_command_themes(self):
         read = nb.latexmk_cmd("latexmk", "read")

@@ -1,17 +1,17 @@
 % Testigos de Turing - ICPC Team Notebook
-% Compilar con: python scripts/notebook.py pdf   (genera build/contents.tex y build/meta.tex)
-% Tema impresion: latexmk -usepretex="\def\PRINTMODE{1}" (ver scripts/notebook.py)
+% Build with: python scripts/notebook.py pdf   (generates build/contents.tex and build/meta.tex)
+% Print theme: latexmk -usepretex="\def\PRINTMODE{1}" (see scripts/notebook.py)
 \documentclass[10pt]{article}
 
-% Tema read/print: \PRINTMODE se define con -usepretex
+% read/print theme: \PRINTMODE is defined with -usepretex
 \newif\ifprintmode
 \ifdefined\PRINTMODE\printmodetrue\fi
-% Respaldo independiente de -usepretex (quoting segun SO): jobname notebook-print
+% Fallback independent of -usepretex (quoting depends on the OS): jobname notebook-print
 \edef\NBjob{\detokenize\expandafter{\jobname}}
 \edef\NBprintjob{\detokenize{notebook-print}}
 \ifx\NBjob\NBprintjob\printmodetrue\fi
 
-% Carta apaisado real (792x612 pt, sin rotacion en el visor)
+% True landscape letter (792x612 pt, no rotation in the viewer)
 \usepackage[letterpaper,landscape,left=0.4in,right=0.4in,top=0.7in,bottom=0.4in,headheight=14pt]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -34,20 +34,20 @@
 \setcounter{tocdepth}{2}
 \renewcommand*{\ttdefault}{lmtt}
 
-% Nombres en espanol (sin babel)
+% Names in English (no babel)
 \renewcommand{\contentsname}{Contents}
 
-% Ruta del snippet (gris, compacta, a la derecha bajo el titulo)
+% Snippet path (gray, compact, right-aligned below the title)
 \newcommand{\NBpath}[1]{{\nopagebreak\hfill\fontsize{5}{6}\ttfamily\color{NBNumber}#1\par}}
 
-% Equipo (portada y cabecera)
+% Team (cover and header)
 \newcommand{\NBteam}{Testigos De Turing}
 \newcommand{\NBtitle}{Team Notebook for Regional 2026 -- \NBteam}
 
-% Fecha y metadatos PDF generados (\NBdate, \hypersetup)
+% Generated date and PDF metadata (\NBdate, \hypersetup)
 \input{build/meta.tex}
 
-% Indice compacto
+% Compact table of contents
 \renewcommand\cftsecfont{\fontsize{10}{12}\bfseries}
 \renewcommand\cftsecpagefont{\fontsize{10}{12}\mdseries}
 \renewcommand\cftsubsecfont{\fontsize{8.5}{10.5}\mdseries}
@@ -58,7 +58,7 @@
 \renewcommand{\cftloftitlefont}{\large\bfseries}
 \setlength{\cftparskip}{0pt}
 
-% Paletas por tema
+% Palettes per theme
 \ifprintmode
   \colorlet{CodeKw}{black}
   \colorlet{CodeComment}{black!60}
@@ -77,7 +77,7 @@
   \colorlet{NBNumber}{gray}
 \fi
 
-% Estilo de codigo (sin escapechar)
+% Code style (no escapechar)
 \lstdefinestyle{cpp}{
   language=C++,
   inputencoding=utf8/latin1,
@@ -106,7 +106,7 @@
 }
 \lstset{style=cpp}
 
-% Cabecera: equipo | seccion | pagina/total
+% Header: team | section | page/total
 \renewcommand{\sectionmark}[1]{\markboth{#1}{}}
 \pagestyle{fancy}
 \fancyhf{}
@@ -118,8 +118,8 @@
 
 \begin{document}
 
-% ---------- Portada: arriba los datos; abajo logo (col. izq.) e indice (col. der.) ----------
-% El indice arranca en la columna derecha y, si no entra, sigue en la pagina 2 a 2 columnas.
+% ---------- Cover: details on top; logo (left col.) and contents (right col.) below ----------
+% The contents start in the right column and, if they do not fit, continue on page 2 in 2 columns.
 \pagestyle{empty}
 \begin{center}
   \vspace*{0.4cm}
@@ -144,7 +144,7 @@
 \clearpage
 \pagestyle{fancy}
 
-% ---------- Contenido: cada seccion en su propio multicols ----------
+% ---------- Content: each section in its own multicols ----------
 \input{build/contents.tex}
 
 \end{document}
