@@ -52,3 +52,4 @@ src/algebra/integration.cpp | Numerical Integration (Simpson)
 src/dp/lis.cpp | Longest Increasing Subsequence (+ Count)
 src/dp/knapsack.cpp | Knapsack (0/1, Unbounded, Bounded, By Value)
 src/dp/subset_sum.cpp | Subset Sum and Coin Change
+src/dp/lcs.cpp | LCS and Edit Distance
