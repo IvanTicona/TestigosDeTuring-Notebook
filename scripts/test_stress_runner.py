@@ -73,6 +73,11 @@ class StressCmd(unittest.TestCase):
         self.assertEqual(cmd[cmd.index("-o") + 1], "/out/lcs")
         self.assertTrue(cmd[-1].endswith("tests/stress/dp/lcs.cpp") or "tests/stress/dp/lcs.cpp" in cmd)
 
+    def test_repo_root_define(self):
+        root = Path("/repo")
+        cmd = nb.stress_cmd("g++", root, "tests/stress/a.cpp", "/out/a", False)
+        self.assertIn(f'-DNB_ROOT="{root.resolve().as_posix()}"', cmd)
+
     def test_sanitize_flags(self):
         cmd = nb.stress_cmd("g++", Path("/repo"), "tests/stress/a.cpp", "/out/a", True)
         for flag in ("-fsanitize=address,undefined", "-fno-sanitize-recover=all",
@@ -236,7 +241,7 @@ class CliWiring(unittest.TestCase):
         self.assertEqual(args[5], 3)
 
 
-PASS_TEST = """#include "template/template.cpp"
+PASS_TEST = """#include "tests/stress/template_lib.h"
 #include "tests/stress/common.h"
 int main() {
     for (int it = 0; it < 100; it++) {
@@ -248,7 +253,7 @@ int main() {
 }
 """
 
-FAIL_TEST = """#include "template/template.cpp"
+FAIL_TEST = """#include "tests/stress/template_lib.h"
 #include "tests/stress/common.h"
 int main() {
     for (int it = 0; it < 100; it++) {
@@ -260,12 +265,12 @@ int main() {
 }
 """
 
-HANG_TEST = """#include "template/template.cpp"
+HANG_TEST = """#include "tests/stress/template_lib.h"
 #include "tests/stress/common.h"
 int main() { volatile int x = 0; for (;;) x = x + 1; }
 """
 
-STDIN_TEST = """#include "template/template.cpp"
+STDIN_TEST = """#include "tests/stress/template_lib.h"
 #include "tests/stress/common.h"
 int main() {
     stress::feed_stdin("3 4\\n");
@@ -287,6 +292,7 @@ class RealGxx(StressFixture):
         super().setUp()
         self.write("template/template.cpp", (REAL_ROOT / "template" / "template.cpp").read_text(encoding="utf-8"))
         self.write("tests/stress/common.h", (REAL_ROOT / "tests" / "stress" / "common.h").read_text(encoding="utf-8"))
+        self.write("tests/stress/template_lib.h", (REAL_ROOT / "tests" / "stress" / "template_lib.h").read_text(encoding="utf-8"))
 
     def test_pass_and_fail_end_to_end(self):
         self.write("tests/stress/good.cpp", PASS_TEST)

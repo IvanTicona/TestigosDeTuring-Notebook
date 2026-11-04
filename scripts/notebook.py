@@ -493,7 +493,9 @@ def stress_exe(root: Path, rel: str) -> Path:
 
 
 def stress_cmd(gxx: str, root: Path, rel: str, out: str, sanitize: bool) -> list[str]:
-    cmd = [gxx, *STRESS_FLAGS, f"-I{root.resolve().as_posix()}"]
+    base = root.resolve().as_posix()
+    # NB_ROOT lets tests read snippet sources (e.g. to verify example comments)
+    cmd = [gxx, *STRESS_FLAGS, f"-I{base}", f'-DNB_ROOT="{base}"']
     if sanitize:
         cmd += SANITIZE_FLAGS
     cmd += ["-o", out, _abs_posix(root, rel)]

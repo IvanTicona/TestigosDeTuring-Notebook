@@ -83,3 +83,54 @@ struct Capture {
 // convertible to std::string, built lazily) and exits 1.
 #define CHECK(cond, input) \
     do { if (!(cond)) ::stress::fail(__FILE__, __LINE__, #cond, (input)); } while (0)
+
+#include <fstream>
+#include <vector>
+namespace stress {
+
+inline std::string trim(std::string s) {
+    while (!s.empty() && std::isspace((unsigned char)s.back())) s.pop_back();
+    size_t i = 0;
+    while (i < s.size() && std::isspace((unsigned char)s[i])) i++;
+    return s.substr(i);
+}
+
+// Verifies a snippet's example function against its own comments.
+// Convention inside `void <name>() { ... }` (closing brace in column 0):
+// every line containing `cout` prints exactly one output line, and its
+// trailing `// text` is that line's expected output.
+inline void check_example(void (*fn)(), const std::string &src, const std::string &name) {
+#ifndef NB_ROOT
+    (void)fn;
+    fail(__FILE__, __LINE__, "NB_ROOT defined", src + ": run via notebook.py test");
+#else
+    std::ifstream in(std::string(NB_ROOT) + "/" + src);
+    if (!in) fail(__FILE__, __LINE__, "example source readable", src);
+    std::vector<std::string> want;
+    std::string line;
+    bool inside = false;
+    while (std::getline(in, line)) {
+        if (!inside) { inside = line.find("void " + name + "(") != std::string::npos; continue; }
+        if (!line.empty() && line[0] == '}') break;
+        if (line.find("cout") == std::string::npos) continue;
+        size_t p = line.find("//");
+        if (p == std::string::npos) fail(__FILE__, __LINE__, "expected-output comment", line);
+        want.push_back(trim(line.substr(p + 2)));
+    }
+    if (!inside) fail(__FILE__, __LINE__, "example function found", name + " in " + src);
+    std::string out;
+    { Capture c; fn(); out = c.str(); }
+    std::vector<std::string> got;
+    std::istringstream ss(out);
+    while (std::getline(ss, line)) got.push_back(trim(line));
+    for (size_t i = 0; i < std::max(want.size(), got.size()); i++) {
+        std::string w = i < want.size() ? want[i] : "<none>";
+        std::string g = i < got.size() ? got[i] : "<none>";
+        if (w != g)
+            fail(__FILE__, __LINE__, "example output matches its comment",
+                 name + " line " + std::to_string(i + 1) + ": comment says '" + w + "', prints '" + g + "'");
+    }
+#endif
+}
+
+}  // namespace stress
