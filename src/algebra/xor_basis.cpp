@@ -26,7 +26,11 @@ struct XorBasis {
         return false;
     }
     bool contains(ull x) const {
-        for (int i = 63; i >= 0; i--) if (x >> i & 1) { if (!b[i]) return false; x ^= b[i]; }
+        for (int i = 63; i >= 0; i--)
+            if (x >> i & 1) {
+                if (!b[i]) return false;
+                x ^= b[i];
+            }
         return true;
     }
     ull max_xor(ull x = 0) const {
@@ -58,7 +62,8 @@ int gauss_xor(vector<bitset<N>> a, int m, bitset<N> &x) {
     int n = sz(a), row = 0;
     vi where(m, -1);
     for (int col = 0; col < m && row < n; col++) {
-        for (int i = row; i < n; i++) if (a[i][col]) { swap(a[i], a[row]); break; }
+        for (int i = row; i < n; i++)
+            if (a[i][col]) { swap(a[i], a[row]); break; }
         if (!a[row][col]) continue;
         where[col] = row;
         for (int i = 0; i < n; i++) if (i != row && a[i][col]) a[i] ^= a[row];
@@ -74,8 +79,10 @@ int gauss_xor(vector<bitset<N>> a, int m, bitset<N> &x) {
 void example_xor_basis() {
     XorBasis xb;
     for (ull v : {5, 6, 3, 9}) xb.insert(v);  // 3 = 5 ^ 6 is dependent
-    cout << xb.r << ' ' << xb.max_xor() << ' ' << xb.contains(12) << '\n';  // 3 15 1
-    cout << xb.kth(0) << ' ' << xb.kth(1) << ' ' << xb.kth(7) << '\n';    // 0 3 15
+    cout << xb.r << ' ' << xb.max_xor() << ' '  // 3 15 1
+         << xb.contains(12) << '\n';
+    cout << xb.kth(0) << ' ' << xb.kth(1) << ' '  // 0 3 15
+         << xb.kth(7) << '\n';
     cout << xb.min_xor(15) << '\n';                                        // 0
     vector<bitset<8>> a(2);  // x0 ^ x1 = 1, x1 = 1
     a[0][0] = a[0][1] = a[0][2] = 1, a[1][1] = a[1][2] = 1;

@@ -13,7 +13,7 @@
  */
 typedef double lpd;
 typedef vector<lpd> lpv;
-const lpd LP_EPS = 1e-9, LP_INF = 1 / .0;
+const lpd LP_EPS = 1e-9, LP_INF = numeric_limits<lpd>::infinity();
 
 struct LPSolver {
     int m, n;
@@ -21,8 +21,10 @@ struct LPSolver {
     vector<lpv> D;
     LPSolver(const vector<lpv> &A, const lpv &b, const lpv &c)
         : m(sz(b)), n(sz(c)), N(n + 1), B(m), D(m + 2, lpv(n + 2)) {
-        for (int i = 0; i < m; i++) for (int j = 0; j < n; j++) D[i][j] = A[i][j];
-        for (int i = 0; i < m; i++) B[i] = n + i, D[i][n] = -1, D[i][n + 1] = b[i];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) D[i][j] = A[i][j];
+            B[i] = n + i, D[i][n] = -1, D[i][n + 1] = b[i];
+        }
         for (int j = 0; j < n; j++) N[j] = j, D[m][j] = -c[j];
         N[n] = -1, D[m + 1][n] = 1;
     }
@@ -39,17 +41,22 @@ struct LPSolver {
         D[r][s] = inv;
         swap(B[r], N[s]);
     }
+    bool better(const lpv &row, int j, int s) {  // Bland tie-break
+        return make_pair(row[j], N[j]) < make_pair(row[s], N[s]);
+    }
     bool simplex(int phase) {
         int x = m + phase - 1;
         for (;;) {
             int s = -1;
             for (int j = 0; j <= n; j++)
-                if (N[j] != -phase && (s == -1 || make_pair(D[x][j], N[j]) < make_pair(D[x][s], N[s]))) s = j;
+                if (N[j] != -phase && (s == -1 || better(D[x], j, s))) s = j;
             if (D[x][s] >= -LP_EPS) return true;
             int r = -1;
             for (int i = 0; i < m; i++) {
                 if (D[i][s] <= LP_EPS) continue;
-                if (r == -1 || make_pair(D[i][n + 1] / D[i][s], B[i]) < make_pair(D[r][n + 1] / D[r][s], B[r])) r = i;
+                if (r == -1 || make_pair(D[i][n + 1] / D[i][s], B[i]) <
+                                   make_pair(D[r][n + 1] / D[r][s], B[r]))
+                    r = i;
             }
             if (r == -1) return false;
             pivot(r, s);
@@ -65,7 +72,7 @@ struct LPSolver {
                 if (B[i] == -1) {
                     int s = 0;
                     for (int j = 1; j <= n; j++)
-                        if (s == -1 || make_pair(D[i][j], N[j]) < make_pair(D[i][s], N[s])) s = j;
+                        if (better(D[i], j, s)) s = j;
                     pivot(i, s);
                 }
         }

@@ -58,7 +58,8 @@ vl conv_any(vl a, vl b, ll m) {
     for (ll &x : a) x %= m;
     for (ll &x : b) x %= m;
     vl c1 = ntt_mul<P1>(a, b), c2 = ntt_mul<P2>(a, b), c3 = ntt_mul<P3>(a, b);
-    const ll i12 = powmod(P1, P2 - 2, P2), i123 = powmod(P1 * P2 % P3, P3 - 2, P3);
+    const ll i12 = powmod(P1, P2 - 2, P2);
+    const ll i123 = powmod(P1 * P2 % P3, P3 - 2, P3);
     vl r(sz(c1));
     for (int i = 0; i < sz(r); i++) {  // Garner: x = c1 + P1 k1 + P1 P2 k2
         ll k1 = (c2[i] - c1[i] % P2 + P2) % P2 * i12 % P2;
@@ -72,7 +73,8 @@ vl conv_any(vl a, vl b, ll m) {
 // ---- Example: call from solve(); each // is the line it prints ----
 void example_ntt() {
     vl c = ntt_mul({1, 2, 3}, {MOD2 - 1, 1});  // (1+2x+3x^2)(x-1)
-    cout << c[0] << ' ' << c[1] << ' ' << c[2] << ' ' << c[3] << '\n';  // 998244352 998244352 998244352 3
+    cout << c[0] << ' ' << c[1] << ' '  // 998244352 998244352 998244352 3
+         << c[2] << ' ' << c[3] << '\n';
     vl d = conv_any({MOD - 1, MOD - 1}, {MOD - 1}, MOD);  // (-1-x)(-1)
     cout << d[0] << ' ' << d[1] << '\n';                 // 1 1
     vl e = ntt_mul<167772161>({5}, {7});

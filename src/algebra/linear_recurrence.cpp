@@ -27,7 +27,8 @@ vl berlekamp_massey(const vl &s, ll p = MOD) {
         if (!d) continue;
         T = C;
         ll coef = d * invmod_prime(b, p) % p;
-        for (int j = m; j <= n; j++) C[j] = ((C[j] - coef * B[j - m]) % p + p) % p;
+        for (int j = m; j <= n; j++)
+            C[j] = ((C[j] - coef * B[j - m]) % p + p) % p;
         if (2 * L > i) continue;
         L = i + 1 - L, B = T, b = d, m = 0;
     }
@@ -44,9 +45,11 @@ ll kitamasa(const vl &c, const vl &f, ll n, ll p = MOD) {
     auto combine = [&](const vl &a, const vl &b) {  // a * b mod charpoly
         vl r(2 * k + 1, 0);
         for (int i = 0; i <= k; i++)
-            for (int j = 0; j <= k; j++) r[i + j] = (r[i + j] + a[i] * b[j]) % p;
+            for (int j = 0; j <= k; j++)
+                r[i + j] = (r[i + j] + a[i] * b[j]) % p;
         for (int i = 2 * k; i > k; i--)
-            for (int j = 0; j < k; j++) r[i - 1 - j] = (r[i - 1 - j] + r[i] * c[j]) % p;
+            for (int j = 0; j < k; j++)
+                r[i - 1 - j] = (r[i - 1 - j] + r[i] * c[j]) % p;
         r.resize(k + 1);
         return r;
     };
@@ -72,5 +75,6 @@ void example_linear_recurrence() {
     cout << sz(c) << ' ' << c[0] << ' ' << c[1] << '\n';  // 2 1 1
     cout << kitamasa({1, 1}, {0, 1}, 90) << '\n';        // 210345902
     // squares 0 1 4 9 ... are a linear recurrence of order 3
-    cout << guess_nth({0, 1, 4, 9, 16, 25, 36, 49}, 1000000) << '\n';  // 999993007
+    vl sq = {0, 1, 4, 9, 16, 25, 36, 49};
+    cout << guess_nth(sq, 1000000) << '\n';  // 999993007
 }

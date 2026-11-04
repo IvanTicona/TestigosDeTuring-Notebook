@@ -26,8 +26,8 @@ void fwht(vl &a, int op, bool inv, ll p = MOD) {
                 else v = md(inv ? v - u : v + u);
             }
     if (op == 0 && inv) {
-        if (p) { ll in = invmod_prime(n % p, p); for (ll &x : a) x = x * in % p; }
-        else for (ll &x : a) x /= n;
+        ll in = p ? invmod_prime(n % p, p) : 0;
+        for (ll &x : a) x = p ? x * in % p : x / n;
     }
 }
 
@@ -36,7 +36,8 @@ vl bit_conv(vl a, vl b, int op, ll p = MOD) {
     while (n < max(sz(a), sz(b))) n *= 2;
     a.resize(n), b.resize(n);
     fwht(a, op, false, p), fwht(b, op, false, p);
-    for (int i = 0; i < n; i++) a[i] = p ? a[i] % p * (b[i] % p) % p : a[i] * b[i];
+    for (int i = 0; i < n; i++)
+        a[i] = p ? a[i] % p * (b[i] % p) % p : a[i] * b[i];
     fwht(a, op, true, p);
     return a;
 }
@@ -48,10 +49,12 @@ vl subset_conv(const vl &f, const vl &g, ll p = MOD) {  // sz = 2^n, p > 0
         int c = __builtin_popcount(m);
         F[c][m] = f[m] % p, G[c][m] = g[m] % p;
     }
-    for (int k = 0; k <= n; k++) fwht(F[k], 2, false, p), fwht(G[k], 2, false, p);
+    for (int k = 0; k <= n; k++)
+        fwht(F[k], 2, false, p), fwht(G[k], 2, false, p);
     for (int m = 0; m < N; m++)
         for (int k = 0; k <= n; k++)
-            for (int i = 0; i <= k; i++) H[k][m] = (H[k][m] + F[i][m] * G[k - i][m]) % p;
+            for (int i = 0; i <= k; i++)
+                H[k][m] = (H[k][m] + F[i][m] * G[k - i][m]) % p;
     for (int k = 0; k <= n; k++) fwht(H[k], 2, true, p);
     vl h(N);
     for (int m = 0; m < N; m++) h[m] = H[__builtin_popcount(m)][m];
@@ -62,9 +65,11 @@ vl subset_conv(const vl &f, const vl &g, ll p = MOD) {  // sz = 2^n, p > 0
 void example_fwht() {
     vl cnt = {0, 1, 1, 1};  // multiset {1, 2, 3}, cnt[v] = #v
     vl x = bit_conv(cnt, cnt, 0, 0);  // ordered pairs by XOR value
-    cout << x[0] << ' ' << x[1] << ' ' << x[2] << ' ' << x[3] << '\n';  // 3 2 2 2
+    cout << x[0] << ' ' << x[1] << ' ' << x[2] << ' ' << x[3]  // 3 2 2 2
+         << '\n';
     vl o = bit_conv(cnt, cnt, 2);     // ordered pairs by OR value
-    cout << o[0] << ' ' << o[1] << ' ' << o[2] << ' ' << o[3] << '\n';  // 0 1 1 7
+    cout << o[0] << ' ' << o[1] << ' ' << o[2] << ' ' << o[3]  // 0 1 1 7
+         << '\n';
     vl h = subset_conv({1, 1, 1, 1}, {1, 1, 1, 1});  // splits of S into A, B
     cout << h[0] << ' ' << h[1] << ' ' << h[3] << '\n';  // 1 2 4
 }

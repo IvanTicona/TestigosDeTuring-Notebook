@@ -23,7 +23,8 @@ int gauss(vector<vd> a, vd &x) {
     vi where(m, -1);
     for (int col = 0, row = 0; col < m && row < n; col++) {
         int sel = row;
-        for (int i = row; i < n; i++) if (fabs(a[i][col]) > fabs(a[sel][col])) sel = i;
+        for (int i = row; i < n; i++)
+            if (fabs(a[i][col]) > fabs(a[sel][col])) sel = i;
         if (fabs(a[sel][col]) < EPS) continue;
         swap(a[sel], a[row]);
         where[col] = row;
@@ -35,7 +36,8 @@ int gauss(vector<vd> a, vd &x) {
         row++;
     }
     x.assign(m, 0);
-    for (int i = 0; i < m; i++) if (where[i] != -1) x[i] = a[where[i]][m] / a[where[i]][i];
+    for (int i = 0; i < m; i++)
+        if (where[i] != -1) x[i] = a[where[i]][m] / a[where[i]][i];
     for (int i = 0; i < n; i++) {
         double s = 0;
         for (int j = 0; j < m; j++) s += x[j] * a[i][j];
@@ -50,7 +52,8 @@ double det(vector<vd> a) {
     double d = 1;
     for (int i = 0; i < n; i++) {
         int b = i;
-        for (int j = i + 1; j < n; j++) if (fabs(a[j][i]) > fabs(a[b][i])) b = j;
+        for (int j = i + 1; j < n; j++)
+            if (fabs(a[j][i]) > fabs(a[b][i])) b = j;
         if (i != b) swap(a[i], a[b]), d = -d;
         d *= a[i][i];
         if (d == 0) return 0;
@@ -76,7 +79,8 @@ int rref_mod(vector<vl> &a, int cols, vi &where, ll p) {
         for (int i = 0; i < n; i++)
             if (i != row && a[i][col]) {
                 ll c = a[i][col];
-                for (int j = col; j < sz(a[i]); j++) a[i][j] = (a[i][j] - c * a[row][j] % p + p) % p;
+                for (int j = col; j < sz(a[i]); j++)
+                    a[i][j] = (a[i][j] - c * a[row][j] % p + p) % p;
             }
         where[col] = row++;
     }
@@ -110,7 +114,9 @@ ll det_mod(vector<vl> a, ll p = MOD) {
         ll iv = invmod_prime(a[i][i], p);
         for (int j = i + 1; j < n; j++) {
             ll c = a[j][i] * iv % p;
-            if (c) for (int k = i; k < n; k++) a[j][k] = (a[j][k] - c * a[i][k] % p + p) % p;
+            if (c)
+                for (int k = i; k < n; k++)
+                    a[j][k] = (a[j][k] - c * a[i][k] % p + p) % p;
         }
     }
     return d;
@@ -123,7 +129,8 @@ ll det_any(vector<vl> a, ll m) {
         for (int j = i + 1; j < n; j++)
             while (a[j][i]) {  // Euclid on rows i, j (keeps the determinant)
                 ll t = a[i][i] / a[j][i];
-                for (int k = i; k < n; k++) a[i][k] = ((a[i][k] - t * a[j][k]) % m + m) % m;
+                for (int k = i; k < n; k++)
+                    a[i][k] = ((a[i][k] - t * a[j][k]) % m + m) % m;
                 swap(a[i], a[j]), d = (m - d) % m;
             }
         d = d * a[i][i] % m;
@@ -151,12 +158,17 @@ void example_gauss() {
     vd x;  // x + y = 3, x - y = 1
     int k = gauss({{1, 1, 3}, {1, -1, 1}}, x);
     cout << k << ' ' << x[0] << ' ' << x[1] << '\n';      // 1 2 1
-    cout << gauss({{1, 1, 1}, {2, 2, 3}}, x) << ' ' << gauss({{1, 1, 1}, {2, 2, 2}}, x) << '\n';  // 0 2
+    int none = gauss({{1, 1, 1}, {2, 2, 3}}, x);  // x+y = 1, 2x+2y = 3
+    int many = gauss({{1, 1, 1}, {2, 2, 2}}, x);  // x+y = 1, 2x+2y = 2
+    cout << none << ' ' << many << '\n';                  // 0 2
     vl y;  // 2x = 1 (mod 7) -> x = 4
     cout << gauss_mod({{2, 1}}, y, 7) << ' ' << y[0] << '\n';  // 1 4
-    cout << det_mod({{1, 2}, {3, 4}}) << ' ' << det_any({{1, 2}, {3, 4}}, 6) << '\n';  // 1000000005 4
+    cout << det_mod({{1, 2}, {3, 4}}) << ' '  // 1000000005 4
+         << det_any({{1, 2}, {3, 4}}, 6) << '\n';
     // spanning trees of K4 = 4^(4-2) = 16: Laplacian minus one row/col
-    cout << det_mod({{3, MOD - 1, MOD - 1}, {MOD - 1, 3, MOD - 1}, {MOD - 1, MOD - 1, 3}}) << '\n';  // 16
+    ll m1 = MOD - 1;
+    cout << det_mod({{3, m1, m1}, {m1, 3, m1}, {m1, m1, 3}}) << '\n';  // 16
     vector<vl> inv = inverse_mod({{1, 2}, {3, 4}}, 7);  // [[5, 1], [5, 3]]
-    cout << inv[0][0] << ' ' << inv[0][1] << ' ' << inv[1][0] << ' ' << inv[1][1] << '\n';  // 5 1 5 3
+    cout << inv[0][0] << ' ' << inv[0][1] << ' '  // 5 1 5 3
+         << inv[1][0] << ' ' << inv[1][1] << '\n';
 }

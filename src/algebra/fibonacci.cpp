@@ -35,7 +35,8 @@ ll pisano(ll m) {
     };
     ll res = 1;
     for (auto [p, e] : factor(m)) {
-        ll N = p == 2 ? 3 : p == 5 ? 20 : (p % 5 == 1 || p % 5 == 4) ? p - 1 : 2 * (p + 1);
+        ll N = p == 2 ? 3 : p == 5 ? 20
+             : (p % 5 == 1 || p % 5 == 4) ? p - 1 : 2 * (p + 1);
         for (auto [q, k] : factor(N))  // smallest d | N with F_d = 0, F_d+1 = 1
             while (N % q == 0 && fib(N / q, p) == pll{0, 1}) N /= q;
         for (int i = 1; i < e; i++) N *= p;

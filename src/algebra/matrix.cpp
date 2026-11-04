@@ -65,7 +65,8 @@ Mat mp_mul(const Mat &A, const Mat &B) {
         for (int k = 0; k < p; k++)
             if (A[i][k] < INFL)
                 for (int j = 0; j < q; j++)
-                    if (B[k][j] < INFL) C[i][j] = min(C[i][j], A[i][k] + B[k][j]);
+                    if (B[k][j] < INFL)
+                        C[i][j] = min(C[i][j], A[i][k] + B[k][j]);
     return C;
 }
 

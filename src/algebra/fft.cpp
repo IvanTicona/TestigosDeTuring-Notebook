@@ -27,7 +27,8 @@ void fft(vector<cpx> &a) {
     for (static int k = 2; k < n; k *= 2) {
         R.resize(n), rt.resize(n);
         auto x = polar(1.0L, acosl(-1) / k);
-        for (int i = k; i < 2 * k; i++) rt[i] = R[i] = i & 1 ? R[i / 2] * x : R[i / 2];
+        for (int i = k; i < 2 * k; i++)
+            rt[i] = R[i] = i & 1 ? R[i / 2] * x : R[i / 2];
     }
     vi rev(n);
     for (int i = 0; i < n; i++) rev[i] = (rev[i / 2] | (i & 1) << L) / 2;
@@ -95,9 +96,11 @@ vl correlate(const vl &a, const vl &b) {  // |b| <= |a|
 // ---- Example: call from solve(); each // is the line it prints ----
 void example_fft() {
     vl c = multiply({1, 2, 3}, {4, 5});  // (1+2x+3x^2)(4+5x)
-    cout << c[0] << ' ' << c[1] << ' ' << c[2] << ' ' << c[3] << '\n';  // 4 13 22 15
+    cout << c[0] << ' ' << c[1] << ' ' << c[2] << ' ' << c[3]  // 4 13 22 15
+         << '\n';
     vl d = conv_mod({MOD - 1, 2}, {MOD - 1, 3}, MOD);  // (-1+2x)(-1+3x)
     cout << d[0] << ' ' << d[1] << ' ' << d[2] << '\n';  // 1 1000000002 6
     vl r = correlate({1, 2, 3, 1, 2, 3}, {1, 2, 3});  // cyclic shifts of 123
-    cout << r[0] << ' ' << r[1] << ' ' << r[2] << ' ' << r[3] << '\n';  // 14 11 11 14
+    cout << r[0] << ' ' << r[1] << ' ' << r[2] << ' ' << r[3]  // 14 11 11 14
+         << '\n';
 }

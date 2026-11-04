@@ -27,7 +27,8 @@ ll lagrange_seq(const vl &y, ll x, ll p = MOD) {
     for (int i = n; i > 0; i--) fi[i - 1] = fi[i] * i % p;
     ll r = 0;
     for (int i = 0; i <= n; i++) {  // y_i prod_{j!=i} (x-j)/(i-j)
-        ll t = y[i] % p * pre[i] % p * suf[i + 1] % p * fi[i] % p * fi[n - i] % p;
+        ll t = y[i] % p * pre[i] % p * suf[i + 1] % p;
+        t = t * fi[i] % p * fi[n - i] % p;
         r = (n - i) & 1 ? (r - t + p) % p : (r + t) % p;
     }
     return r;
@@ -43,8 +44,10 @@ vl interpolate(const vl &xs, const vl &ys, ll p = MOD) {
     for (int i = 0; i < n; i++) {
         vl q(n);  // q = M / (x - xs[i]), synthetic division
         ll carry = 0, d = 1, xi = xs[i] % p;
-        for (int j = n; j >= 1; j--) carry = (M[j] + carry * xi) % p, q[j - 1] = carry;
-        for (int j = 0; j < n; j++) if (j != i) d = d * ((xi - xs[j] % p + p) % p) % p;
+        for (int j = n; j >= 1; j--)
+            carry = (M[j] + carry * xi) % p, q[j - 1] = carry;
+        for (int j = 0; j < n; j++)
+            if (j != i) d = d * ((xi - xs[j] % p + p) % p) % p;
         ll coef = ys[i] % p * invmod_prime(d, p) % p;
         for (int j = 0; j < n; j++) c[j] = (c[j] + coef * q[j]) % p;
     }

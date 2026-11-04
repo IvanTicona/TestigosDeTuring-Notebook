@@ -25,10 +25,15 @@ vl kara_rec(const vl &a, const vl &b, ll m) {  // sz(a) == sz(b)
     vl b0(b.begin(), b.begin() + h), b1(b.begin() + h, b.end());
     vl z0 = kara_rec(a0, b0, m), z2 = kara_rec(a1, b1, m);
     a0.resize(n - h), b0.resize(n - h);
-    for (int i = 0; i < n - h; i++) a0[i] = (a0[i] + a1[i]) % m, b0[i] = (b0[i] + b1[i]) % m;
+    for (int i = 0; i < n - h; i++)
+        a0[i] = (a0[i] + a1[i]) % m, b0[i] = (b0[i] + b1[i]) % m;
     vl z1 = kara_rec(a0, b0, m);  // (a0 + a1)(b0 + b1)
-    for (int i = 0; i < sz(z0); i++) r[i] = (r[i] + z0[i]) % m, z1[i] = (z1[i] - z0[i] + m) % m;
-    for (int i = 0; i < sz(z2); i++) r[i + 2 * h] = (r[i + 2 * h] + z2[i]) % m, z1[i] = (z1[i] - z2[i] + m) % m;
+    for (int i = 0; i < sz(z0); i++)
+        r[i] = (r[i] + z0[i]) % m, z1[i] = (z1[i] - z0[i] + m) % m;
+    for (int i = 0; i < sz(z2); i++) {
+        r[i + 2 * h] = (r[i + 2 * h] + z2[i]) % m;
+        z1[i] = (z1[i] - z2[i] + m) % m;
+    }
     for (int i = 0; i < sz(z1); i++) r[i + h] = (r[i + h] + z1[i]) % m;
     return r;
 }
@@ -45,7 +50,8 @@ vl karatsuba(vl a, vl b, ll m) {
 // ---- Example: call from solve(); each // is the line it prints ----
 void example_karatsuba() {
     vl c = karatsuba({1, 2, 3}, {4, 5}, 10);  // 4 13 22 15 mod 10
-    cout << c[0] << ' ' << c[1] << ' ' << c[2] << ' ' << c[3] << '\n';  // 4 3 2 5
+    cout << c[0] << ' ' << c[1] << ' ' << c[2] << ' ' << c[3]  // 4 3 2 5
+         << '\n';
     vl d = karatsuba(vl(100, 1), vl(100, 1), MOD);  // coef k = #(i + j = k)
     cout << d[0] << ' ' << d[99] << ' ' << d[198] << '\n';  // 1 100 1
 }

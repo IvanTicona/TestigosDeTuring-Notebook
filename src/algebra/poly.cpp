@@ -50,7 +50,8 @@ vl poly_log(const vl &a, int n) {
     for (int i = 1; i < sz(a); i++) d[i - 1] = a[i] * i % MOD2;
     vl t = ntt_mul(d, poly_inv(a, n));
     vl r(n, 0), inv = inv_table(n, MOD2);
-    for (int i = 1; i < n && i - 1 < sz(t); i++) r[i] = t[i - 1] * inv[i] % MOD2;
+    for (int i = 1; i < n && i - 1 < sz(t); i++)
+        r[i] = t[i - 1] * inv[i] % MOD2;
     return r;
 }
 
@@ -58,7 +59,8 @@ vl poly_exp(const vl &a, int n) {
     vl b = {1};
     for (int k = 1; k < n; k *= 2) {
         vl l = poly_log(b, 2 * k);
-        for (int i = 0; i < 2 * k; i++) l[i] = ((i < sz(a) ? a[i] : 0) - l[i] + MOD2) % MOD2;
+        for (int i = 0; i < 2 * k; i++)
+            l[i] = ((i < sz(a) ? a[i] : 0) - l[i] + MOD2) % MOD2;
         l[0] = (l[0] + 1) % MOD2;
         b = ntt_mul(b, l);
         b.resize(2 * k);
@@ -109,13 +111,17 @@ vl poly_eval(const vl &a, const vl &xs) {
 // ---- Example: call from solve(); each // is the line it prints ----
 void example_poly() {
     vl iv = poly_inv({1, MOD2 - 1}, 4);  // 1/(1-x) = 1 + x + x^2 + ...
-    cout << iv[0] << ' ' << iv[1] << ' ' << iv[2] << ' ' << iv[3] << '\n';  // 1 1 1 1
+    cout << iv[0] << ' ' << iv[1] << ' ' << iv[2] << ' ' << iv[3]  // 1 1 1 1
+         << '\n';
     auto [q, r] = poly_divmod({5, 0, 3, 1}, {1, 1});  // x^3+3x^2+5 by x+1
-    cout << q[0] << ' ' << q[1] << ' ' << q[2] << " r " << r[0] << '\n';  // 998244351 2 1 r 7
+    cout << q[0] << ' ' << q[1] << ' ' << q[2]  // 998244351 2 1 r 7
+         << " r " << r[0] << '\n';
     vl e = poly_exp({0, 1}, 5);  // e^x: k-th coef = 1/k!
-    cout << e[2] << ' ' << e[2] * 2 % MOD2 << ' ' << e[4] * 24 % MOD2 << '\n';  // 499122177 1 1
+    cout << e[2] << ' ' << e[2] * 2 % MOD2 << ' '  // 499122177 1 1
+         << e[4] * 24 % MOD2 << '\n';
     vl p = poly_pow({0, 1, 1}, 3, 6);  // (x + x^2)^3 = x^3 + 3x^4 + 3x^5 + x^6
     cout << p[3] << ' ' << p[4] << ' ' << p[5] << '\n';  // 1 3 3
     vl v = poly_eval({1, 2, 3}, {0, 1, 2, 10});  // 1 + 2x + 3x^2
-    cout << v[0] << ' ' << v[1] << ' ' << v[2] << ' ' << v[3] << '\n';  // 1 6 17 321
+    cout << v[0] << ' ' << v[1] << ' ' << v[2] << ' ' << v[3]  // 1 6 17 321
+         << '\n';
 }
