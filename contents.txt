@@ -22,3 +22,4 @@ src/number_theory/floor_sum.cpp | Floor Sum and Mod Sum
 src/number_theory/floor_blocks.cpp | Floor Division Blocks
 src/number_theory/divisors.cpp | Divisors
 src/number_theory/legendre.cpp | Legendre Formula and Kummer
+src/number_theory/mobius_patterns.cpp | Mobius Inversion Patterns

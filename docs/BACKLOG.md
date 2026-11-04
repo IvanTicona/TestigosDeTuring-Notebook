@@ -42,7 +42,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 12 | floor(n/d) blocks | U SQRT Mod (fragment) | done (review) + 2-var blocks, sum d/sigma/mod |
 | 13 | Divisors from factorization | U Get All Divisors (fragment) | done (review) + divisor_lists(N) |
 | 14 | Legendre: exponent of p in n! | T highest exponent factorial | done (review): vp_fact + trailing zeros base b + Kummer vp_binom |
-| 15 | Mobius problem patterns (pairs gcd = k, sum n/gcd) | U x3 (one counts i<=j instead of i<j) | |
+| 15 | Mobius problem patterns (pairs gcd = k, sum n/gcd) | U x3 (one counts i<=j instead of i<j) | done (review) + squarefree fixed, pillai |
 
 Topic 1 extras added on request: inverse table O(n), batch inverses, run-time modulus `dmint`.
 
