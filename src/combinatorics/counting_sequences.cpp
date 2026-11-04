@@ -1,5 +1,5 @@
 /**
- * Usage (all tables mod ANY m >= 1, index 0..N):
+ * Usage: (all tables mod ANY m >= 1, index 0..N)
  *        derangements(N, m)[n]  -> permutations of n with no fixed point
  *        stirling2(N, m)[n][k]  -> partitions of n labeled items into k sets
  *        stirling1(N, m)[n][k]  -> permutations of n with k cycles (unsigned)
