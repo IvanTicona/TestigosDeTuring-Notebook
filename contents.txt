@@ -43,3 +43,4 @@ src/algebra/fwht.cpp | Bitwise Convolutions (FWHT, Subset Convolution)
 src/algebra/matrix.cpp | Matrix Exponentiation (and Min-Plus)
 src/algebra/linear_recurrence.cpp | Linear Recurrences (Berlekamp-Massey, Kitamasa)
 src/algebra/fibonacci.cpp | Fast Fibonacci and Pisano Period
+src/algebra/gauss.cpp | Gaussian Elimination, Rank, Determinant, Inverse
