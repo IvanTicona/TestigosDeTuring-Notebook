@@ -41,7 +41,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 11 | Floor sum | U Floor Sums (AtCoder) | done (review) + mod_sum |
 | 12 | floor(n/d) blocks | U SQRT Mod (fragment) | done (review) + 2-var blocks, sum d/sigma/mod |
 | 13 | Divisors from factorization | U Get All Divisors (fragment) | done (review) + divisor_lists(N) |
-| 14 | Legendre: exponent of p in n! | T highest exponent factorial | |
+| 14 | Legendre: exponent of p in n! | T highest exponent factorial | done (review): vp_fact + trailing zeros base b + Kummer vp_binom |
 | 15 | Mobius problem patterns (pairs gcd = k, sum n/gcd) | U x3 (one counts i<=j instead of i<j) | |
 
 Topic 1 extras added on request: inverse table O(n), batch inverses, run-time modulus `dmint`.
@@ -104,6 +104,10 @@ Topic 1 extras added on request: inverse table O(n), batch inverses, run-time mo
   (copy them too in a contest).
   `check` compiles template + dependencies + snippet and requires each dependency to be
   listed earlier in contents.txt.
+
+- Never name a function like a std:: one: C++17 special math functions (legendre, beta,
+  expint, hermite, laguerre, riemann_zeta, ...) and gcd/lcm/size/data/distance/hash win
+  overload resolution silently under `using namespace std` (legendre(100,5) printed 2e98).
 
 ## Tooling notes
 - Template has main()/init()/solve(): stress tests include it via
