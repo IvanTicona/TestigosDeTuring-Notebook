@@ -71,3 +71,4 @@ src/ds/segtree.cpp | Segment Tree (Generic, Binary Search)
 src/ds/lazy_segtree.cpp | Lazy Segment Tree (Assign + Add, Sum + Min)
 src/ds/sparse_table.cpp | Sparse Table and Disjoint Sparse Table
 src/ds/persistent_segtree.cpp | Persistent Segment Tree (k-th in Range)
+src/ds/treap.cpp | Implicit Treap (Reverse, Range Add, Sum)
