@@ -56,7 +56,7 @@ Topic 1 extras added on request: inverse table O(n), batch inverses, run-time mo
 | 1 | binomial.cpp: Comb (fact/ifact, C, P, multinomial, stars and bars), C for huge n small k, exact C (i128), Pascal mod any m | P CombinatoricsMod, U Modular Combinatorics (no bounds check), U Combinatorics (overflow), P BinomialDP_Pascal, T counting (perm_rep) | done (review) |
 | 2 | lucas.cpp: Lucas (prime p), extra: C(n, k) mod any m (prime powers + CRT) | T Lucas theorem; extra: own | done (review) |
 | 3 | catalan.cpp: Catalan, ballot / Catalan convolution, parentheses with prefix | U Catalan (OOB bug), U Catalan Convolution | done (review) + Narayana |
-| 4 | counting_sequences.cpp: derangements, Stirling 1st/2nd, Bell, partitions (pentagonal) | U SubFactorial, P isc partition (Java syntax), extras: own | |
+| 4 | counting_sequences.cpp: derangements, Stirling 1st/2nd, Bell, partitions (pentagonal) | U SubFactorial, P isc partition (Java syntax), extras: own | done (review) + stirling2_single |
 | 5 | inclusion_exclusion.cpp: count not divisible by any, coprime count, exactly-k formula | P InclusionExclusion | |
 | 6 | burnside.cpp: necklaces / bracelets (Burnside, Polya) | extra: own (missing in all references) | |
 | 7 | tex/theory/combinatorics.tex: formulas sheet (identities, Catalan, Stirling, Fibonacci, Burnside) | U .tex style, T fibonacci properties; every formula verified numerically | |
