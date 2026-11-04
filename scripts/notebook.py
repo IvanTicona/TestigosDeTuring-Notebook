@@ -196,6 +196,8 @@ def parse_header(text: str) -> Meta:
         if fm and fm.group(1) not in fields:
             fields[fm.group(1)] = fm.group(2)
             lines[fm.group(1)] = start_line + i
+        elif fm and fm.group(1) == "Depends":  # several Depends: lines accumulate
+            fields["Depends"] += ", " + fm.group(2)
     return Meta(True, fields, lines, start_line)
 
 

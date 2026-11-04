@@ -602,6 +602,13 @@ class DependsTests(Fixture):
         meta = nb.parse_header(DEP_B)
         self.assertEqual(meta.fields["Depends"], "src/a/dep_a.cpp")
 
+    def test_repeated_depends_lines_accumulate(self):
+        text = DEP_B.replace(" * Depends: src/a/dep_a.cpp\n",
+                             " * Depends: src/a/dep_a.cpp\n * Depends: src/a/dep_x.cpp\n")
+        meta = nb.parse_header(text)
+        self.assertEqual(nb.parse_depends(meta.fields["Depends"]),
+                         ["src/a/dep_a.cpp", "src/a/dep_x.cpp"])
+
     def test_depends_listed_earlier_is_clean(self):
         self.write("src/a/dep_a.cpp", DEP_A)
         self.write("src/a/dep_b.cpp", DEP_B)
