@@ -32,7 +32,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 2 | Extended Euclid | P Euclid.cpp (U Extended Euclides is BROKEN) | done (review) |
 | 3 | Linear Diophantine | P Euclid.cpp (U broken: b=0 crash, bad euclid) | done (review) |
 | 4 | CRT (non-coprime) + Garner | U Chinese Remainder (overflow risk), P CRT_Garner | done (review) |
-| 5 | Sieves (linear/SPF, segmented, prime table) | P PrimesSieve, U Linear Sieve, P SegmentedSieve, P Primes | |
+| 5 | Sieves (linear/SPF, segmented, prime table) | P PrimesSieve, U Linear Sieve, P SegmentedSieve, P Primes | done (review) |
 | 6 | Multiplicative functions (phi, mu, d, sigma) | P DivisorsTotientMobius, U Mobius (+ .tex theory), T totient/sigma | |
 | 7 | Primality + factorization 64-bit | U Optimized Pollard Rho (only correct one); P versions BROKEN | |
 | 8 | Discrete log (BSGS, gcd != 1) | U Discrete Log (m=1 edge); P BSGS BROKEN | |
