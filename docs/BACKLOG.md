@@ -15,7 +15,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 1 | Number Theory | done: 17 topics (pushed effab9a) |
 | 2 | Combinatorics | done: 6 snippets + formulas sheet (review) |
 | 3 | Algebra & Polynomials | done (review) |
-| 4 | Dynamic Programming (incl. optimizations) | pending |
+| 4 | Dynamic Programming (incl. optimizations) | done (review) |
 | 5 | Data Structures | pending |
 | 6 | Graphs | pending |
 | 7 | Flows & Matching | pending |
@@ -81,6 +81,25 @@ Topic 1 extras added on request: inverse table O(n), batch inverses, run-time mo
 
 SOS DP (zeta/Mobius over subsets as a DP) is covered by fwht.cpp (OR/AND transforms); a plain SOS DP snippet can still go to section 4 if wanted.
 
+## 4. Dynamic Programming (topics chosen by Claude on user delegation, 2026-11-04)
+
+| # | Topic / file | Sources | Done |
+|---|---|---|---|
+| 1 | lis.cpp: strict / non-strict with reconstruction, count of LIS (Fenwick) | U LIS, P LongestIncreasingSubsequence | done (review) |
+| 2 | knapsack.cpp: 0/1 (+ items), unbounded, bounded (binary grouping), by value | P Knapsack01, old knapsack_01, U Multiple Knapsack (value/weight swapped by name) | done (review) |
+| 3 | subset_sum.cpp: bitset sums with grouping, count subsets, coin ways / sequences / min | P SubsetSum, P CoinChange, U Coin Change, old subset_sum | done (review) |
+| 4 | lcs.cpp: LCS with reconstruction (strings / vectors), LCS of 3, weighted edit distance | P LCS, U LCS / LCS 3 (globals 100^3), U Edit Distance, old lcs / edit_distance | done (review) |
+| 5 | digit_dp.cpp: automaton template (any state machine on digits) | P DigitDP, old digit_dp (int overflow) | done (review) |
+| 6 | bitmask_dp.cpp: Held-Karp cycle / path with order, SOS (+ inverse, supersets), partitions O(3^n), min rides | P BitmaskDP_Templates, P TSP_HeldKarp, U TSP, U Mask Over Submasks, U SOS (+ reverse), U Elevator | done (review) |
+| 7 | max_subarray.cpp: Kadane with indices, 2D O(R^2 C), 3D O(X^2 Y^2 Z) | P Kadane, U Max Sum 1D / 2D / 3D (3D wrong index) | done (review) |
+| 8 | cht.cpp: LineContainer (KACTL), MonoCHT (sorted slopes, binary search / pointer) | U Convex Hull Trick, P ConvexHullTrick (equal slopes reversed) | done (review) |
+| 9 | li_chao.cpp: lines and segments, dynamic nodes, min | P LiChaoTree | done (review) |
+| 10 | dp_opt.cpp: divide and conquer (layer + k-partition), Knuth, Aliens (WQS) | P DP_Optimizations, U Knuth (D&C was a TODO); aliens: own | done (review) |
+| 11 | rerooting.cpp: generic lambda interface, iterative | P RerootingDP (recursive) | done (review) |
+| 12 | probability.cpp: dice pmf / counts, Markov powers, absorbing chains (Gauss) | P ProbabilityDP_Dice, P MarkovSmall, P ExpectedValueDP_Rolls | done (review) |
+| 13 | meet_middle.cpp: sorted subset sums by merging, exact count, best <= W | P MeetInTheMiddle | done (review) |
+| 14 | tex/theory/dp.tex: when each optimization applies (QI, Knuth, CHT, Aliens, monotone queue, separation, bitset, expected value) | U Separation Optimization, U pragmas for bitset, P DP_Optimizations notes | done (review) |
+
 ## Deferred to later sections (do not lose)
 
 ### 2. Combinatorics
@@ -92,10 +111,6 @@ SOS DP (zeta/Mobius over subsets as a DP) is covered by fwht.cpp (OR/AND transfo
 - Inclusion-exclusion patterns: P InclusionExclusion
 - Pascal triangle: P BinomialDP_Pascal
 - Counting formulas: T counting, T fibonacci properties
-
-### 4. Dynamic Programming
-- old (delete/src/dp): edit_distance, lcs, knapsack_01(+1d), subset_sum(+1d), digit_dp (BUG: int overflow)
-- old stress tests in delete/tests/stress/dp
 
 ### 5. Data Structures
 - old: fenwick_tree (BUG: RURQ int overflow), segment_tree (BUGS: size ctor, -1 sentinel), union_find
