@@ -72,7 +72,7 @@ int main() {
         CHECK(brackets_with_prefix(cb, n, string(n + 1, '(')) == 0, "prefix longer than n");
     }
     // Narayana vs peak counting, and sum over k == Catalan
-    for (int n = 1; n <= 12; n++) {
+    for (int n = 1; n <= (stress::SLOW ? 10 : 12); n++) {  // 2^(2n) words
         vl peaks(n + 1, 0);
         for (int mask = 0; mask < (1 << (2 * n)); mask++) {
             int h = 0, pk = 0;
