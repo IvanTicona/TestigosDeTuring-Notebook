@@ -13,7 +13,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 |---|---|---|
 | 0 | Template | done (85a0fdc) |
 | 1 | Number Theory | done: 17 topics (pushed effab9a) |
-| 2 | Combinatorics | in progress: 7 topics |
+| 2 | Combinatorics | done: 6 snippets + formulas sheet (review) |
 | 3 | Algebra & Polynomials | pending |
 | 4 | Dynamic Programming (incl. optimizations) | pending |
 | 5 | Data Structures | pending |
@@ -59,7 +59,7 @@ Topic 1 extras added on request: inverse table O(n), batch inverses, run-time mo
 | 4 | counting_sequences.cpp: derangements, Stirling 1st/2nd, Bell, partitions (pentagonal) | U SubFactorial, P isc partition (Java syntax), extras: own | done (review) + stirling2_single |
 | 5 | inclusion_exclusion.cpp: count not divisible by any, coprime count, exactly-k formula | P InclusionExclusion | done (review) |
 | 6 | burnside.cpp: necklaces / bracelets (Burnside, Polya) | extra: own (missing in all references) | done (review) |
-| 7 | tex/theory/combinatorics.tex: formulas sheet (identities, Catalan, Stirling, Fibonacci, Burnside) | U .tex style, T fibonacci properties; every formula verified numerically | |
+| 7 | tex/theory/combinatorics.tex: formulas sheet (identities, Catalan, Stirling, Fibonacci, Burnside) | U .tex style, T fibonacci properties; every formula verified numerically | done (review) |
 
 ## Deferred to later sections (do not lose)
 

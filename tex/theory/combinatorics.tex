@@ -1,0 +1,64 @@
+% Combinatorics formulas sheet. Every identity below was checked numerically
+% (Python, exact integers) before being written here.
+{\scriptsize
+\setlength{\parskip}{2pt}
+\textbf{Binomials.}
+$\binom{n}{k}=\binom{n}{n-k}$,\;
+$\sum_k \binom{n}{k}=2^n$,\;
+$\sum_k (-1)^k\binom{n}{k}=[n=0]$,\;
+$\sum_k \binom{n}{k}^2=\binom{2n}{n}$,\;
+$k\binom{n}{k}=n\binom{n-1}{k-1}$.\\
+Vandermonde: $\sum_i \binom{m}{i}\binom{n}{k-i}=\binom{m+n}{k}$.\;
+Hockey stick: $\sum_{i=r}^{n}\binom{i}{r}=\binom{n+1}{r+1}$.
+
+\textbf{Stars and bars.} $x_1+\dots+x_k=n$:
+$x_i\ge 0$: $\binom{n+k-1}{k-1}$;\; $x_i\ge 1$: $\binom{n-1}{k-1}$.\;
+Multisets of size $k$ from $n$ types: $\binom{n+k-1}{k}$.
+
+\textbf{Catalan.} $C_n=\frac{1}{n+1}\binom{2n}{n}=\binom{2n}{n}-\binom{2n}{n+1}$,
+$C_{n+1}=\sum_i C_iC_{n-i}$: 1 1 2 5 14 42 132 429 1430 4862.
+Dyck paths, balanced brackets, binary trees with $n$ nodes, full binary
+trees with $n+1$ leaves, triangulations of an $(n+2)$-gon, non-crossing
+partitions, monotone paths not above the diagonal.
+
+\textbf{Derangements.} $D_n=(n-1)(D_{n-1}+D_{n-2})=n!\sum_{i=0}^{n}\frac{(-1)^i}{i!}
+=\mathrm{round}(n!/e)$ ($n\ge1$).
+\emph{Warning:} with \texttt{double}, round$(n!/e)$ is wrong from $n=19$: use
+the recurrence.
+
+\textbf{Stirling.} $S_2(n,k)$: partitions of $n$ labeled items into $k$
+non-empty sets; $s_1(n,k)$ (unsigned): permutations with $k$ cycles.
+$x^n=\sum_k S_2(n,k)\,x^{\underline{k}}$,\;
+$\sum_k s_1(n,k)=n!$,\;
+$S_2(n,2)=2^{n-1}-1$,\;
+$S_2(n,n-1)=\binom{n}{2}$.\;
+Surjections $[n]\to[k]$: $k!\,S_2(n,k)$.
+
+\textbf{Bell.} $B_{n+1}=\sum_k\binom{n}{k}B_k$: 1 1 2 5 15 52 203 877 4140.
+
+\textbf{Partitions.} $p(n)$: 1 1 2 3 5 7 11 15 22 30 42;\; $p(100)=190569292$.
+Partitions into distinct parts $=$ partitions into odd parts.
+
+\textbf{Fibonacci} ($F_0=0$, $F_1=1$).
+$F_{n+m}=F_nF_{m+1}+F_{n-1}F_m$,\;
+$F_{2n}=F_n(2F_{n+1}-F_n)$,\; $F_{2n+1}=F_{n+1}^2+F_n^2$ (fast doubling),\;
+$\gcd(F_m,F_n)=F_{\gcd(m,n)}$,\;
+$\sum_{i=1}^{n}F_i=F_{n+2}-1$,\;
+Cassini: $F_{n-1}F_{n+1}-F_n^2=(-1)^n$.\;
+Binary strings of length $n$ without two consecutive 1s: $F_{n+2}$.
+
+\textbf{Other counts.} Involutions: $I_n=I_{n-1}+(n-1)I_{n-2}$.\;
+Labeled trees on $n$ vertices (Cayley): $n^{n-2}$.
+
+\textbf{Inclusion-exclusion.} $|\bigcup A_i|=\sum_{j\ge1}(-1)^{j+1}S_j$,\;
+exactly $k$: $\sum_{j\ge k}(-1)^{j-k}\binom{j}{k}S_j$ ($S_j$ = sum of all
+$j$-wise intersections).
+
+\textbf{Lucas / Kummer} ($p$ prime). $\binom{n}{k}\equiv\prod_i\binom{n_i}{k_i}\pmod p$
+(base-$p$ digits);\; $v_p\binom{n}{k}$ = number of carries adding $k$ and $n-k$
+in base $p$.
+
+\textbf{Burnside.} \#orbits $=\frac{1}{|G|}\sum_{g\in G}|\mathrm{Fix}(g)|$;\;
+Polya: $\frac{1}{|G|}\sum_g k^{c(g)}$, $c(g)$ = cycles of $g$.\;
+Necklaces: $\frac1n\sum_{d\mid n}\varphi(d)k^{n/d}$.
+\par}

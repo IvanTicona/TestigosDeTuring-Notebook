@@ -55,7 +55,8 @@ i128 burnside(const vl &cycles, ll k) {
 // ---- Example: call from solve(); each // is the line it prints ----
 void example_burnside() {
     cout << (ll)necklaces(4, 2) << ' ' << (ll)necklaces(6, 3) << '\n';  // 6 130
-    cout << (ll)bracelets(6, 3) << ' ' << (ll)bracelets(10, 2) << '\n';  //92 78
+    cout << (ll)bracelets(6, 3) << '\n';            // 92
+    cout << (ll)bracelets(10, 2) << '\n';           // 78
     cout << (ll)necklaces(10, 2) << '\n';           // 108
     cout << necklaces_mod(1e9, 2, MOD) << '\n';     // 388199333
     vl cube = {6, 3, 3, 3, 3, 3, 3, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2,

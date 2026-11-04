@@ -31,3 +31,4 @@ src/combinatorics/catalan.cpp | Catalan Numbers and Lattice Paths
 src/combinatorics/counting_sequences.cpp | Counting Sequences (Derangements, Stirling, Bell, Partitions)
 src/combinatorics/inclusion_exclusion.cpp | Inclusion-Exclusion
 src/combinatorics/burnside.cpp | Burnside and Polya (Necklaces, Bracelets)
+!tex tex/theory/combinatorics.tex | Combinatorics Formulas
