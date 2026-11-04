@@ -41,3 +41,4 @@ src/algebra/lagrange.cpp | Lagrange Interpolation and Power Sums
 src/algebra/karatsuba.cpp | Karatsuba (Any Modulus)
 src/algebra/fwht.cpp | Bitwise Convolutions (FWHT, Subset Convolution)
 src/algebra/matrix.cpp | Matrix Exponentiation (and Min-Plus)
+src/algebra/linear_recurrence.cpp | Linear Recurrences (Berlekamp-Massey, Kitamasa)
