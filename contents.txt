@@ -29,3 +29,4 @@ src/combinatorics/binomial.cpp | Binomial Coefficients
 src/combinatorics/lucas.cpp | Lucas Theorem and Binomial mod Any m
 src/combinatorics/catalan.cpp | Catalan Numbers and Lattice Paths
 src/combinatorics/counting_sequences.cpp | Counting Sequences (Derangements, Stirling, Bell, Partitions)
+src/combinatorics/inclusion_exclusion.cpp | Inclusion-Exclusion
