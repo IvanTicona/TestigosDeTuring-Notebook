@@ -1,0 +1,33 @@
+# Notebook manifest: single source of order and titles.
+# Format: PATH | Title   (paths relative to the repo root)
+
+[Template]
+template/template.cpp | Template
+
+[Dynamic Programming]
+src/dp/edit_distance.cpp | Edit Distance
+src/dp/lcs.cpp | Longest Common Subsequence (LCS)
+src/dp/knapsack_01.cpp | 0/1 Knapsack
+src/dp/knapsack_01_1d.cpp | 0/1 Knapsack (O(W) memory)
+src/dp/subset_sum.cpp | Subset Sum
+src/dp/subset_sum_1d.cpp | Subset Sum (O(X) memory)
+src/dp/digit_dp.cpp | Digit DP
+
+[Data Structures]
+src/data_structures/fenwick_tree.cpp | Fenwick Tree (BIT)
+src/data_structures/segment_tree.cpp | Segment Tree
+src/data_structures/union_find.cpp | Union-Find (DSU)
+
+[Strings]
+src/strings/z_function.cpp | Z-Function
+src/strings/kmp.cpp | KMP
+src/strings/rabin_karp.cpp | Rabin-Karp
+
+[Backtracking]
+src/backtracking/backtracking_template.cpp | Backtracking Template
+src/backtracking/n_queens.cpp | N-Queens
+
+[Graphs: Trees]
+src/graphs/trees/lca_euler_segtree.cpp | LCA (Euler Tour + Segment Tree)
+src/graphs/trees/minimax_all_pairs.cpp | All-Pairs Minimax
+src/graphs/trees/minimax_mst_path.cpp | Minimax Path on MST
