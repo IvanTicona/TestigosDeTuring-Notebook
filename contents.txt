@@ -50,3 +50,4 @@ src/algebra/integration.cpp | Numerical Integration (Simpson)
 
 [Dynamic Programming]
 src/dp/lis.cpp | Longest Increasing Subsequence (+ Count)
+src/dp/knapsack.cpp | Knapsack (0/1, Unbounded, Bounded, By Value)
