@@ -274,6 +274,17 @@ def _read_snippet(root: Path, rel: str, report: Report) -> str | None:
         return None
 
 
+MAX_COLUMNS = 80  # 2-column landscape PDF: longer lines wrap
+
+
+def long_line_diagnostics(rel: str, text: str) -> list[str]:
+    return [
+        f"{rel}:{ln}: WARNING line has {len(line)} columns (max {MAX_COLUMNS})"
+        for ln, line in enumerate(text.splitlines(), 1)
+        if len(line) > MAX_COLUMNS
+    ]
+
+
 def validate(root: Path, sections: list[Section]) -> Report:
     report = Report()
     seen: dict[str, int] = {}
@@ -308,6 +319,7 @@ def validate(root: Path, sections: list[Section]) -> Report:
                 )
             report.errors += lint_snippet(e.path, text)
             report.errors += latin1_diagnostics(e.path, text)
+            report.warnings += long_line_diagnostics(e.path, text)
             dep_line = meta.lines.get("Depends", meta.header_line)
             for dep in parse_depends(meta.fields.get("Depends")):
                 if not (root / dep).is_file():

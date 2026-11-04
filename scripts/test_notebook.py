@@ -199,6 +199,13 @@ class LintTests(unittest.TestCase):
         body = "// main( is a demo, #include aside\n/* using namespace std */\nint domain(int x){return x;}\nint a=0;\n"
         self.assertEqual(nb.lint_snippet("src/x.cpp", body), [])
 
+    def test_long_lines_warned(self):
+        body = "int a;\n" + "x" * 80 + "\n" + "y" * 81 + "\n"
+        w = nb.long_line_diagnostics("src/x.cpp", body)
+        self.assertEqual(len(w), 1)
+        self.assertTrue(w[0].startswith("src/x.cpp:3: WARNING"), w[0])
+        self.assertIn("81 columns", w[0])
+
     def test_latin1(self):
         self.assertEqual(nb.latin1_diagnostics("src/x.cpp", "// ñandú áé\n"), [])
         d = nb.latin1_diagnostics("src/x.cpp", "int a;\n// guion ‐ aqui\n")
