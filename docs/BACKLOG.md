@@ -16,7 +16,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 2 | Combinatorics | done: 6 snippets + formulas sheet (review) |
 | 3 | Algebra & Polynomials | done (review) |
 | 4 | Dynamic Programming (incl. optimizations) | done (review) |
-| 5 | Data Structures | pending |
+| 5 | Data Structures | done (review) |
 | 6 | Graphs | pending |
 | 7 | Flows & Matching | pending |
 | 8 | Trees | pending |
@@ -100,6 +100,29 @@ SOS DP (zeta/Mobius over subsets as a DP) is covered by fwht.cpp (OR/AND transfo
 | 13 | meet_middle.cpp: sorted subset sums by merging, exact count, best <= W | P MeetInTheMiddle | done (review) |
 | 14 | tex/theory/dp.tex: when each optimization applies (QI, Knuth, CHT, Aliens, monotone queue, separation, bitset, expected value) | U Separation Optimization, U pragmas for bitset, P DP_Optimizations notes | done (review) |
 
+## 5. Data Structures (topics chosen by Claude on user delegation, 2026-11-04)
+
+| # | Topic / file | Sources | Done |
+|---|---|---|---|
+| 1 | dsu.cpp: DSU (size, halving), rollback DSU (undo to a time), weighted / potential DSU | U DSU, P UnionFind, P DSU_Rollback (wrong rank undo), U Dynamic Connectivity, old union_find | done (review) |
+| 2 | fenwick.cpp: BIT (O(n) build, lower_bound), range add + range sum, 2D | U Fenwick 1D / 2D, P BIT (std name clash), P Fenwick2D, old fenwick_tree (RURQ overflow) | done (review) |
+| 3 | segtree.cpp: generic iterative monoid tree, max_right / min_left | U General Iterative Segment Tree, AtCoder; old segment_tree (size ctor, -1 sentinel) | done (review) |
+| 4 | lazy_segtree.cpp: assign + add, sum + min (editable hooks) | U General Lazy Tree (stale sibling), U Iterative Lazytree, P SegmentTreeLazy (flip) | done (review) |
+| 5 | sparse_table.cpp: idempotent O(1), disjoint sparse table (any associative op) | U Min Sparse Table, P SparseTable, P DisjointSparseTable (std::function) | done (review) |
+| 6 | persistent_segtree.cpp: point add, range sum, range k-th by versions | U PersistantSegmentTree (pointers), T persistent seg tree | done (review) |
+| 7 | treap.cpp: implicit treap with split / join, reverse, range add, sum | P isc ds_treap (erase rotation breaks heap), T STL treap | done (review) |
+| 8 | mo.cpp: generic add / rem / get, Hilbert or zig-zag order | U Mo's, U Mo's Hilbert, P MosAlgorithm, T Mo's | done (review) |
+| 9 | monotonic_queue.cpp: window min / max, MonoQueue, two-stack SWAG (any associative op) | P MonotonicQueue, T sliding window | done (review) |
+| 10 | xor_trie.cpp: multiset trie, max / min xor, count_less, kth | P BinaryTrieXOR, U Xor Trie, T trie | done (review) |
+| 11 | wavelet_tree.cpp: range kth and count <= x, any value range | T wavelet tree | done (review) |
+| 12 | dynamic_connectivity.cpp: offline segment tree over time + rollback DSU | U Dynamic Connectivity | done (review) |
+| 13 | segtree_beats.cpp: chmin / chmax / add, sum / max / min | own (gap in all references) | done (review) |
+
+Not added (covered elsewhere or rarely needed): ordered set / multiset (template `oset`, use pairs
+(value, id) for a multiset), custom hash (template), merge sort tree (wavelet / PST cover it),
+2D segment tree (U, for non-sum 2D queries), block tree / sqrt decomposition (problem-specific),
+rope (U: slower than the treap), KD tree (P: geometry), link-cut / HLD / centroid (trees section).
+
 ## Deferred to later sections (do not lose)
 
 ### 2. Combinatorics
@@ -111,9 +134,6 @@ SOS DP (zeta/Mobius over subsets as a DP) is covered by fwht.cpp (OR/AND transfo
 - Inclusion-exclusion patterns: P InclusionExclusion
 - Pascal triangle: P BinomialDP_Pascal
 - Counting formulas: T counting, T fibonacci properties
-
-### 5. Data Structures
-- old: fenwick_tree (BUG: RURQ int overflow), segment_tree (BUGS: size ctor, -1 sentinel), union_find
 
 ### 8. Trees
 - old: lca_euler_segtree, lca_binary_lifting (quarantined), minimax_all_pairs (BUG unreachable=0), minimax_mst_path (unused mst_cost)
@@ -143,6 +163,9 @@ SOS DP (zeta/Mobius over subsets as a DP) is covered by fwht.cpp (OR/AND transfo
   example wraps after the `// expected` comment (the comment must stay on the `cout` line).
 - Type names defined by another snippet (e.g. `vd` from fft.cpp) must be re-typedef'd (same type)
   or the snippet does not compile alone.
+
+- Never use a template macro name as an identifier (`all`, `sz`, `F`, `S`, `pb`, `SQ`, ...):
+  `st.all()` expands the macro. Members named `max` / `min` hide std::max inside the class.
 
 - Never name a function like a std:: one: C++17 special math functions (legendre, beta,
   expint, hermite, laguerre, riemann_zeta, ...) and gcd/lcm/size/data/distance/hash win
