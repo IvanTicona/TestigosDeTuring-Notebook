@@ -47,3 +47,6 @@ src/algebra/gauss.cpp | Gaussian Elimination, Rank, Determinant, Inverse
 src/algebra/xor_basis.cpp | XOR Basis and GF(2) Elimination
 src/algebra/simplex.cpp | Simplex (Linear Programming)
 src/algebra/integration.cpp | Numerical Integration (Simpson)
+
+[Dynamic Programming]
+src/dp/lis.cpp | Longest Increasing Subsequence (+ Count)
