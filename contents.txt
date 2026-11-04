@@ -10,3 +10,4 @@ src/number_theory/modular_arithmetic.cpp | Modular Arithmetic
 src/number_theory/extended_euclid.cpp | Extended Euclid
 src/number_theory/modular_sqrt.cpp | Modular Square Root (Tonelli-Shanks)
 src/number_theory/primitive_root.cpp | Primitive Root and Multiplicative Order
+src/number_theory/diophantine.cpp | Linear Diophantine Equations
