@@ -28,7 +28,7 @@ int main() {
         CHECK(pc.count_primes(n) == cnt[n], "pc n=" + to_string(n));
     }
     // ---- random n <= 3e6 ----
-    for (int it = 0; it < 300; it++) {
+    for (int it = 0; it < stress::scaled(300); it++) {
         stress::iter = it;
         ll n = stress::rnd(3000, N);
         Lucy L(n), Lc(n, false);
@@ -54,7 +54,7 @@ int main() {
         if (k <= KMAX_PC) CHECK(pc.count_primes(p10) == PI10[k], "pc 10^" + to_string(k));
     }
     // ---- cross-check on random large n ----
-    for (int it = 0; it < 6; it++) {
+    for (int it = 0; it < stress::scaled(6); it++) {
         stress::iter = it;
         ll n = stress::rnd(1000000000LL, 3000000000LL);
         CHECK(Lucy(n, false).count(n) == pc.count_primes(n), "cross n=" + to_string(n));

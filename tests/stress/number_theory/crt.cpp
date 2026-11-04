@@ -19,7 +19,7 @@ static string V(const vl &v) {
 int main() {
     stress::check_example(example_crt, "src/number_theory/crt.cpp", "example_crt");
     // ---- small: exhaustive scan ----
-    for (int it = 0; it < 30000; it++) {
+    for (int it = 0; it < stress::scaled(30000); it++) {
         stress::iter = it;
         int k = (int)stress::rnd(1, 4);
         vl a(k), m(k);
@@ -41,7 +41,7 @@ int main() {
         else CHECK(x == want && ml == l, in + " got " + to_string(x) + " " + to_string(ml));
     }
     // ---- large: lcm up to ~9e18 (the documented limit), verify congruences ----
-    for (int it = 0; it < 100000; it++) {
+    for (int it = 0; it < stress::scaled(100000); it++) {
         stress::iter = it;
         ll g = stress::rnd(1, 1000);  // common factor: lcm <= m1 * m2 / g <= 9e18
         ll m1 = stress::rnd(1, 3000000000LL / g) * g, m2 = stress::rnd(1, 3000000000LL / g) * g;
@@ -56,7 +56,7 @@ int main() {
     }
     // ---- garner vs direct __int128 ----
     vl primes = {998244353, 1000000007, 1000000009, 754974721, 167772161};
-    for (int it = 0; it < 50000; it++) {
+    for (int it = 0; it < stress::scaled(50000); it++) {
         stress::iter = it;
         unsigned __int128 x = ((unsigned __int128)stress::rnd(0, LLONG_MAX) << 40) ^
                               (unsigned __int128)stress::rnd(0, LLONG_MAX);

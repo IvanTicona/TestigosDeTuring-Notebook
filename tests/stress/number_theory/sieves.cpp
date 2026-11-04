@@ -119,7 +119,7 @@ int main() {
         }
     }
     // ---- segmented sieve vs trial division (random windows, large R) ----
-    for (int it = 0; it < 300; it++) {
+    for (int it = 0; it < stress::scaled(300); it++) {
         stress::iter = it;
         ll R = it % 3 == 0 ? stress::rnd(0, 5000) : stress::rnd(1, 1000000000000LL);
         ll L = R - stress::rnd(0, it % 3 == 0 ? 5000 : 3000);

@@ -25,6 +25,15 @@ inline uint64_t read_seed() {
     return 0x5EED;
 }
 
+// Sanitized builds (notebook.py test --sanitize, used by CI) also define
+// _GLIBCXX_DEBUG and run 5-10x slower: scale random-iteration counts.
+#ifdef _GLIBCXX_DEBUG
+inline constexpr bool SLOW = true;
+#else
+inline constexpr bool SLOW = false;
+#endif
+inline long long scaled(long long iters) { return SLOW ? std::max(1LL, iters / 4) : iters; }
+
 inline const uint64_t seed = read_seed();
 inline std::mt19937_64 rng(seed);
 // Set by the test at the top of each randomized iteration; reported by CHECK.
