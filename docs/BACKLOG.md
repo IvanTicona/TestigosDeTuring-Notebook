@@ -34,7 +34,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 4 | CRT (non-coprime) + Garner | U Chinese Remainder (overflow risk), P CRT_Garner | done (review) |
 | 5 | Sieves (linear/SPF, segmented, prime table) | P PrimesSieve, U Linear Sieve, P SegmentedSieve, P Primes | done (review) |
 | 6 | Multiplicative functions (phi, mu, d, sigma) | P DivisorsTotientMobius, U Mobius (+ .tex theory), T totient/sigma | done (review) |
-| 7 | Primality + factorization 64-bit | U Optimized Pollard Rho (only correct one); P versions BROKEN | |
+| 7 | Primality + factorization 64-bit | U Optimized Pollard Rho (only correct one); P versions BROKEN | done (review) |
 | 8 | Discrete log (BSGS, gcd != 1) | U Discrete Log (m=1 edge); P BSGS BROKEN | |
 | 9 | Huge exponent a^(b^c) | U Big Exponent (edge bug when a % MOD == 0) | |
 | 10 | Prime counting pi(n) | U Count Primes | |
