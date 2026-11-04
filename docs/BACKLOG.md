@@ -35,7 +35,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 5 | Sieves (linear/SPF, segmented, prime table) | P PrimesSieve, U Linear Sieve, P SegmentedSieve, P Primes | done (review) |
 | 6 | Multiplicative functions (phi, mu, d, sigma) | P DivisorsTotientMobius, U Mobius (+ .tex theory), T totient/sigma | done (review) |
 | 7 | Primality + factorization 64-bit | U Optimized Pollard Rho (only correct one); P versions BROKEN | done (review) |
-| 8 | Discrete log (BSGS, gcd != 1) | U Discrete Log (m=1 edge); P BSGS BROKEN | |
+| 8 | Discrete log (BSGS, gcd != 1) | U Discrete Log (m=1 edge); P BSGS BROKEN | done (review) + discrete_root |
 | 9 | Huge exponent a^(b^c) | U Big Exponent (edge bug when a % MOD == 0) | |
 | 10 | Prime counting pi(n) | U Count Primes | |
 | 11 | Floor sum | U Floor Sums (AtCoder) | |
@@ -100,7 +100,8 @@ Topic 1 extras added on request: inverse table O(n), batch inverses, run-time mo
   `stress::check_example(example_<name>, "src/...", "example_<name>")`, which runs it and
   fails if any comment does not match what is printed (examples can never lie).
 - Header: Usage / Complexity / Source / Note / Depends / Status (`untested` until the user approves).
-- `Depends: src/a.cpp, src/b.cpp`: snippets this one needs (copy them too in a contest).
+- `Depends: src/a.cpp, src/b.cpp` (or one `Depends:` line per file): snippets this one needs
+  (copy them too in a contest).
   `check` compiles template + dependencies + snippet and requires each dependency to be
   listed earlier in contents.txt.
 
