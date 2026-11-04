@@ -68,3 +68,4 @@ src/dp/meet_middle.cpp | Meet in the Middle
 src/ds/dsu.cpp | DSU (Rollback, Weighted)
 src/ds/fenwick.cpp | Fenwick Tree (Range Add, k-th, 2D)
 src/ds/segtree.cpp | Segment Tree (Generic, Binary Search)
+src/ds/lazy_segtree.cpp | Lazy Segment Tree (Assign + Add, Sum + Min)
