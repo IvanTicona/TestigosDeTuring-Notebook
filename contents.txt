@@ -73,3 +73,4 @@ src/ds/sparse_table.cpp | Sparse Table and Disjoint Sparse Table
 src/ds/persistent_segtree.cpp | Persistent Segment Tree (k-th in Range)
 src/ds/treap.cpp | Implicit Treap (Reverse, Range Add, Sum)
 src/ds/mo.cpp | Mo's Algorithm (Hilbert Order)
+src/ds/monotonic_queue.cpp | Monotonic Queue and Sliding Window Aggregation
