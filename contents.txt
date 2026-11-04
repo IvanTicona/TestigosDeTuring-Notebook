@@ -63,3 +63,6 @@ src/dp/rerooting.cpp | Rerooting DP (Generic)
 src/dp/probability.cpp | Probability and Expected Value
 src/dp/meet_middle.cpp | Meet in the Middle
 !tex tex/theory/dp.tex | DP Techniques
+
+[Data Structures]
+src/ds/dsu.cpp | DSU (Rollback, Weighted)
