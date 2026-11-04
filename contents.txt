@@ -17,3 +17,4 @@ src/number_theory/multiplicative_functions.cpp | Multiplicative Functions (phi, 
 src/number_theory/pollard_rho.cpp | Primality and Factorization (Miller-Rabin, Pollard)
 src/number_theory/discrete_log.cpp | Discrete Logarithm and Discrete Root
 src/number_theory/huge_exponent.cpp | Huge Exponents and Power Towers
+src/number_theory/prime_counting.cpp | Prime Counting (Lucy, Meissel-Lehmer)
