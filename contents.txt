@@ -19,3 +19,4 @@ src/number_theory/discrete_log.cpp | Discrete Logarithm and Discrete Root
 src/number_theory/huge_exponent.cpp | Huge Exponents and Power Towers
 src/number_theory/prime_counting.cpp | Prime Counting (Lucy, Meissel-Lehmer)
 src/number_theory/floor_sum.cpp | Floor Sum and Mod Sum
+src/number_theory/floor_blocks.cpp | Floor Division Blocks

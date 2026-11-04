@@ -39,7 +39,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 9 | Huge exponent a^(b^c) | U Big Exponent (edge bug when a % MOD == 0) | done (review): powmod_str + tower, any m |
 | 10 | Prime counting pi(n) | U Count Primes | done (review): Lucy (+ prime sums) + UMSS PrimeCounter |
 | 11 | Floor sum | U Floor Sums (AtCoder) | done (review) + mod_sum |
-| 12 | floor(n/d) blocks | U SQRT Mod (fragment) | |
+| 12 | floor(n/d) blocks | U SQRT Mod (fragment) | done (review) + 2-var blocks, sum d/sigma/mod |
 | 13 | Divisors from factorization | U Get All Divisors (fragment) | |
 | 14 | Legendre: exponent of p in n! | T highest exponent factorial | |
 | 15 | Mobius problem patterns (pairs gcd = k, sum n/gcd) | U x3 (one counts i<=j instead of i<j) | |
