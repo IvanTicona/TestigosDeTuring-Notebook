@@ -1,0 +1,62 @@
+% DP techniques sheet: when each optimization applies. Counts checked
+% numerically (Python) where a number is given.
+{\scriptsize
+\setlength{\parskip}{2pt}
+\textbf{Sizes.} $n\le 20$: $2^n n$ (bitmask);\; $n\le 40$: meet in the
+middle $2^{n/2}$;\; $n\le 500$: $O(n^3)$;\; $n\le 5000$: $O(n^2)$;\;
+$n\le 10^6$: $O(n\log n)$;\; $n\le 10^{18}$: matrix power / Kitamasa /
+digit DP / formula.
+
+\textbf{Designing a state.} Write what a partial solution must remember to
+continue (position, last choice, budget, mask, tight flag). Count states
+$\times$ transitions. Reduce: drop a dimension that is a function of the
+others, swap value and index (knapsack by value), process in an order that
+makes the recurrence one-directional.
+
+\textbf{Divide and conquer.} $dp_k[i]=\min_{j<i} dp_{k-1}[j]+C(j,i)$ with
+$opt(i)\le opt(i{+}1)$: $O(kn\log n)$. Sufficient: quadrangle inequality
+$C(a,c)+C(b,d)\le C(a,d)+C(b,c)$ for $a\le b\le c\le d$. Holds for
+$(\text{sum})^2$ of non-negative values, $\text{length}^2$, any convex
+function of a prefix-sum difference.
+
+\textbf{Knuth.} $dp[i][j]=\min_{i\le m<j} dp[i][m]+dp[m{+}1][j]+w(i,j)$, $w$
+satisfying the quadrangle inequality and monotone on inclusion: search
+$m\in[opt(i,j{-}1),opt(i{+}1,j)]$, $O(n^2)$. Optimal merging of piles,
+breaking strings, optimal BST.
+
+\textbf{Convex hull trick.} $dp[i]=\min_j (m_j x_i+b_j)$: lines
+$(m_j,b_j)$, queries $x_i$. Sorted slopes and monotone queries: deque, $O(n)$;
+otherwise LineContainer or Li Chao, $O(n\log n)$. Li Chao also handles
+lines alive on a range and functions that cross at most once.
+
+\textbf{Aliens (WQS / Lagrange).} ``Exactly $k$ items'' with $g(k)$ convex:
+solve without the limit paying $\lambda$ per item, binary search
+$\lambda$ until the optimum uses $k$ items, answer $=h(\lambda)-\lambda k$.
+Ties must report the fewest items. Removes a factor $k$.
+
+\textbf{Monotone queue.} $dp[i]=c_i+\min_{i-K\le j<i} dp[j]$: sliding
+window minimum, $O(n)$. Bounded knapsack in $O(nW)$: same trick per residue
+of the weight.
+
+\textbf{Separation.} $dp[x]=\min_y f(x)+g(y)$ over a range of $y$: keep $g(y)$
+in a segment tree / Fenwick and query the range; sort by one coordinate
+first if the condition is $y_1<x_1,\,y_2<x_2$ (LIS-like).
+
+\textbf{Bitmasks.} Submasks of all masks: $3^n$ pairs ($3^{15}\approx 1.4\cdot
+10^7$). SOS (sum over subsets): $2^n n$. Broken profile (tilings): process
+cell by cell, state = mask of the frontier, $O(nm2^m)$.
+
+\textbf{Bitset.} Boolean DP rows (subset sum, reachability, LCS of small
+alphabets) as \texttt{bitset}: $/64$. Pragmas \texttt{target("popcnt")} can
+decide AC vs TLE.
+
+\textbf{Expected value.} Go backwards from the end state:
+$E[x]=c(x)+\sum_y p(x,y)E[y]$. Cycles: linear system (Gauss).
+Linearity holds without independence. Geometric: $1/p$ trials.
+Coupon collector: $nH_n$ ($n=6$: $14.7$). Probability ``mod $p$'': same DP
+with modular inverses.
+
+\textbf{Counting.} Count by the first (or last) element to avoid double
+counting; ``at least'' $\to$ ``exactly'' by inclusion-exclusion; fix the
+maximum and count arrangements of the rest.
+}
