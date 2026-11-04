@@ -14,7 +14,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 0 | Template | done (85a0fdc) |
 | 1 | Number Theory | done: 17 topics (pushed effab9a) |
 | 2 | Combinatorics | done: 6 snippets + formulas sheet (review) |
-| 3 | Algebra & Polynomials | pending |
+| 3 | Algebra & Polynomials | done (review) |
 | 4 | Dynamic Programming (incl. optimizations) | pending |
 | 5 | Data Structures | pending |
 | 6 | Graphs | pending |
@@ -61,6 +61,26 @@ Topic 1 extras added on request: inverse table O(n), batch inverses, run-time mo
 | 6 | burnside.cpp: necklaces / bracelets (Burnside, Polya) | extra: own (missing in all references) | done (review) |
 | 7 | tex/theory/combinatorics.tex: formulas sheet (identities, Catalan, Stirling, Fibonacci, Burnside) | U .tex style, T fibonacci properties; every formula verified numerically | done (review) |
 
+## 3. Algebra & Polynomials (topics chosen by Claude on user delegation, 2026-11-04)
+
+| # | Topic / file | Sources | Done |
+|---|---|---|---|
+| 1 | fft.cpp: FFT (precise roots), exact multiply, conv mod any m < 2^31 (split), correlate (cyclic shifts, wildcard) | U FFT, U Interesting FFT MOD (KACTL), P FFT_new (cyclic only), T fft; U shifts trick doc said cyclic | done (review) |
+| 2 | ntt.cpp: NTT templated on prime/root (4 primes listed), conv_any (3 primes + Garner) | P NTT, P isc math_ntt, U NTT (61-bit, global arrays), T ntt | done (review) |
+| 3 | poly.cpp: power series inv, divmod, log, exp, pow (leading zeros, huge k), multipoint eval | own (refs only define polynomials: U Poly Definitions, T polynomials) | done (review) |
+| 4 | lagrange.cpp: P(x) from P(0..n) in O(n), interpolation O(n^2), power sums | own (missing in all references) | done (review) |
+| 5 | karatsuba.cpp: any modulus | U Karatsuba (new[] released with free()) | done (review) |
+| 6 | fwht.cpp: XOR/AND/OR convolutions (mod p or exact), subset convolution | U Fast Hadamard Transform, P InverseSOS_SubsetConvolution | done (review) |
+| 7 | matrix.cpp: mat mul/pow (m < 2^31, lazy reduction), lin_rec, (min,+) powers | P MatrixExponentiation, P FastExpo, U Linear Recurrence Matrix | done (review) |
+| 8 | linear_recurrence.cpp: Berlekamp-Massey, Kitamasa, guess_nth | U Cayley-Hamilton (compile bug), P Kitamasa/BM (float pow inverse, k = 1 bug) | done (review) |
+| 9 | fibonacci.cpp: doubling mod m <= 1e18, Pisano period, identities | U Fast Fibonacci; pisano: own | done (review) |
+| 10 | gauss.cpp: doubles (0/1/inf), mod p solve/rank/det/inverse, det mod any m | P GaussJordan (exit on singular) | done (review) |
+| 11 | xor_basis.cpp: insert/contains/max/min/kth/merge, GF(2) bitset elimination | U Xor Basis, P XOR_Basis_Bitset | done (review) |
+| 12 | simplex.cpp: two-phase, Bland | P Simplex (double inverse on long double table), P isc math_simplex | done (review) |
+| 13 | integration.cpp: composite + adaptive Simpson (relative floor) | P NumericalIntegration | done (review) |
+
+SOS DP (zeta/Mobius over subsets as a DP) is covered by fwht.cpp (OR/AND transforms); a plain SOS DP snippet can still go to section 4 if wanted.
+
 ## Deferred to later sections (do not lose)
 
 ### 2. Combinatorics
@@ -72,19 +92,6 @@ Topic 1 extras added on request: inverse table O(n), batch inverses, run-time mo
 - Inclusion-exclusion patterns: P InclusionExclusion
 - Pascal triangle: P BinomialDP_Pascal
 - Counting formulas: T counting, T fibonacci properties
-
-### 3. Algebra & Polynomials
-- NTT: U NTT (61-bit prime), P NTT (998244353), P isc-notebook math_ntt (1004535809), T
-- FFT: U FFT, P FFT_new, T fft; U FFT shifts trick (doc: cyclic, not linear)
-- Karatsuba: U; Fast Walsh-Hadamard: U
-- Matrix exponentiation: P MatrixExponentiation, P FastExpo, U Linear Recurrence Matrix
-- Linear recurrences: U Cayley-Hamilton (latent compile bug in pow), P Kitamasa/BM (BROKEN)
-- Fast Fibonacci (doubling): U
-- Gauss / RREF / determinant / rank: P
-- Simplex: P; Simpson integration: P
-- XOR basis: U Xor Basis, P XOR_Basis_Bitset
-- Subset convolution / inverse SOS: P InverseSOS_SubsetConvolution (maybe DP)
-- Polynomials: T polynomials, U Poly Definitions
 
 ### 4. Dynamic Programming
 - old (delete/src/dp): edit_distance, lcs, knapsack_01(+1d), subset_sum(+1d), digit_dp (BUG: int overflow)
@@ -116,6 +123,11 @@ Topic 1 extras added on request: inverse table O(n), batch inverses, run-time mo
   (copy them too in a contest).
   `check` compiles template + dependencies + snippet and requires each dependency to be
   listed earlier in contents.txt.
+
+- Lines <= 80 columns (`check` warns): the PDF has 2 columns of 6pt code. A long `cout` in an
+  example wraps after the `// expected` comment (the comment must stay on the `cout` line).
+- Type names defined by another snippet (e.g. `vd` from fft.cpp) must be re-typedef'd (same type)
+  or the snippet does not compile alone.
 
 - Never name a function like a std:: one: C++17 special math functions (legendre, beta,
   expint, hermite, laguerre, riemann_zeta, ...) and gcd/lcm/size/data/distance/hash win
