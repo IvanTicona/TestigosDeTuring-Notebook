@@ -77,3 +77,4 @@ src/ds/monotonic_queue.cpp | Monotonic Queue and Sliding Window Aggregation
 src/ds/xor_trie.cpp | Binary Trie (XOR Queries)
 src/ds/wavelet_tree.cpp | Wavelet Tree (k-th, Count in Range)
 src/ds/dynamic_connectivity.cpp | Dynamic Connectivity (Offline)
+src/ds/segtree_beats.cpp | Segment Tree Beats (chmin, chmax, add)
