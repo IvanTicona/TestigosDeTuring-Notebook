@@ -16,3 +16,4 @@ src/number_theory/sieves.cpp | Sieves and Prime Tables
 src/number_theory/multiplicative_functions.cpp | Multiplicative Functions (phi, mu, d, sigma)
 src/number_theory/pollard_rho.cpp | Primality and Factorization (Miller-Rabin, Pollard)
 src/number_theory/discrete_log.cpp | Discrete Logarithm and Discrete Root
+src/number_theory/huge_exponent.cpp | Huge Exponents and Power Towers
