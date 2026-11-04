@@ -32,3 +32,6 @@ src/combinatorics/counting_sequences.cpp | Counting Sequences (Derangements, Sti
 src/combinatorics/inclusion_exclusion.cpp | Inclusion-Exclusion
 src/combinatorics/burnside.cpp | Burnside and Polya (Necklaces, Bracelets)
 !tex tex/theory/combinatorics.tex | Combinatorics Formulas
+
+[Algebra & Polynomials]
+src/algebra/fft.cpp | FFT (Exact, Any Modulus, Correlation)
