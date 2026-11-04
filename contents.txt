@@ -26,3 +26,4 @@ src/number_theory/huge_exponent.cpp | Huge Exponents and Power Towers
 
 [Combinatorics]
 src/combinatorics/binomial.cpp | Binomial Coefficients
+src/combinatorics/lucas.cpp | Lucas Theorem and Binomial mod Any m
