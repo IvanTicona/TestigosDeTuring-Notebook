@@ -23,3 +23,6 @@ src/number_theory/primitive_root.cpp | Primitive Root and Multiplicative Order
 src/number_theory/modular_sqrt.cpp | Modular Square Root (Tonelli-Shanks)
 src/number_theory/discrete_log.cpp | Discrete Logarithm and Discrete Root
 src/number_theory/huge_exponent.cpp | Huge Exponents and Power Towers
+
+[Combinatorics]
+src/combinatorics/binomial.cpp | Binomial Coefficients
