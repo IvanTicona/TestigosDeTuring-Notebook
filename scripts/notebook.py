@@ -26,7 +26,9 @@ TEMPLATE_REL = "template/template.cpp"
 CODE_PATH_RE = re.compile(r"^(src|template)/[a-z0-9_/]+\.cpp$")
 TEX_PATH_RE = re.compile(r"^tex/[a-z0-9_/]+\.tex$")
 SNIPPET_PATH_RE = re.compile(r"^src/[a-z0-9_/]+\.cpp$")
-HEADER_FIELD_RE = re.compile(r"^\s*\*\s*(Usage|Complexity|Source|Tested|Note|Status):\s*(.+?)\s*$")
+HEADER_FIELD_RE = re.compile(
+    r"^\s*\*\s*(Usage|Complexity|Source|Tested|Note|Depends|Status):\s*(.+?)\s*$"
+)
 VALID_STATUS = ("ok", "untested", "broken")
 
 GXX_FLAGS = ["-std=gnu++17", "-fsyntax-only", "-Wall", "-Wextra"]
@@ -304,6 +306,14 @@ def validate(root: Path, sections: list[Section]) -> Report:
                 )
             report.errors += lint_snippet(e.path, text)
             report.errors += latin1_diagnostics(e.path, text)
+            dep_line = meta.lines.get("Depends", meta.header_line)
+            for dep in parse_depends(meta.fields.get("Depends")):
+                if not (root / dep).is_file():
+                    report.errors.append(f"{e.path}:{dep_line}: depends on {dep}, which does not exist")
+                elif dep not in seen:
+                    report.errors.append(
+                        f"{e.path}:{dep_line}: depends on {dep}, which must be listed before it in {MANIFEST_NAME}"
+                    )
             status = meta.fields.get("Status")
             if status == "untested":
                 n_untested += 1
@@ -371,9 +381,36 @@ def compile_tu(gxx: str, root: Path, includes: list[str]) -> tuple[bool, str]:
     return proc.returncode == 0, out
 
 
+def parse_depends(value: str | None) -> list[str]:
+    """'Depends: src/a.cpp, src/b.cpp' -> ['src/a.cpp', 'src/b.cpp']."""
+    return [d.strip() for d in (value or "").split(",") if d.strip()]
+
+
+def snippet_deps(root: Path, rel: str) -> list[str]:
+    """Transitive dependencies of a snippet, dependencies first (no duplicates)."""
+    order: list[str] = []
+    visiting: set[str] = set()
+
+    def visit(cur: str) -> None:
+        if cur in order or cur in visiting:
+            return
+        visiting.add(cur)
+        path = root / cur
+        if path.is_file():
+            meta = parse_header(path.read_text(encoding="utf-8", errors="replace"))
+            for dep in parse_depends(meta.fields.get("Depends")):
+                visit(dep)
+        visiting.discard(cur)
+        if cur != rel:
+            order.append(cur)
+
+    visit(rel)
+    return order
+
+
 def compile_one(gxx: str, root: Path, rel: str) -> tuple[bool, str]:
-    """TU = template + snippet."""
-    return compile_tu(gxx, root, [TEMPLATE_REL, rel])
+    """TU = template + dependencies (Depends:) + snippet."""
+    return compile_tu(gxx, root, [TEMPLATE_REL, *snippet_deps(root, rel), rel])
 
 
 def check(root: Path = ROOT, jobs: int | None = None) -> int:

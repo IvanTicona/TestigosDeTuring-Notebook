@@ -29,7 +29,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | # | Topic | Candidate sources | Done |
 |---|---|---|---|
 | 1 | Modular arithmetic (mulmod, powmod, inverse) | P ModularArithmetic, U Fraction Modular, T mod mul/pow/inv/mod integer | done |
-| 2 | Extended Euclid | P Euclid.cpp (U Extended Euclides is BROKEN) | |
+| 2 | Extended Euclid | P Euclid.cpp (U Extended Euclides is BROKEN) | done (review) |
 | 3 | Linear Diophantine | P Euclid.cpp (U broken: b=0 crash, bad euclid) | |
 | 4 | CRT (non-coprime) + Garner | U Chinese Remainder (overflow risk), P CRT_Garner | |
 | 5 | Sieves (linear/SPF, segmented, prime table) | P PrimesSieve, U Linear Sieve, P SegmentedSieve, P Primes | |
@@ -46,8 +46,8 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 
 Topic 1 extras added on request: inverse table O(n), batch inverses, run-time modulus `dmint`.
 
-| 16 | Modular square root (Tonelli-Shanks) | proposed by Claude, approved 2026-11-03 | |
-| 17 | Primitive root / multiplicative order | proposed by Claude, approved 2026-11-03 | |
+| 16 | Modular square root (Tonelli-Shanks) | proposed by Claude, approved 2026-11-03 | done (review) |
+| 17 | Primitive root / multiplicative order | proposed by Claude, approved 2026-11-03 | done (review) |
 
 ## Deferred to later sections (do not lose)
 
@@ -99,7 +99,10 @@ Topic 1 extras added on request: inverse table O(n), batch inverses, run-time mo
   carries a trailing `// expected output`. The stress test calls
   `stress::check_example(example_<name>, "src/...", "example_<name>")`, which runs it and
   fails if any comment does not match what is printed (examples can never lie).
-- Header: Usage / Complexity / Source / Note / Status (`untested` until the user approves).
+- Header: Usage / Complexity / Source / Note / Depends / Status (`untested` until the user approves).
+- `Depends: src/a.cpp, src/b.cpp`: snippets this one needs (copy them too in a contest).
+  `check` compiles template + dependencies + snippet and requires each dependency to be
+  listed earlier in contents.txt.
 
 ## Tooling notes
 - Template has main()/init()/solve(): stress tests include it via

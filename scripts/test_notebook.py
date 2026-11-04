@@ -575,5 +575,69 @@ class MetaAndTexCommandTests(Fixture):
             self.assertEqual(nb.main(["pdf", "--theme", "x"]), 2)
 
 
+DEP_A = """/**
+ * Usage: twice(x)
+ * Complexity: O(1)
+ * Status: untested
+ */
+int twice(int x) { return 2 * x; }
+"""
+DEP_B = """/**
+ * Usage: quad(x)
+ * Complexity: O(1)
+ * Depends: src/a/dep_a.cpp
+ * Status: untested
+ */
+int quad(int x) { return twice(twice(x)); }
+"""
+
+
+class DependsTests(Fixture):
+    def validate(self, manifest_body):
+        secs, perrs = nb.parse_manifest(self.manifest(manifest_body))
+        self.assertEqual(perrs, [])
+        return nb.validate(self.root, secs)
+
+    def test_header_parses_depends(self):
+        meta = nb.parse_header(DEP_B)
+        self.assertEqual(meta.fields["Depends"], "src/a/dep_a.cpp")
+
+    def test_depends_listed_earlier_is_clean(self):
+        self.write("src/a/dep_a.cpp", DEP_A)
+        self.write("src/a/dep_b.cpp", DEP_B)
+        r = self.validate("[A]\nsrc/a/dep_a.cpp | A\nsrc/a/dep_b.cpp | B\n")
+        self.assertEqual(r.errors, [])
+
+    def test_depends_missing_file_is_error(self):
+        self.write("src/a/dep_b.cpp", DEP_B)
+        r = self.validate("[A]\nsrc/a/dep_b.cpp | B\n")
+        self.assertTrue(any("depends on src/a/dep_a.cpp" in e for e in r.errors), r.errors)
+
+    def test_depends_listed_after_is_error(self):
+        self.write("src/a/dep_a.cpp", DEP_A)
+        self.write("src/a/dep_b.cpp", DEP_B)
+        r = self.validate("[A]\nsrc/a/dep_b.cpp | B\nsrc/a/dep_a.cpp | A\n")
+        self.assertTrue(any("must be listed before" in e for e in r.errors), r.errors)
+
+    def test_snippet_deps_transitive_order(self):
+        self.write("src/a/dep_a.cpp", DEP_A)
+        self.write("src/a/dep_b.cpp", DEP_B)
+        dep_c = DEP_B.replace("dep_a.cpp", "dep_b.cpp").replace("quad", "oct")
+        self.write("src/a/dep_c.cpp", dep_c)
+        self.assertEqual(nb.snippet_deps(self.root, "src/a/dep_c.cpp"),
+                         ["src/a/dep_a.cpp", "src/a/dep_b.cpp"])
+
+    @unittest.skipUnless(HAS_GXX, "g++ not available")
+    def test_compile_includes_dependencies(self):
+        self.write("template/template.cpp", "#include <bits/stdc++.h>\nusing namespace std;\n")
+        self.write("src/a/dep_a.cpp", DEP_A)
+        self.write("src/a/dep_b.cpp", DEP_B)
+        ok, out = nb.compile_one("g++", self.root, "src/a/dep_b.cpp")
+        self.assertTrue(ok, out)
+        self.write("src/a/dep_b.cpp", DEP_B.replace(" * Depends: src/a/dep_a.cpp\n", ""))
+        ok, _ = nb.compile_one("g++", self.root, "src/a/dep_b.cpp")
+        self.assertFalse(ok)
+
+
 if __name__ == "__main__":
     unittest.main()
