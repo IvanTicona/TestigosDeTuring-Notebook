@@ -40,3 +40,4 @@ src/algebra/poly.cpp | Power Series (Inverse, Division, Log, Exp, Pow, Multipoin
 src/algebra/lagrange.cpp | Lagrange Interpolation and Power Sums
 src/algebra/karatsuba.cpp | Karatsuba (Any Modulus)
 src/algebra/fwht.cpp | Bitwise Convolutions (FWHT, Subset Convolution)
+src/algebra/matrix.cpp | Matrix Exponentiation (and Min-Plus)
