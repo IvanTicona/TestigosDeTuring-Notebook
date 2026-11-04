@@ -37,3 +37,4 @@ src/combinatorics/burnside.cpp | Burnside and Polya (Necklaces, Bracelets)
 src/algebra/fft.cpp | FFT (Exact, Any Modulus, Correlation)
 src/algebra/ntt.cpp | NTT and Convolution mod Any m
 src/algebra/poly.cpp | Power Series (Inverse, Division, Log, Exp, Pow, Multipoint)
+src/algebra/lagrange.cpp | Lagrange Interpolation and Power Sums
