@@ -55,3 +55,4 @@ src/dp/subset_sum.cpp | Subset Sum and Coin Change
 src/dp/lcs.cpp | LCS and Edit Distance
 src/dp/digit_dp.cpp | Digit DP (Automaton Template)
 src/dp/bitmask_dp.cpp | Bitmask DP (TSP, SOS, Partitions)
+src/dp/max_subarray.cpp | Maximum Subarray (Kadane, 2D, 3D)
