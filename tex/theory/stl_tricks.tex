@@ -1,0 +1,50 @@
+% STL and I/O tricks sheet. Every line below was compiled with
+% g++ -std=gnu++17 and its commented result checked before writing it here.
+{\scriptsize
+\setlength{\parskip}{2pt}
+\textbf{Containers and algorithms} (results in comments):
+\begin{lstlisting}[style=cpp]
+sort(all(v)); v.erase(unique(all(v)), v.end());   // dedup: {3,1,3,2,1}->{1,2,3}
+// unique alone only drops ADJACENT repeats and leaves junk at the tail
+int c = count_if(all(v), [&](int a) { return a != x; });
+bool ok = is_sorted(all(v));
+set<char> st(all(s));                  // distinct chars of a string
+string r(n, 'x');                      // "xxx...x", n copies
+\end{lstlisting}
+
+\textbf{Strings} (\texttt{find} is $O(n \cdot m)$; \texttt{contains} is C++23,
+it does NOT compile in C++17/20):
+\begin{lstlisting}[style=cpp]
+size_t p = t.find(pat);               // first match or string::npos
+if (p != string::npos) { /* found at p */ }
+t.find_first_of("aeiou");             // first position holding ANY of them
+t.substr(pos, len);                   // O(len) copy
+transform(all(t), t.begin(), ::tolower);   // or ::toupper
+\end{lstlisting}
+
+\textbf{Reading lines.} After \texttt{cin >> n} the newline is still in the
+buffer, so \texttt{getline} returns an empty line. Use
+\texttt{getline(cin >> ws, line)} (also drops the line's leading spaces) or
+\texttt{cin.ignore(numeric\_limits<streamsize>::max(), '\textbackslash n')}
+first. Whole line: \texttt{string line; getline(cin, line);}
+
+\textbf{Arithmetic traps}:
+\begin{lstlisting}[style=cpp]
+ll md(ll a, ll m) { return (a % m + m) % m; }   // -7 % 3 == -1, md == 2
+ll r = 1 % m;      // modpow start: p == 0 with m == 1 must give 0, not 1
+ll even = (n / 2) * (n / 2 + 1);           // 2 + 4 + ... <= n
+ll odd = ((n + 1) / 2) * ((n + 1) / 2);    // 1 + 3 + ... <= n
+\end{lstlisting}
+\texttt{\#define int long long} turns every \texttt{int} into 64 bits; then
+write \texttt{signed main()}. Mind the memory (twice the size) and
+\texttt{printf("\%d")}.
+
+\textbf{Local runs.} Extra flags: \texttt{-Wconversion} (implicit narrowing,
+e.g.\ \texttt{ll} into \texttt{int}) and \texttt{-O1} with sanitizers (fast
+enough, still accurate). File I/O only on your machine:
+\begin{lstlisting}[style=cpp]
+#ifdef LOCAL
+    freopen("input.txt", "r", stdin);  // missing file -> stdin closed
+#endif
+\end{lstlisting}
+}
