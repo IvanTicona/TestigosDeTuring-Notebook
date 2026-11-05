@@ -130,3 +130,4 @@ src/strings/lyndon.cpp | Lyndon Factorization and Minimal Rotation
 
 [Geometry]
 src/geometry/point.cpp | Point (Vectors, Angular Sort)
+src/geometry/segments.cpp | Lines and Segments
