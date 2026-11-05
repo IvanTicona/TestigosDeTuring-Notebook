@@ -61,7 +61,10 @@ i128 binom_exact(ll n, ll k) {
     if (k < 0 || k > n) return 0;
     k = min(k, n - k);
     i128 r = 1;
-    for (ll i = 1; i <= k; i++) r = r * (n - k + i) / i;  // r = C(n-k+i, i)
+    for (ll i = 1; i <= k; i++) {  // r = C(n-k+i, i); divide BEFORE multiply
+        ll g = gcd((ll)(r % i), i);  // so no middle value exceeds the result
+        r = r / g * ((n - k + i) / (i / g));
+    }
     return r;
 }
 

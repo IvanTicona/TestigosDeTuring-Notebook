@@ -64,6 +64,15 @@ int main() {
             i128 want = (n < 0 || k < 0 || k > n) ? 0 : (i128)ex[n][k];
             CHECK(binom_exact(n, k) == want, "exact C(" + to_string(n) + "," + to_string(k) + ")");
         }
+    // binom_exact near the i128 limit (C(126, 63) overflowed the old version)
+    {
+        vector<vector<i128>> pa(131, vector<i128>(131, 0));
+        for (int n = 0; n <= 130; n++) {
+            pa[n][0] = 1;
+            for (int k = 1; k <= n; k++) pa[n][k] = pa[n - 1][k - 1] + pa[n - 1][k];
+            for (int k = 0; k <= n; k++) CHECK(binom_exact(n, k) == pa[n][k], "exact big C(" + to_string(n) + "," + to_string(k) + ")");
+        }
+    }
     // binom_big_n: small n vs exact; n < p vs Comb; huge n vs Lucas split
     for (ll p : {2LL, 3LL, 5LL, 13LL, 101LL}) {
         for (int n = 0; n <= E; n++)
