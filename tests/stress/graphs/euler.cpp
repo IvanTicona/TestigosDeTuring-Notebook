@@ -34,15 +34,15 @@ int main() {
         for (int s = 0; s < n && !exists; s++)
             if (src < 0 || s == src) exists = dfs(dfs, s, m);
         if (m == 0) exists = true;
-        auto [vs, es] = euler(n, E, dir, src);
-        CHECK(vs.empty() == !exists, "existence n=" + to_string(n) + " m=" + to_string(m) + " dir=" + to_string(dir));
-        if (vs.empty()) continue;
-        CHECK(sz(vs) == m + 1 && sz(es) == m, "lengths");
-        if (src >= 0) CHECK(vs[0] == src, "starts at src");
+        auto [ver, es] = euler(n, E, dir, src);
+        CHECK(ver.empty() == !exists, "existence n=" + to_string(n) + " m=" + to_string(m) + " dir=" + to_string(dir));
+        if (ver.empty()) continue;
+        CHECK(sz(ver) == m + 1 && sz(es) == m, "lengths");
+        if (src >= 0) CHECK(ver[0] == src, "starts at src");
         CHECK(sz(set<int>(all(es))) == m, "each edge once");
         for (int i = 0; i < m; i++) {
             auto [a, b] = E[es[i]];
-            bool fw = a == vs[i] && b == vs[i + 1], bw = b == vs[i] && a == vs[i + 1];
+            bool fw = a == ver[i] && b == ver[i + 1], bw = b == ver[i] && a == ver[i + 1];
             CHECK(fw || (!dir && bw), "consecutive edge");
         }
     }

@@ -1,8 +1,8 @@
 /**
- * Usage: auto [vs, es] = euler(n, E, directed, src = -1);
- *        E[i] = {u, v}; vs = vertices of the trail (m + 1 of them), es =
+ * Usage: auto [ver, es] = euler(n, E, directed, src = -1);
+ *        E[i] = {u, v}; ver = vertices of the trail (m + 1 of them), es =
  *        edge ids in order; both empty if no Eulerian trail exists (or none
- *        starting at src, when src >= 0). Circuit iff vs.front() == vs.back()
+ *        starting at src, when src >= 0). Circuit iff ver.front() == ver.back()
  * Complexity: O(n + m), iterative Hierholzer
  * Source: UPB EulerianPath (undirected only; started at vertex 0 when no
  *         odd vertex existed, even if 0 was isolated) + UTP eulerian path;
@@ -40,14 +40,14 @@ pair<vi, vi> euler(int n, const vector<pii> &E, bool directed, int src = -1) {
         } else if (!odd && g[src].empty()) return {};
         start = src;
     }
-    vi it(n, 0), vs, es;
+    vi it(n, 0), ver, es;
     vector<char> used(m, 0);
     vector<pii> st = {{start, -1}};
     while (!st.empty()) {
         auto [u, e] = st.back();
         while (it[u] < sz(g[u]) && used[g[u][it[u]].S]) it[u]++;
         if (it[u] == sz(g[u])) {
-            vs.pb(u), st.pop_back();
+            ver.pb(u), st.pop_back();
             if (e >= 0) es.pb(e);
         } else {
             auto [v, id] = g[u][it[u]++];
@@ -55,15 +55,15 @@ pair<vi, vi> euler(int n, const vector<pii> &E, bool directed, int src = -1) {
         }
     }
     if (sz(es) != m) return {};
-    reverse(all(vs)), reverse(all(es));
-    return {vs, es};
+    reverse(all(ver)), reverse(all(es));
+    return {ver, es};
 }
 
 // ---- Example: call from solve(); each // is the line it prints ----
 void example_euler() {
     vector<pii> E = {{0, 1}, {1, 2}, {2, 0}, {2, 3}};  // triangle + tail
-    auto [vs, es] = euler(5, E, false);  // vertex 4 isolated: fine
-    cout << sz(vs) << ' ' << vs.front() << vs.back() << '\n';  // 5 23
+    auto [ver, es] = euler(5, E, false);  // vertex 4 isolated: fine
+    cout << sz(ver) << ' ' << ver.front() << ver.back() << '\n';  // 5 23
     auto [dv, de] = euler(3, {{0, 1}, {1, 2}, {2, 0}}, true, 1);
     cout << dv[0] << dv[1] << dv[2] << dv[3] << ' ' << de[0] << '\n';  // 1201 1
 }

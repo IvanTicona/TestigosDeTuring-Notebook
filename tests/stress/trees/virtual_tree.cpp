@@ -2,7 +2,7 @@
 // Oracles: the node set must equal the closure of the keys under pairwise
 // LCA (computed naively over all pairs, repeated until stable); each edge
 // parent must be the nearest proper ancestor of the child inside the set
-// (naive parent walking); |vs| - 1 edges, vs[0] is the top.
+// (naive parent walking); |ver| - 1 edges, ver[0] is the top.
 #include "tests/stress/template_lib.h"
 #include "src/trees/euler_tour.cpp"
 #include "src/trees/virtual_tree.cpp"
@@ -40,15 +40,15 @@ int main() {
             for (int a : cur) for (int b : cur) changed |= cl.insert(lca(a, b)).second;
         }
         EulerTour et(g, root);
-        auto [vs, es] = virtual_tree(et, keys);
-        CHECK(set<int>(all(vs)) == cl && sz(vs) == sz(cl), "node set");
-        CHECK(sz(es) == sz(vs) - 1, "edge count");
+        auto [ver, es] = virtual_tree(et, keys);
+        CHECK(set<int>(all(ver)) == cl && sz(ver) == sz(cl), "node set");
+        CHECK(sz(es) == sz(ver) - 1, "edge count");
         for (auto [p, c] : es) {
             int x = par[c];
             while (x >= 0 && !cl.count(x)) x = par[x];
             CHECK(x == p, "nearest ancestor in the set");
         }
-        for (int v : vs) CHECK(lca(vs[0], v) == vs[0], "vs[0] is the top");
+        for (int v : ver) CHECK(lca(ver[0], v) == ver[0], "ver[0] is the top");
     }
     puts("OK");
 }
