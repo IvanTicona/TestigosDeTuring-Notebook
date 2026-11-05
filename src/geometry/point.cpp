@@ -22,6 +22,10 @@ struct Pt {
     Pt operator/(T k) const { return {x / k, y / k}; }
     bool operator<(Pt o) const { return tie(x, y) < tie(o.x, o.y); }
     bool operator==(Pt o) const { return x == o.x && y == o.y; }
+    bool operator!=(Pt o) const { return !(*this == o); }
+    bool operator>(Pt o) const { return o < *this; }
+    bool operator<=(Pt o) const { return !(o < *this); }
+    bool operator>=(Pt o) const { return !(*this < o); }
     T dot(Pt o) const { return x * o.x + y * o.y; }
     T cross(Pt o) const { return x * o.y - y * o.x; }
     T cross(Pt a, Pt b) const { return (a - *this).cross(b - *this); }

@@ -18,6 +18,8 @@ int main() {
         }
         CHECK(a.cross(b) == (ll)((i128)a.x * b.y - (i128)a.y * b.x), "cross");
         CHECK(a.dot(b) == (ll)((i128)a.x * b.x + (i128)a.y * b.y), "dot");
+        CHECK((a != b) == !(a == b) && (a > b) == (b < a) &&
+              (a <= b) == !(b < a) && (a >= b) == !(a < b), "derived comparisons");
         i128 o = (i128)(b.x - a.x) * (c.y - a.y) - (i128)(b.y - a.y) * (c.x - a.x);
         CHECK((i128)a.cross(b, c) == o, "orientation");
         CHECK(a.perp().dot(a) == 0 && a.perp().cross(a) == -a.norm2(), "perp");
