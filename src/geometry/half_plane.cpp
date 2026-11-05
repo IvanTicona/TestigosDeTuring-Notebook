@@ -13,9 +13,9 @@
  * Status: untested
  */
 struct HP {
-    Pt<ld> p, d;  // point and direction
-    ld ang;
-    HP(Pt<ld> a, Pt<ld> b) : p(a), d(b - a), ang(atan2l(d.y, d.x)) {}
+    Pt<ld> p, d;  // point and UNIT direction: EPS is a distance, whatever
+    ld ang;       // the length of b - a (short directions broke it)
+    HP(Pt<ld> a, Pt<ld> b) : p(a), d((b - a).unit()), ang(atan2l(d.y, d.x)) {}
     bool out(Pt<ld> r) const { return d.cross(r - p) < -EPS; }
 };
 Pt<ld> hp_inter(const HP &s, const HP &t) {

@@ -17,6 +17,7 @@ int main() {
         ld B = 100;
         vector<HP> hs;
         vector<pair<Pt<ld>, Pt<ld>>> lines;
+        ld sc = vector<ld>{1, 1e-5, 1e-3, 1e4}[stress::rnd(0, 3)];  // |b - a|
         for (int i = 0; i < n; i++) {
             Pt<ld> a{(ld)stress::rnd(-10, 10), (ld)stress::rnd(-10, 10)};
             Pt<ld> b{(ld)stress::rnd(-10, 10), (ld)stress::rnd(-10, 10)};
@@ -26,7 +27,7 @@ int main() {
                 ld sh = stress::rnd(-3, 3);
                 a = p + Pt<ld>{sh, -sh}, b = a + (q - p) * (stress::rnd(0, 1) ? 1 : -1);
             }
-            hs.pb(HP(a, b)), lines.pb({a, b});
+            hs.pb(HP(a, a + (b - a) * sc)), lines.pb({a, b});
         }
         vector<Pt<ld>> poly = {{-B, -B}, {B, -B}, {B, B}, {-B, B}};
         for (auto [a, b] : lines) {
