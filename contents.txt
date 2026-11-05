@@ -146,3 +146,4 @@ src/misc/bit_tricks.cpp | Bit Tricks (Gosper, Gray Codes, Submasks)
 src/misc/search.cpp | Binary / Ternary Search, Compression, Inversions
 src/misc/fraction.cpp | Fractions and Best Rational Approximation
 src/misc/bigint.cpp | Big Integers
+src/misc/backtracking.cpp | Backtracking (N-Queens with Bitmasks)
