@@ -2,9 +2,9 @@
 # check (gate g++) -> PDFs (latexmk) -> artifact -> Release `latest` -> Google Drive
 name: Build Notebook
 
+# Disabled on push (2026-11-05): the PDF is built and uploaded locally.
+# Run it by hand from the Actions tab if ever needed.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

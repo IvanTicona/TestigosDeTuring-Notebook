@@ -109,12 +109,30 @@ path/to/snippet.cpp | Title            # snippet: PATH | Title (path relative to
 g++ -std=gnu++17 -I. tests/demo/dp/lcs.cpp -o lcs && ./lcs
 ```
 
-## CI, Release and Google Drive
+## Publishing (local)
 
-The workflow `.github/workflows/build.yml` runs on every push to `main` (and manually via
-`workflow_dispatch`): unit tests, `check`, installs TeX Live, `pdf --theme both`, uploads the
-PDFs as an artifact, updates the `latest` Release (`--clobber`) and updates the PDF on Drive.
-If `check` or `pdf` fails nothing is published (and the LaTeX logs are uploaded as an artifact).
+Since 2026-11-05 the PDF is built and uploaded from a local machine (GitHub Actions is no
+longer triggered on push):
+
+```
+python -m unittest discover -s scripts -p "test_*.py"   # script unit tests
+python scripts/notebook.py check                       # compile gate
+python scripts/notebook.py test --jobs 4               # stress tests
+python scripts/notebook.py pdf --theme both            # build/ PDFs (read + print)
+python scripts/drive_upload.py --file build/testigos-de-turing-teambook.pdf
+```
+
+The Drive upload needs `GDRIVE_FILE_ID` and `GDRIVE_SA_JSON` (the key file contents) in the
+environment of that shell only; never commit the key. PowerShell:
+`$env:GDRIVE_SA_JSON = Get-Content path\to\key.json -Raw`; bash:
+`export GDRIVE_SA_JSON="$(cat path/to/key.json)"`.
+
+## CI, Release and Google Drive (manual only)
+
+The workflow `.github/workflows/build.yml` now runs only manually (`workflow_dispatch`): unit
+tests, `check`, installs TeX Live, `pdf --theme both`, uploads the PDFs as an artifact, updates
+the `latest` Release (`--clobber`) and updates the PDF on Drive. If `check` or `pdf` fails
+nothing is published (and the LaTeX logs are uploaded as an artifact).
 
 Stable downloads: Releases -> `latest` -> `testigos-de-turing-teambook.pdf` (color) and
 `testigos-de-turing-teambook-print.pdf` (print).
