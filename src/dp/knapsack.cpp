@@ -46,7 +46,8 @@ ll knap_unbounded(const vl &w, const vl &v, int W) {
 ll knap_bounded(const vl &w, const vl &v, const vl &cnt, int W) {
     vl nw, nv;  // split c copies into 1, 2, 4, ..., rest (binary grouping)
     for (int i = 0; i < sz(w); i++)
-        for (ll k = cnt[i], p = 1; k > 0; k -= p, p *= 2) {
+        for (ll k = w[i] ? min(cnt[i], (ll)W / w[i]) : cnt[i], p = 1; k > 0;
+             k -= p, p *= 2) {  // more than W / w copies never fit
             ll t = min(p, k);
             nw.pb(w[i] * t), nv.pb(v[i] * t);
         }

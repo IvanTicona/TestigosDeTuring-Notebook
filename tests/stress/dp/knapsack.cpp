@@ -70,5 +70,8 @@ int main() {
         }
         CHECK(knap_by_value(w, v, W) == best, "by_value huge W");
     }
+    // huge counts: grouping 1e18 copies overflowed w * t (now capped at W / w)
+    CHECK(knap_bounded({(ll)4e17}, {7}, {(ll)1e18}, 10) == 0, "huge count");
+    CHECK(knap_bounded({3, 4}, {5, 7}, {(ll)1e18, 1}, 10) == 17, "capped count");
     puts("OK");
 }
