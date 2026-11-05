@@ -138,3 +138,4 @@ src/geometry/circles.cpp | Circles (Intersections, Tangents, MEC, Lens)
 src/geometry/half_plane.cpp | Half-Plane Intersection
 src/geometry/minkowski.cpp | Minkowski Sum
 src/geometry/point3d.cpp | 3D Basics (Volumes, Planes, Sphere)
+!tex tex/theory/geometry.tex | Geometry Formulas

@@ -1,0 +1,37 @@
+% Geometry formulas sheet. Triangle / polygon / solid formulas were checked
+% numerically (Python) on concrete values.
+{\scriptsize
+\setlength{\parskip}{2pt}
+\textbf{Triangle} (sides $a,b,c$, opposite angles $A,B,C$, $s=(a+b+c)/2$).
+Area $=\sqrt{s(s-a)(s-b)(s-c)}=\frac12ab\sin C=\frac12|\vec{AB}\times\vec{AC}|$.
+Sines: $\frac{a}{\sin A}=2R$, $R=\frac{abc}{4\,\mathrm{Area}}$. Cosines:
+$c^2=a^2+b^2-2ab\cos C$. Inradius $r=\mathrm{Area}/s$, incenter
+$=\frac{aA+bB+cC}{a+b+c}$. Median $m_a=\frac12\sqrt{2b^2+2c^2-a^2}$.
+Bisector $t_a=\sqrt{bc\,(1-(\frac{a}{b+c})^2)}$ (it cuts $a$ in ratio $c:b$).
+
+\textbf{Polygon.} Shoelace: $2A=\sum x_iy_{i+1}-x_{i+1}y_i$ ($>0$ CCW).
+Pick: $A=I+B/2-1$, $B=\sum\gcd(|dx|,|dy|)$. Centroid
+$=\frac{1}{6A}\sum(p_i+p_{i+1})(p_i\times p_{i+1})$. Regular $n$-gon with side
+$s$: area $\frac{ns^2}{4\tan(\pi/n)}$, interior angle $\pi(n-2)/n$.
+
+\textbf{Circle} (radius $r$, central angle $\theta$). Arc $r\theta$, sector
+$r^2\theta/2$, segment $r^2(\theta-\sin\theta)/2$, chord $2r\sin(\theta/2)$.
+Power of a point $P$: $|PO|^2-r^2$ (product of the two chord pieces).
+
+\textbf{Solids.} Sphere $V=\frac43\pi r^3$, $S=4\pi r^2$; cap of height $h$:
+$V=\frac{\pi h^2(3r-h)}{3}$, $S=2\pi rh$. Cone $V=\frac13\pi r^2h$, lateral
+$\pi r\ell$. Frustum (glass) $V=\frac{\pi h}{3}(r_1^2+r_1r_2+r_2^2)$.
+Tetrahedron $V=\frac16|(b-a)\cdot((c-a)\times(d-a))|$. Polyhedra (and planar
+graphs): $V-E+F=2$.
+
+\textbf{Vectors.} $u\cdot v=|u||v|\cos\theta$, $u\times v=|u||v|\sin\theta$
+(signed, $>0$: $v$ is counter-clockwise from $u$). Angle: $\mathrm{atan2}(u\times
+v,\,u\cdot v)$. Rotation by $\theta$: $(x\cos\theta-y\sin\theta,\;
+x\sin\theta+y\cos\theta)$. Distance point--line $=|(b-a)\times(p-a)|/|b-a|$.
+
+\textbf{Precision.} Prefer integers (\texttt{Pt<ll>}, coordinates $\le
+10^9$); compare doubles with \texttt{sgn} (EPS); clamp before
+\texttt{acos}/\texttt{asin}/\texttt{sqrt}; avoid slopes; \texttt{long
+double} for ill-conditioned intersections; print with \texttt{fixed} and
+enough digits (and avoid printing $-0.000$).
+}
