@@ -17,7 +17,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 3 | Algebra & Polynomials | done (review) |
 | 4 | Dynamic Programming (incl. optimizations) | done (review) |
 | 5 | Data Structures | done (review) |
-| 6 | Graphs | pending |
+| 6 | Graphs | done (review) |
 | 7 | Flows & Matching | pending |
 | 8 | Trees | pending |
 | 9 | Strings | pending |
@@ -123,6 +123,26 @@ Not added (covered elsewhere or rarely needed): ordered set / multiset (template
 2D segment tree (U, for non-sum 2D queries), block tree / sqrt decomposition (problem-specific),
 rope (U: slower than the treap), KD tree (P: geometry), link-cut / HLD / centroid (trees section).
 
+## 6. Graphs (topics chosen by Claude on user delegation, 2026-11-05)
+
+| # | Topic / file | Sources | Done |
+|---|---|---|---|
+| 1 | bfs.cpp: multi-source BFS + paths, 0-1 BFS, bipartite check | U BFS, P BFS01, U DFS (never left the start node) | done (review) |
+| 2 | dijkstra.cpp: multi-source with parents, k shortest walks | P FastDijkstra, P MultiSourceDijkstra, U Dijkstra (std::distance clash), U K-Shortest | done (review) |
+| 3 | bellman_ford.cpp: -inf propagation, negative cycle extraction | U BellmanFord (+ negative cycle), P BellmanFord_SPFA (SPFA hangs) | done (review) |
+| 4 | floyd.cpp: negative weights with -inf, path reconstruction, bitset closure, minimax | U Floyd (no d[i][i] = 0), U Floyd negative, U Transitive Closure, P DijkstraFloyd, old minimax_all_pairs | done (review) |
+| 5 | toposort.cpp: Kahn (+ lexicographic), directed cycle (iterative), DAG longest path | U Topological Sort, P TopologicalSort, P TopoSort_DAG_LongestPath, U Cycle Detection | done (review) |
+| 6 | scc.cpp: iterative Tarjan, topological component ids, condensation | U SCC (Tarjan), P SCC, P isc graph_scc, T tarjan / kosaraju | done (review) |
+| 7 | two_sat.cpp: either / imply / force / at_most_one | U Two Sat, P TwoSAT, T two sat | done (review) |
+| 8 | bridges.cpp: iterative lowlink, bridges, cut vertices, 2-edge comps, vertex BCCs | P BridgesArticulation_BCC (comp never filled), P isc graph_bcc, T bridges | done (review) |
+| 9 | euler.cpp: directed + undirected trail / circuit, optional start, edge order | P EulerianPath (isolated vertex 0), T eulerian path | done (review) |
+| 10 | mst.cpp: Kruskal (forest, chosen ids), dense Prim O(n^2) | U Kruskal (always max), P Kruskal, P MST_Kruskal_Prim, P Prim, old minimax_mst_path | done (review) |
+| 11 | directed_mst.cpp: Chu-Liu / Edmonds O(nm) | T directed mst | done (review) |
+| 12 | min_mean_cycle.cpp: Karp, exact fraction | P MinMeanCycle_Karp (double), T karp | done (review) |
+| 13 | dominator_tree.cpp: iterative Lengauer-Tarjan | own (gap in all references) | done (review) |
+
+Not added: Yen's k shortest SIMPLE paths (P, rare), SPFA (BF is safer), Johnson (note in dijkstra).
+
 ## Deferred to later sections (do not lose)
 
 ### 2. Combinatorics
@@ -166,6 +186,9 @@ rope (U: slower than the treap), KD tree (P: geometry), link-cut / HLD / centroi
 
 - Never use a template macro name as an identifier (`all`, `sz`, `F`, `S`, `pb`, `SQ`, ...):
   `st.all()` expands the macro. Members named `max` / `min` hide std::max inside the class.
+
+- CHECK is a statement (do-while): never chain it with commas.
+- Explanations go on their own comment line, never after the `// expected` of a `cout` line.
 
 - Never name a function like a std:: one: C++17 special math functions (legendre, beta,
   expint, hermite, laguerre, riemann_zeta, ...) and gcd/lcm/size/data/distance/hash win
