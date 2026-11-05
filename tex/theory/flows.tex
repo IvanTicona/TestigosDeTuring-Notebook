@@ -1,0 +1,51 @@
+% Flow and matching modeling sheet (theorems + standard reductions).
+{\scriptsize
+\setlength{\parskip}{2pt}
+\textbf{Max-flow min-cut.} Max $s$-$t$ flow $=$ min capacity of an $s$-$t$
+cut. After max flow, the source side of a min cut $=$ vertices reachable
+from $s$ in the residual graph. Integral capacities $\Rightarrow$ integral
+max flow.
+
+\textbf{Gadgets.} Vertex capacity $c$: split $v\to(v_{in},v_{out})$ with an
+edge of capacity $c$. Many sources / sinks: super source / sink.
+Undirected edge: two arcs (or one arc with rcap $=$ cap). ``Edge can be used
+at most $k$ times in total'': capacity $k$. Forbid a cut: capacity $\infty$.
+
+\textbf{Menger.} Max \#edge-disjoint $s$-$t$ paths $=$ max flow with unit
+capacities; vertex-disjoint: split vertices with capacity 1.
+
+\textbf{Project selection (closure).} Profit $p_i$ (may be $<0$), ``taking
+$i$ requires $j$'': edge $i\to j$ of capacity $\infty$; $s\to i$ cap $p_i$ if
+$p_i>0$, $i\to t$ cap $-p_i$ otherwise. Best profit $=\sum_{p_i>0}p_i-$
+max flow; chosen set $=$ source side. Same model: ``two options per item
+with pairwise penalties'' (min cut labeling).
+
+\textbf{Bipartite.} K\"onig: max matching $=$ min vertex cover; max
+independent set $=V-$ max matching; min edge cover $=V-$ max matching (no
+isolated vertices). Hall: a perfect matching of the left side exists iff
+$|N(S)|\ge|S|$ for every left $S$. Regular bipartite graphs have a perfect
+matching.
+
+\textbf{DAGs.} Min vertex-disjoint path cover $=V-$ matching on (out, in)
+copies. Dilworth: min chains covering a poset $=$ max antichain $=V-$
+matching on the transitive closure (paths may share vertices).
+
+\textbf{General graphs.} Max matching: blossom. Tutte: perfect matching
+iff for every $U$, \#odd components of $G-U\le|U|$. Gallai: max
+independent set $+$ min vertex cover $=V$ (any graph).
+
+\textbf{Lower bounds.} Edge $[l,h]$: capacity $h-l$, excess $l$ at the head,
+deficit $l$ at the tail, super source / sink to the excesses, plus $t\to s$
+of capacity $\infty$. Feasible iff the super flow saturates.
+
+\textbf{Min cost flow.} Successive shortest paths with potentials (Dijkstra
+on reduced costs $c+\pi_u-\pi_v\ge0$). Negative costs: initial potentials by
+Bellman-Ford; negative cycles: cancel them first (or saturate negative
+edges and fix with lower bounds). Cost of $k$ units is convex in $k$.
+Assignment ($n\times m$): Hungarian $O(n^2m)$.
+
+\textbf{Choosing.} Dinic: general, unit-capacity graphs
+$O(E\sqrt V)$. Push-relabel: dense / large graphs, value only. Bipartite
+matching: Hopcroft-Karp. Global min cut (undirected): Stoer-Wagner; all
+pairs: Gomory-Hu ($n-1$ flows).
+}

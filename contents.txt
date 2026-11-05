@@ -104,3 +104,4 @@ src/flows/global_min_cut.cpp | Global Min Cut (Stoer-Wagner)
 src/flows/gomory_hu.cpp | Gomory-Hu Tree (All-Pairs Min Cut)
 src/flows/lower_bounds.cpp | Flow with Lower Bounds (Circulation)
 src/flows/general_matching.cpp | General Matching (Edmonds Blossom)
+!tex tex/theory/flows.tex | Flow Modeling
