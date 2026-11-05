@@ -7,14 +7,17 @@ The algorithms live as C++ snippets, and a Python script validates them and buil
 ## Structure
 
 ```
-contents.txt        manifest: single source of order and titles for the PDF
-template/           template.cpp: shared includes, typedefs and macros (no main)
-src/<topic>/*.cpp   library snippets (functions/classes only, no includes or main)
-tests/demo/<topic>/ demos with main() that include the template + a snippet
-tex/notebook.tex    LaTeX document (cover, contents, header, code style)
-tex/assets/         logo; tex/theory/*.tex: optional theory (!tex), created on demand
-scripts/notebook.py CLI: check | tex | pdf
-build/              generated output (ignored by git)
+contents.txt          manifest: single source of order and titles for the PDF
+template/             template.cpp: shared includes, typedefs and macros
+src/<topic>/*.cpp     library snippets (no includes or main), each ending in a
+                      verified example_<name>() function
+tests/stress/<topic>/ one stress test per snippet (random cases vs independent
+                      oracles); common.h (CHECK, rnd, check_example) and
+                      template_lib.h (template without its main)
+tex/notebook.tex      LaTeX document (cover, contents, header, code style)
+tex/theory/*.tex      theory sheets included with !tex
+scripts/notebook.py   CLI: check | test | tex | pdf
+build/                generated output (ignored by git)
 ```
 
 ## Requirements
@@ -29,15 +32,23 @@ build/              generated output (ignored by git)
 ## Usage
 
 ```
-python scripts/notebook.py check [--jobs N]            # validate and compile every snippet
-python scripts/notebook.py tex                         # generate build/contents.tex and build/meta.tex
+python scripts/notebook.py check [--jobs N]                # validate and compile every snippet
+python scripts/notebook.py test [filters] [--jobs N] [--seed N] [--timeout S] [--sanitize]
+python scripts/notebook.py tex                             # generate build/contents.tex and build/meta.tex
 python scripts/notebook.py pdf [--theme read|print|both]   # generate the PDFs (default: both)
 ```
 
-- `check`: validates the manifest and the headers, and compiles each snippet with the template
-  (`g++ -std=gnu++17 -fsyntax-only -Wall -Wextra`). Exit codes: 0 ok, 1 validation or
-  compilation errors, 2 a tool is missing (g++). It ends with a line such as
-  `Compilation summary: 18 ok / 0 failed` followed by `check: OK` (or `check: FAIL (...)`).
+- `check`: validates the manifest and the headers (including `Depends`), warns about lines
+  longer than 80 columns (they wrap in the 2-column PDF) and compiles each snippet with the
+  template (`g++ -std=gnu++17 -fsyntax-only -Wall -Wextra`). Exit codes: 0 ok, 1 validation
+  or compilation errors, 2 a tool is missing (g++). It ends with a line such as
+  `Compilation summary: 118 ok / 0 failed` followed by `check: OK` (or `check: FAIL (...)`).
+- `test`: compiles and runs `tests/stress/**/*.cpp` (`-O2`), optionally only the paths that
+  contain one of the `filters` (e.g. `test flows/ geometry/circles`). Each test first runs
+  the snippet's `example_<name>()` and compares every printed line with its `// expected`
+  comment, then runs its random cases. A failure prints the seed and the failing input;
+  rerun with `--seed N`. `--sanitize` adds ASan + UBSan + `_GLIBCXX_DEBUG` (not on MinGW)
+  and scales the iteration counts down.
 - `pdf`: runs `tex` and then `latexmk`. Output: `build/testigos-de-turing-teambook.pdf`
   (read) and `build/testigos-de-turing-teambook-print.pdf` (print). TeX error: exit 1
   with the relevant log; no `latexmk`: exit 2. `pdf` does not run `check`.
@@ -46,17 +57,28 @@ python scripts/notebook.py pdf [--theme read|print|both]   # generate the PDFs (
 
 1. Create `src/<topic>/<name>.cpp` with a `snake_case` name (`[a-z0-9_]`).
 2. Write library code only: no `#include`, no `using namespace std`, no `main`. Use what
-   `template/template.cpp` already defines (`vi`, `pii`, `ll`, `INF`, `MOD`, ...).
+   `template/template.cpp` already defines (`vi`, `pii`, `ll`, `INFL`, `MOD`, `rng`, ...)
+   and avoid names that clash with its macros / typedefs or with `std` (`all`, `sz`, `F`,
+   `S`, `pb`, `vs`, `merge`, `apply`, ...). Lines of at most 80 columns.
 3. Put the header (see below) at the top of the file.
-4. List it in `contents.txt` under its section: `src/<topic>/<name>.cpp | English title`.
-5. (Optional) Create a demo in `tests/demo/<topic>/<name>.cpp`:
+4. End the file with `void example_<name>()` that prints a few lines, each `cout` line
+   followed by `// expected output` (computed independently, e.g. in Python).
+5. List it in `contents.txt` under its section: `src/<topic>/<name>.cpp | English title`.
+6. Create `tests/stress/<topic>/<name>.cpp`:
 
    ```cpp
-   #include "template/template.cpp"
+   #include "tests/stress/template_lib.h"
    #include "src/<topic>/<name>.cpp"
-   int main() { /* example */ }
+   #include "tests/stress/common.h"
+   int main() {
+       stress::check_example(example_<name>, "src/<topic>/<name>.cpp", "example_<name>");
+       for (stress::iter = 0; stress::iter < stress::scaled(1000); stress::iter++) {
+           // random small input; compare with a brute force: CHECK(cond, "what");
+       }
+       puts("OK");
+   }
    ```
-6. Run `python scripts/notebook.py check` and then `pdf`.
+7. Run `python scripts/notebook.py check`, `test <name>` and then `pdf`.
 
 Snippets with no entry in `contents.txt` (and without `Status: broken`) are a `check` error.
 
@@ -75,12 +97,13 @@ Block comment at the top of the snippet:
  */
 ```
 
-Recognized fields: `Usage`, `Complexity`, `Source`, `Tested`, `Note` and `Status`.
-`Status` is required: `ok`, `untested` or `broken`; `Usage` and `Complexity` are
-recommended (`check` warns if they are missing). A `broken` snippet is quarantined: it must
-not appear in `contents.txt` (if it is listed, `check` fails) and it is reported as INFO
-(`INFO quarantine: ...`). The content must be Latin-1 (the PDF uses `listingsutf8`); `check`
-reports the offending codepoint.
+Recognized fields: `Usage`, `Complexity`, `Source`, `Tested`, `Note`, `Depends` and
+`Status`. `Depends: src/a.cpp, src/b.cpp` lists the snippets that must be pasted first
+(`check` compiles them together, in that order). `Status` is required: `ok`, `untested`
+or `broken`; `Usage` and `Complexity` are recommended (`check` warns if they are missing).
+A `broken` snippet is quarantined: it must not appear in `contents.txt` (if it is listed,
+`check` fails) and it is reported as INFO (`INFO quarantine: ...`). The content must be
+Latin-1 (the PDF uses `listingsutf8`); `check` reports the offending codepoint.
 
 ## `contents.txt` grammar
 
@@ -100,14 +123,6 @@ path/to/snippet.cpp | Title            # snippet: PATH | Title (path relative to
   (use `Union_Find#1`).
 - Each snippet is printed under its title (subsection) with the path in gray on the right;
   there are no numbered captions or list of algorithms (the cover contents play that role).
-
-## Demos
-
-`tests/demo/<topic>/*.cpp` are complete programs to try a snippet by hand:
-
-```
-g++ -std=gnu++17 -I. tests/demo/dp/lcs.cpp -o lcs && ./lcs
-```
 
 ## Publishing (local)
 
