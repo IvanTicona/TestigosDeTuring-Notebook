@@ -88,3 +88,4 @@ src/graphs/toposort.cpp | Topological Sort, Cycle, Longest Path in DAG
 src/graphs/scc.cpp | Strongly Connected Components (Iterative Tarjan)
 src/graphs/two_sat.cpp | 2-SAT (+ At Most One)
 src/graphs/bridges.cpp | Bridges, Articulation Points, BCC
+src/graphs/euler.cpp | Eulerian Path and Circuit
