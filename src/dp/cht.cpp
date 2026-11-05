@@ -34,6 +34,7 @@ struct LineContainer : multiset<CLine, less<>> {
         while ((y = x) != begin() && (--x)->p >= y->p) isect(x, erase(y));
     }
     ll query(ll x) {
+        assert(!empty());
         auto l = *lower_bound(x);
         return l.k * x + l.m;
     }
@@ -57,6 +58,7 @@ struct MonoCHT {  // lower envelope, slopes added in non-increasing order
         ptr = min(ptr, sz(L) - 1);
     }
     ll query(ll x) const {
+        assert(!L.empty());
         int lo = 0, hi = sz(L) - 1;
         while (lo < hi) {
             int md = (lo + hi) / 2;
@@ -66,6 +68,7 @@ struct MonoCHT {  // lower envelope, slopes added in non-increasing order
         return f(L[lo], x);
     }
     ll query_inc(ll x) {
+        assert(!L.empty());
         while (ptr + 1 < sz(L) && f(L[ptr + 1], x) <= f(L[ptr], x)) ptr++;
         return f(L[ptr], x);
     }
