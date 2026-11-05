@@ -4,24 +4,34 @@
  *                                 negative cycle can make it arbitrarily low
  *        neg_cycle(n, E)       -> vertices of SOME negative cycle (in order,
  *                                 anywhere in the graph), {} if none
- * Complexity: O(n m)
+ * Complexity: O(n m), stops early once nothing relaxes
  * Source: UMSS BellmanFord + UMSS BellmanFord Find Negative Cycle + UPB
  *         BellmanFord_SPFA (SPFA loops forever on a negative cycle: the
  *         counter only marks, never stops relaxing)
- * Note: |w| * n must fit in ll. Difference constraints x_v - x_u <= w:
- *       edge u -> v with weight w, add a source with 0-edges to all;
- *       infeasible iff negative cycle; x = dist. Longest path: negate.
+ * Note: needs |w| * n < INFL (distances are clamped at -INFL).
+ *       Difference constraints x_v - x_u <= w: edge u -> v with weight w,
+ *       add a source with 0-edges to all; infeasible iff negative cycle;
+ *       x = dist. Longest path: negate.
  * Status: untested
  */
 vl bellman_ford(int n, const vector<array<ll, 3>> &E, int s) {
     vl d(n, INFL);
     d[s] = 0;
-    for (int r = 0; r < n; r++)
+    for (int r = 0; r < n; r++) {
+        bool ch = false;  // clamp: a negative cycle keeps lowering forever
         for (auto [u, v, w] : E)
-            if (d[u] < INFL && d[u] + w < d[v]) d[v] = d[u] + w;
-    for (int r = 0; r < n; r++)  // spread -INFL through everything reachable
+            if (d[u] < INFL && d[u] + w < d[v])
+                d[v] = max(-INFL, d[u] + w), ch = 1;
+        if (!ch) return d;  // converged: no negative cycle reachable
+    }
+    for (int r = 0; r < n; r++) {  // spread -INFL through everything reachable
+        bool ch = false;
         for (auto [u, v, w] : E)
-            if (d[u] < INFL && (d[u] == -INFL || d[u] + w < d[v])) d[v] = -INFL;
+            if (d[u] < INFL && d[v] > -INFL &&
+                (d[u] == -INFL || d[u] + w < d[v]))
+                d[v] = -INFL, ch = 1;
+        if (!ch) break;
+    }
     return d;
 }
 
@@ -32,9 +42,10 @@ vi neg_cycle(int n, const vector<array<ll, 3>> &E) {
     for (int r = 0; r < n; r++) {
         x = -1;
         for (auto [u, v, w] : E)
-            if (d[u] + w < d[v]) d[v] = d[u] + w, par[v] = u, x = v;
+            if (d[u] + w < d[v])
+                d[v] = max(-INFL, d[u] + w), par[v] = u, x = v;
+        if (x < 0) return {};
     }
-    if (x < 0) return {};
     for (int i = 0; i < n; i++) x = par[x];  // surely inside the cycle now
     vi cyc;
     for (int v = x;; v = par[v]) {
