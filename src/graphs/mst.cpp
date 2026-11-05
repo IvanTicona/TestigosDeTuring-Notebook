@@ -3,6 +3,7 @@
  *        auto [cost, ids] = kruskal(n, E)  -> min spanning FOREST cost and
  *          chosen edge ids (n - #components of them); max: negate weights
  *        prim_dense(w) -> MST cost of a complete graph given by a matrix
+ *          (n >= 1)
  *          (INFL = no edge; -1 if disconnected), O(n^2): e.g. points
  * Complexity: kruskal O(m log m); prim_dense O(n^2)
  * Source: UMSS Kruskal (always max: reverse() left in) + UPB Kruskal +
