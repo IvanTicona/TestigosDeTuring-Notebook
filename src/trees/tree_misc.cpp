@@ -61,8 +61,9 @@ struct TreeIso {
             vi ch;
             for (int v : adj[u]) if (v != par[u]) ch.pb(lab[v]);
             sort(all(ch));
-            auto it = ids.find(ch);
-            lab[u] = it != ids.end() ? it->S : ids[ch] = sz(ids);
+            auto it = ids.find(ch);  // new shape: next id (args first)
+            if (it == ids.end()) it = ids.emplace(ch, sz(ids)).first;
+            lab[u] = it->S;
         }
         return lab[root];
     }
