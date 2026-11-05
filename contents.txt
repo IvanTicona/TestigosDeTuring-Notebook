@@ -81,3 +81,4 @@ src/ds/segtree_beats.cpp | Segment Tree Beats (chmin, chmax, add)
 
 [Graphs]
 src/graphs/bfs.cpp | BFS (Multi-Source, 0-1, Bipartite)
+src/graphs/dijkstra.cpp | Dijkstra (Multi-Source, k Shortest Walks)
