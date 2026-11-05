@@ -8,7 +8,10 @@
  * Source: Lucy_Hedgehog's algorithm (Project Euler forum, own code);
  *         PrimeCounter = UMSS Count Primes (Meissel-Lehmer style), tidied
  * Note: use Lucy for sums or many n / i values, PrimeCounter for one big n.
- *       sum is __int128 (sum of primes <= 1e12 ~ 1.9e22).
+ *       sum is __int128 (sum of primes <= 1e12 ~ 1.9e22). Memory:
+ *       Lucy ~4 sqrt(n) ll; PrimeCounter sieves to y = n^0.64 with an
+ *       int per value: 1e12 ~200 MB, 1e13 ~850 MB (too much: lower 0.64,
+ *       slower, or use Lucy).
  * Status: untested
  */
 struct Lucy {
