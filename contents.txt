@@ -139,3 +139,6 @@ src/geometry/half_plane.cpp | Half-Plane Intersection
 src/geometry/minkowski.cpp | Minkowski Sum
 src/geometry/point3d.cpp | 3D Basics (Volumes, Planes, Sphere)
 !tex tex/theory/geometry.tex | Geometry Formulas
+
+[Misc]
+src/misc/dates.cpp | Dates (Gregorian Day Numbers)
