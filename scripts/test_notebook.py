@@ -21,6 +21,19 @@ GOOD_SNIPPET = """/**
 int foo(int x) { return x; }
 """
 
+HIDDEN_SNIPPET = """/**
+ * Usage: foo(x)
+ *        more usage
+ * Complexity: O(1)
+ * Source: somewhere
+ *         second source line
+ * Note: keep me
+ *       and me
+ * Status: ok
+ */
+int foo(int x) { return x; }  // Status: in code is kept
+"""
+
 
 class Fixture(unittest.TestCase):
     """Temp repo root with the real template and helpers."""
@@ -498,8 +511,8 @@ class RenderTests(Fixture):
         out = nb.render_contents(secs)
         order = [out.index(x) for x in ("{Template}", "{One}", "{Two}")]
         self.assertEqual(order, sorted(order))
-        self.assertIn(r"\lstinputlisting[style=cpp]{template/template.cpp}", out)
-        self.assertIn(r"\lstinputlisting[style=cpp]{src/a/foo.cpp}", out)
+        self.assertIn(r"\lstinputlisting[style=cpp]{build/listings/template/template.cpp}", out)
+        self.assertIn(r"\lstinputlisting[style=cpp]{build/listings/src/a/foo.cpp}", out)
         self.assertIn(r"\NBpath{template/template.cpp}", out)
         self.assertNotIn("caption", out)
         self.assertEqual(out.count(r"\clearpage"), 3)
@@ -548,6 +561,26 @@ class MetaAndTexCommandTests(Fixture):
         self.assertEqual(code, 0)
         self.assertTrue((self.root / "build" / "contents.tex").is_file())
         self.assertTrue((self.root / "build" / "meta.tex").is_file())
+
+    def test_tex_command_writes_listings_without_source_and_status(self):
+        self.write("src/a/foo.cpp", HIDDEN_SNIPPET)
+        self.write("contents.txt", "[Template]\ntemplate/template.cpp | Template\n[A]\nsrc/a/foo.cpp | Foo\n")
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(nb.tex(self.root), 0)
+        listing = self.root / "build" / "listings" / "src" / "a" / "foo.cpp"
+        out = listing.read_text(encoding="utf-8")
+        self.assertEqual(out, nb.strip_hidden_fields(HIDDEN_SNIPPET))
+        self.assertTrue((self.root / "build" / "listings" / "template" / "template.cpp").is_file())
+
+    def test_strip_hidden_fields(self):
+        out = nb.strip_hidden_fields(HIDDEN_SNIPPET)
+        self.assertNotIn("Source", out)
+        self.assertNotIn(" * Status", out)
+        self.assertNotIn("second source line", out)
+        self.assertIn(" * Usage: foo(x)\n *        more usage\n * Complexity: O(1)\n", out)
+        self.assertIn(" * Note: keep me\n *       and me\n */\n", out)
+        self.assertIn("// Status: in code is kept", out)
+        self.assertEqual(nb.strip_hidden_fields("int x;\n"), "int x;\n")
 
     def test_tex_command_bad_manifest_exit_1(self):
         self.write("contents.txt", "[A]\nsrc/a/foo.cpp\tFoo\n")

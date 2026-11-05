@@ -105,6 +105,9 @@ A `broken` snippet is quarantined: it must not appear in `contents.txt` (if it i
 `check` fails) and it is reported as INFO (`INFO quarantine: ...`). The content must be
 Latin-1 (the PDF uses `listingsutf8`); `check` reports the offending codepoint.
 
+`Source` and `Status` stay in the files but are left out of the PDF to save space: `tex`
+writes copies of the code entries without them to `build/listings/` and the PDF prints those.
+
 ## `contents.txt` grammar
 
 ```
