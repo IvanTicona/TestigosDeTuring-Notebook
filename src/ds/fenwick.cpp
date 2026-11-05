@@ -27,9 +27,9 @@ struct BIT {
         }
     }
     void add(int i, ll v) { for (i++; i <= n; i += i & -i) t[i] += v; }
-    ll sum(int r) const {  // [0, r]
+    ll sum(int r) const {  // [0, r]; r >= n means everything
         ll s = 0;
-        for (r++; r > 0; r -= r & -r) s += t[r];
+        for (r = min(r + 1, n); r > 0; r -= r & -r) s += t[r];
         return s;
     }
     ll sum(int l, int r) const { return l > r ? 0 : sum(r) - sum(l - 1); }
@@ -49,7 +49,9 @@ struct RangeBIT {  // sum[0, r] = B1(r) * (r + 1) - B2(r)
         b2.add(l, v * l), b2.add(r + 1, -v * (r + 1));
     }
     ll pre(int r) const { return b1.sum(r) * (r + 1) - b2.sum(r); }
-    ll sum(int l, int r) const { return pre(r) - (l ? pre(l - 1) : 0); }
+    ll sum(int l, int r) const {
+        return l > r ? 0 : pre(r) - (l ? pre(l - 1) : 0);
+    }
 };
 
 struct BIT2D {

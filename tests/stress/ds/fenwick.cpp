@@ -41,7 +41,8 @@ int main() {
                 CHECK(b.lower_bound(q) == want, "lower_bound q=" + to_string(q));
             }
         }
-        CHECK(b.sum(3, 2) == 0, "empty range");
+        CHECK(b.sum(3, 2) == 0 && rb.sum(3, 2) == 0, "empty range");
+        CHECK(b.sum(n + 5) == b.sum(n - 1), "prefix past the end");
     }
     for (stress::iter = 0; stress::iter < stress::scaled(200); stress::iter++) {
         int n = stress::rnd(1, 12), m = stress::rnd(1, 12);
