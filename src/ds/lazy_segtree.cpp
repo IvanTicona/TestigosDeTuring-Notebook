@@ -1,5 +1,5 @@
 /**
- * Usage: LazySeg st(a);  (0-indexed, inclusive ranges)
+ * Usage: LazySeg st(a);  (0-indexed, inclusive ranges, a non-empty)
  *        st.update(l, r, tag)   e.g. Tag{true, 5, 0} = assign 5,
  *                               Tag{false, 0, 3} = add 3
  *        st.query(l, r)         -> Node {sum, mn, len} of a[l..r]

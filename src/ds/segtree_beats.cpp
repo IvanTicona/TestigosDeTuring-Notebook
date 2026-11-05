@@ -1,5 +1,6 @@
 /**
- * Usage: Beats b(a);  0-indexed, inclusive ranges, |values| < ~1e17
+ * Usage: Beats b(a);  0-indexed, inclusive ranges, a non-empty,
+ *        n * max|value| < ~9e18 (sums are ll)
  *        b.chmin(l, r, x)  a[i] = min(a[i], x);  b.chmax(l, r, x)
  *        b.add(l, r, x);   b.sum(l, r), b.qmax(l, r), b.qmin(l, r)
  * Complexity: O(log^2 n) amortized per update (O(log n) with only chmin /

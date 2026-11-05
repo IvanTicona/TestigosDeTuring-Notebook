@@ -7,7 +7,9 @@
  * Source: UTP wavelet tree; vector nodes + stable_partition: own
  * Note: also gives the median (k = len / 2), #distinct needs offline /
  *       PST instead. With updates: BIT of sorted vectors or PST.
- *       Same queries online with a persistent segment tree.
+ *       Same queries online with a persistent segment tree. Memory
+ *       O(n log V) ints + nodes: with a huge value range compress to
+ *       0..n-1 first (2e5 raw ll values: ~260 MB; compressed: ~20 MB).
  * Status: untested
  */
 struct Wavelet {
