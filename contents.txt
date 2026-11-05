@@ -148,3 +148,4 @@ src/misc/fraction.cpp | Fractions and Best Rational Approximation
 src/misc/bigint.cpp | Big Integers
 src/misc/backtracking.cpp | Backtracking (N-Queens with Bitmasks)
 src/misc/random_gen.cpp | Random Generators (Stress Testing)
+!tex tex/theory/contest.tex | Contest Tooling (Stress Loop, Python)

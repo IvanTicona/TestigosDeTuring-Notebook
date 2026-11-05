@@ -1,0 +1,46 @@
+% Contest tooling sheet: stress testing loop and Python recipes.
+% Every Python line below was run (Python 3.11) before writing it here.
+{\scriptsize
+\setlength{\parskip}{2pt}
+\textbf{Stress test} (gen.cpp prints a random test from \texttt{argv[1]} as
+the seed, brute.cpp is the slow correct solution):
+\begin{lstlisting}[language=bash]
+g++ -O2 -o sol sol.cpp && g++ -O2 -o brute brute.cpp && g++ -O2 -o gen gen.cpp
+for i in $(seq 1 2000); do
+  ./gen $i > in; ./sol < in > a; ./brute < in > b
+  if ! cmp -s a b; then echo "diff on seed $i"; cat in; break; fi
+done
+\end{lstlisting}
+Debug build: \texttt{-DLOCAL -fsanitize=address,undefined -D\_GLIBCXX\_DEBUG
+-g} (catches out of bounds, overflow, bad iterators). Seed the generator:
+\texttt{mt19937\_64 rng(atoi(argv[1]))}.
+
+\textbf{Python} (big integers are native; use when C++ precision fails):
+\begin{lstlisting}[language=Python]
+import sys
+from decimal import Decimal, getcontext
+from fractions import Fraction
+from math import comb, gcd, isqrt
+from functools import lru_cache
+input = sys.stdin.readline          # fast input
+sys.setrecursionlimit(10**6)        # deep recursion (also raise the stack)
+getcontext().prec = 50              # Decimal(1) / Decimal(7): 50 digits
+Fraction(1, 6) + Fraction(3, 4)     # 11/12, exact
+comb(100, 50) % (10**9 + 7)         # big binomials, exact
+isqrt(10**30 + 1)                   # 10**15, exact integer sqrt
+pow(3, -1, 7)                       # 5: modular inverse (3.8+)
+int('ff', 16), bin(10)[2:], format(255, 'x')   # 255, '1010', 'ff'
+@lru_cache(None)                    # memoization
+def f(n): return n if n < 2 else f(n - 1) + f(n - 2)
+print(f'{x:.6f}')                   # fixed output
+\end{lstlisting}
+Rounding: \texttt{f'\{2.675:.2f\}'} gives 2.67 (binary float), while
+\texttt{round(Decimal('2.675'), 2)} gives 2.68 (round half even on the exact
+decimal). Read all input at once: \texttt{data = sys.stdin.buffer.read().split()}.
+
+\textbf{C++ reminders.} \texttt{\#pragma GCC optimize("O3,unroll-loops")} and
+\texttt{target("avx2,popcnt")} at the top (template). \texttt{\_\_int128} for
+products up to $\sim 10^{36}$ (I/O in the template). Precision of
+\texttt{long double}: 18--19 digits. Avoid \texttt{endl} in loops; use
+\texttt{'\textbackslash n'}.
+}
