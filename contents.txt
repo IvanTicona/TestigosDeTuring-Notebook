@@ -116,3 +116,6 @@ src/trees/virtual_tree.cpp | Virtual Tree (Auxiliary Tree)
 src/trees/tree_misc.cpp | Diameter, Centers, Isomorphism, Prufer
 src/trees/link_cut.cpp | Link-Cut Tree
 src/trees/mo_tree.cpp | Mo's Algorithm on Tree Paths
+
+[Strings]
+src/strings/prefix_function.cpp | Prefix Function (KMP, Automaton, Period)
