@@ -4,7 +4,9 @@
  *        sam.distinct() -> #distinct non-empty substrings
  *        sam.occ(p)     -> #occurrences of p in s (0 if absent)
  *        sam.lcs(t)     -> longest common substring length of s and t
- * Complexity: O(n K) build (<= 2n states), queries O(|p|) / O(|t|)
+ * Complexity: O(n K) build (<= 2n states), queries O(|p|) / O(|t|);
+ *             memory 2n (K + 2) ints: n = 1e6 -> ~230 MB (use map
+ *             transitions or a suffix array beyond ~5e5)
  * Source: UPB SuffixAutomaton (reserve(1 << 20) per object: 120 MB) + UPB
  *         isc string_suffix_automaton + UTP suffix automaton
  * Note: endpos classes: len[link[v]] < |substring| <= len[v] for every

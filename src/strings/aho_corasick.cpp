@@ -1,9 +1,11 @@
 /**
  * Usage: Aho ac; int id = ac.add(p) (id = 0, 1, ...); ac.build();
+ *        (lowercase; build() once after all add(), before count / go)
  *        ac.count(text) -> occurrences of each pattern in text (overlaps
  *        and duplicate patterns counted)
  *        ac.go[v][c] = full automaton transition (for DP over strings)
- * Complexity: build O(L K), L = total pattern length; count O(|text| + L)
+ * Complexity: build O(L K), L = total pattern length; count O(|text| + L);
+ *             memory ~(L + 1) K ints (L = 1e6: ~110 MB)
  * Source: UPB AhoCorasick (pointer nodes with unordered_map; missed
  *         matches of patterns that are suffixes of other matches) + UPB
  *         isc string_AC (ok) + UTP incremental Aho-Corasick

@@ -5,7 +5,7 @@
  *                         the first occurrence of palindrome v (nodes 2..)
  *        e.ends[i]      -> #palindromes ending at position i (their sum =
  *                         #palindromic substrings by position)
- * Complexity: O(n K) build
+ * Complexity: O(n K) build; memory ~(n + 2) K ints (n = 1e6: ~110 MB)
  * Source: UPB PalindromicTree_Eertree (copies s char by char; occ needs a
  *         separate build_occ); ends[] and pos[]: own
  * Note: node 0 = root of length -1, node 1 = root of length 0. Longest
