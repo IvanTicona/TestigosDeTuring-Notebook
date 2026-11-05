@@ -123,3 +123,4 @@ src/strings/z_function.cpp | Z-Function
 src/strings/hashing.cpp | String Hashing (mod 2^61 - 1)
 src/strings/manacher.cpp | Manacher (Palindromes)
 src/strings/suffix_array.cpp | Suffix Array and LCP
+src/strings/suffix_automaton.cpp | Suffix Automaton
