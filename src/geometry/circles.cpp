@@ -74,8 +74,9 @@ ld lens_area(PD c1, ld r1, PD c2, ld r2) {
     ld d = (c2 - c1).len();
     if (d >= r1 + r2) return 0;
     if (d <= fabsl(r1 - r2)) return PI * min(r1, r2) * min(r1, r2);
-    ld a1 = 2 * acosl((d * d + r1 * r1 - r2 * r2) / (2 * d * r1));
-    ld a2 = 2 * acosl((d * d + r2 * r2 - r1 * r1) / (2 * d * r2));
+    auto ac = [](ld x) { return acosl(max((ld)-1, min((ld)1, x))); };
+    ld a1 = 2 * ac((d * d + r1 * r1 - r2 * r2) / (2 * d * r1));  // clamp:
+    ld a2 = 2 * ac((d * d + r2 * r2 - r1 * r1) / (2 * d * r2));  // NaN-safe
     return (r1 * r1 * (a1 - sinl(a1)) + r2 * r2 * (a2 - sinl(a2))) / 2;
 }
 

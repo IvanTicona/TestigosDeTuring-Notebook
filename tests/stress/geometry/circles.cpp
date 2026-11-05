@@ -77,5 +77,17 @@ int main() {
             }
         CHECK(fabsl(r - best) < 1e-7, "mec radius");
     }
+    // near-tangent disks (outside and inside): the acosl argument can leave
+    // [-1, 1] by rounding; the old version returned NaN there
+    for (stress::iter = 0; stress::iter < stress::scaled(200000); stress::iter++) {
+        ld r1 = stress::rnd(1, 1000000) / (ld)1000, r2 = stress::rnd(1, 1000000) / (ld)1000;
+        ld ang = stress::rnd(0, 1000000) / (ld)1e6 * 2 * PI;
+        ld base = stress::rnd(0, 1) ? r1 + r2 : fabsl(r1 - r2);
+        ld d = base * (1 + stress::rnd(-1000, 1000) * 1e-18L);
+        PD c1{stress::rnd(-1000, 1000) / (ld)7, stress::rnd(-1000, 1000) / (ld)7};
+        PD c2 = c1 + PD{d * cosl(ang), d * sinl(ang)};
+        ld a = lens_area(c1, r1, c2, r2), mx = PI * min(r1, r2) * min(r1, r2);
+        CHECK(!isnan(a) && a > -1e-9 && a < mx + 1e-6 * mx, "near-tangent lens");
+    }
     puts("OK");
 }
