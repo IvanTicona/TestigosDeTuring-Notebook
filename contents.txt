@@ -136,3 +136,4 @@ src/geometry/convex_hull.cpp | Convex Hull and Diameter (Rotating Calipers)
 src/geometry/closest_pair.cpp | Closest Pair of Points
 src/geometry/circles.cpp | Circles (Intersections, Tangents, MEC, Lens)
 src/geometry/half_plane.cpp | Half-Plane Intersection
+src/geometry/minkowski.cpp | Minkowski Sum
