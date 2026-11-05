@@ -133,3 +133,4 @@ src/geometry/point.cpp | Point (Vectors, Angular Sort)
 src/geometry/segments.cpp | Lines and Segments
 src/geometry/polygon.cpp | Polygons (Area, Point Location, Pick, Cut)
 src/geometry/convex_hull.cpp | Convex Hull and Diameter (Rotating Calipers)
+src/geometry/closest_pair.cpp | Closest Pair of Points
