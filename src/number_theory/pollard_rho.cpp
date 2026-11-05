@@ -41,8 +41,9 @@ ll pollard(ll n) {
     return gcd(prd, (ull)n);
 }
 
-vl factor(ll n) {
+vl factor(ll n) {  // n >= 1 (factor(1) = {})
     vl res;
+    if (n < 1) return res;
     for (ll p : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37})
         while (n % p == 0) res.pb(p), n /= p;
     vl st = {n};  // remaining parts to split

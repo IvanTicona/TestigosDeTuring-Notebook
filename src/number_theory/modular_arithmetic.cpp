@@ -75,7 +75,8 @@ struct Mint {
     }
     Mint &operator-=(Mint o) { if ((v -= o.v) < 0) v += m(); return *this; }
     Mint &operator*=(Mint o) { v = (int)((ll)v * o.v % m()); return *this; }
-    Mint pow(ll e) const {
+    Mint pow(ll e) const {  // e < 0: power of the inverse (m prime)
+        if (e < 0) return inv().pow(-e);
         Mint r = 1, b = *this;
         for (; e; e >>= 1, b *= b) if (e & 1) r *= b;
         return r;

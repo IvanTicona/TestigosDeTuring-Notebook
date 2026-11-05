@@ -138,6 +138,9 @@ int main() {
     for (int x = -50; x <= 50; x++) {
         CHECK(m7(x).v == ((x % 7) + 7) % 7, "Mint<7> " + to_string(x));
         if (x % 7) CHECK((m7(x) * m7(x).inv()).v == 1, "inv7 " + to_string(x));
+        // negative exponents: x^-e == (x^-1)^e (the old pow looped forever)
+        for (int e = -5; e <= 5 && x % 7; e++)
+            CHECK(m7(x).pow(e) * m7(x).pow(-e) == m7(1), "pow neg " + to_string(e));
     }
     puts("OK");
 }

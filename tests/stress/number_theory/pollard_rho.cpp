@@ -104,5 +104,6 @@ int main() {
         for (auto [p, e] : factor_pe(n)) for (int i = 0; i < e; i++) flat.pb(p);
         CHECK(flat == factor(n), "pe n=" + to_string(n));
     }
+    CHECK(factor(0).empty() && factor(1).empty() && factor(-6).empty(), "n < 2");
     puts("OK");
 }
