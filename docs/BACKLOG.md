@@ -20,7 +20,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 6 | Graphs | done (review) |
 | 7 | Flows & Matching | done (review) |
 | 8 | Trees | done (review) |
-| 9 | Strings | pending |
+| 9 | Strings | done (review) |
 | 10 | Geometry | pending |
 | 11 | Misc | pending |
 
@@ -178,6 +178,23 @@ P DinicScaling (Dinic is enough).
 Rerooting DP lives in section 4 (dp/rerooting.cpp); tree knapsack and "count paths of length k" patterns
 are solved with centroid.cpp / sack.cpp.
 
+## 9. Strings (topics chosen by Claude on user delegation, 2026-11-05)
+
+| # | Topic / file | Sources | Done |
+|---|---|---|---|
+| 1 | prefix_function.cpp: pi, KMP (empty pattern ok), period, KMP automaton | U KMP, U KMP Automaton, P KMP, P KMP_Automaton, P isc string_KMP, old kmp (empty pattern bug) | done (review) |
+| 2 | z_function.cpp: Z, matching (empty pattern ok) | P ZFunction, P isc string_z_function (wrong index), old z_function | done (review) |
+| 3 | hashing.cpp: mod 2^61 - 1, random base, unsigned bytes, lcp | U Fast Hashing (fixed bases), P RollingHash, old rabin_karp (empty pattern, bytes >= 128) | done (review) |
+| 4 | manacher.cpp: d1 / d2, O(1) is_pal, longest, count | P Manacher | done (review) |
+| 5 | suffix_array.cpp: O(n log n) with sentinel, Kasai LCP | P SuffixArrayLCP (cyclic, wrong), P isc string_SA, P isc kasai | done (review) |
+| 6 | suffix_automaton.cpp: distinct, occurrences, LCS | P SuffixAutomaton (120 MB reserve), P isc SAM, T suffix automaton | done (review) |
+| 7 | aho_corasick.cpp: array automaton, counts per pattern (suffix chains) | P AhoCorasick (missed suffix matches), P isc string_AC, T incremental AC | done (review) |
+| 8 | eertree.cpp: distinct palindromes, occ, first position, ends[i] | P PalindromicTree_Eertree | done (review) |
+| 9 | lyndon.cpp: Duval factorization, minimal rotation (smallest index) | P Booth_Duval, T minimal string rotation | done (review) |
+
+Not added: Ukkonen suffix tree (P isc, SA / SAM cover it), trie (trivial; see xor_trie / aho),
+wildcard matching (fft.cpp correlate note).
+
 ## Deferred to later sections (do not lose)
 
 ### 2. Combinatorics
@@ -189,9 +206,6 @@ are solved with centroid.cpp / sack.cpp.
 - Inclusion-exclusion patterns: P InclusionExclusion
 - Pascal triangle: P BinomialDP_Pascal
 - Counting formulas: T counting, T fibonacci properties
-
-### 9. Strings
-- old: z_function, kmp (BUG: empty pattern), rabin_karp (BUGS: empty pattern, bytes >= 128)
 
 ### 11. Misc
 - old: backtracking_template, n_queens
