@@ -96,5 +96,15 @@ int main() {
             CHECK(f == bestf && c == bestc, "negative costs");
         }
     }
+    for (ll w : {1LL, -1LL}) {  // long chain: the old O(V E) Bellman-Ford
+        int n = 50000;          // took ~20 s here; now skipped / 2 rounds
+        MCMF m(n);
+        for (int i = 0; i + 1 < n; i++) m.add_edge(i, i + 1, 2, w);
+        auto t0 = chrono::steady_clock::now();
+        auto [f, c] = m.solve(0, n - 1);
+        double sec = chrono::duration<double>(chrono::steady_clock::now() - t0).count();
+        CHECK(f == 2 && c == 2 * (n - 1) * w, "long chain");
+        CHECK(sec < 2.0 || stress::SLOW, "long chain too slow");
+    }
     puts("OK");
 }

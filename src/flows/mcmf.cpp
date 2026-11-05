@@ -3,7 +3,8 @@
  *        auto [flow, cost] = m.solve(s, t, maxf = INFL);  (min cost among
  *        max flows, or among flows of value maxf); m.flow(id)
  * Complexity: O(F (E log V)) with F = #augmentations (<= flow value);
- *             first potentials by Bellman-Ford O(V E)
+ *             first potentials by Bellman-Ford O(V E) (skipped if no cost
+ *             is negative; stops early)
  * Source: UPB MinCostMaxFlowPotentials (verified) + UPB MinCostMaxFlow +
  *         UPB isc graph_mincost_maxflow + UMSS Min Cost Max Flow (CheapDinitz:
  *         did not compile, int costs)
@@ -30,10 +31,15 @@ struct MCMF {
         vl pot(n, INFL), d(n);
         vi pe(n);
         pot[s] = 0;
-        for (int r = 0; r < n; r++)  // Bellman-Ford: potentials for < 0 costs
+        bool neg = false;
+        for (auto &x : e) neg |= x.cap > 0 && x.cost < 0;
+        for (int r = 0; neg && r < n; r++) {  // Bellman-Ford if costs < 0
+            neg = false;  // stops as soon as nothing relaxes
             for (int i = 0; i < sz(e); i++)
-                if (int u = e[i ^ 1].to; e[i].cap > 0 && pot[u] < INFL)
-                    pot[e[i].to] = min(pot[e[i].to], pot[u] + e[i].cost);
+                if (int u = e[i ^ 1].to, v = e[i].to; e[i].cap > 0 &&
+                    pot[u] < INFL && pot[u] + e[i].cost < pot[v])
+                    pot[v] = pot[u] + e[i].cost, neg = true;
+        }
         for (ll &x : pot) if (x == INFL) x = 0;
         ll flow = 0, cost = 0;
         while (flow < maxf) {
