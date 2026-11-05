@@ -142,3 +142,4 @@ src/geometry/point3d.cpp | 3D Basics (Volumes, Planes, Sphere)
 
 [Misc]
 src/misc/dates.cpp | Dates (Gregorian Day Numbers)
+src/misc/bit_tricks.cpp | Bit Tricks (Gosper, Gray Codes, Submasks)
