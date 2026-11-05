@@ -1,5 +1,6 @@
 /**
- * Usage: kadane(a)        -> {best sum, l, r}: a[l..r] non-empty, max sum
+ * Usage: kadane(a)        -> {best sum, l, r}: a[l..r] max sum (a and
+ *                           the answer non-empty)
  *        max_sum_2d(g)    -> max sum of a non-empty sub-rectangle
  *        max_sum_3d(c)    -> max sum of a non-empty sub-box (c[x][y][z])
  * Complexity: kadane O(n); 2d O(R^2 C); 3d O(X^2 Y^2 Z)

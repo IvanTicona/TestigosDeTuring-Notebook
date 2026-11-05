@@ -3,7 +3,7 @@
  *          non-empty consecutive groups, C(j, i) = cost of [j, i)
  *        dnc_layer(prev, cur, C)  -> one layer: cur[i] = min_{j<i}
  *          prev[j] + C(j, i) (building block for other recurrences)
- *        knuth(n, w) -> dp[0][n-1], dp[i][j] = min_{i<=m<j} dp[i][m] +
+ *        knuth(n >= 1, w) -> dp[0][n-1], dp[i][j] = min_{i<=m<j} dp[i][m] +
  *          dp[m+1][j] + w(i, j), dp[i][i] = 0 (merge / split intervals)
  *        aliens(k, lo, hi, f) -> g(k) for convex g from f(lambda) =
  *          {min_c g(c) + lambda c, SMALLEST optimal c}, lambda in [lo, hi]

@@ -2,8 +2,8 @@
  * Usage: subset_sums_sorted(a) -> all 2^n subset sums, sorted
  *        mitm_count(a, S)      -> #subsets (by index) with sum exactly S
  *        mitm_best(a, W)       -> max subset sum <= W (LLONG_MIN if none)
- * Complexity: subset_sums_sorted O(2^n) (merging); mitm O(2^(n/2) n)
- *             -> n = 40 in ~0.1 s
+ * Complexity: subset_sums_sorted O(2^n) (merging); mitm O(2^(n/2)) time
+ *             and memory -> n = 40 in ~0.1 s
  * Source: UPB MeetInTheMiddle (O(2^n n) generation, sorts) + own (sorted
  *         generation by merging, two pointers)
  * Note: values may be negative. Same idea for XOR (hash map of one half),
