@@ -49,6 +49,8 @@ int main() {
         CHECK(am / m == a && am % m == 0, "mul / div");
         CHECK((a * b) % m == (ll)((i128)(a % m) * (b % m) % m), "mod of product");
         CHECK((a < b) != (b < a) || a == b, "total order");
+        CHECK((a != b) == !(a == b) && (a > b) == (b < a) &&
+              (a <= b) == !(b < a) && (a >= b) == !(a < b), "derived comparisons");
     }
     puts("OK");
 }

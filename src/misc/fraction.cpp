@@ -34,6 +34,10 @@ struct Frac {
     Frac operator/(Frac o) const { return mk((i128)p * o.q, (i128)q * o.p); }
     bool operator<(Frac o) const { return (i128)p * o.q < (i128)o.p * q; }
     bool operator==(Frac o) const { return p == o.p && q == o.q; }
+    bool operator!=(Frac o) const { return !(*this == o); }
+    bool operator>(Frac o) const { return o < *this; }
+    bool operator<=(Frac o) const { return !(o < *this); }
+    bool operator>=(Frac o) const { return !(*this < o); }
     ld to_ld() const { return (ld)p / q; }
 };
 

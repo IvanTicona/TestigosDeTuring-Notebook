@@ -27,6 +27,8 @@ int main() {
             CHECK((i128)q.p * b * c == (i128)a * d * q.q, "quotient");
         }
         if (!(x == y)) CHECK((x < y) == (x.to_ld() < y.to_ld()), "order");
+        CHECK((x != y) == !(x == y) && (x > y) == (y < x) &&
+              (x <= y) == !(y < x) && (x >= y) == !(x < y), "derived comparisons");
     }
     for (stress::iter = 0; stress::iter < stress::scaled(3000); stress::iter++) {
         ll b = stress::rnd(1, 1000), a = stress::rnd(0, 3000), N = stress::rnd(1, 60);

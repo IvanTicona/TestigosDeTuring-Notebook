@@ -36,6 +36,10 @@ struct Big {
         return false;
     }
     bool operator==(const Big &o) const { return d == o.d; }
+    bool operator!=(const Big &o) const { return !(*this == o); }
+    bool operator>(const Big &o) const { return o < *this; }
+    bool operator<=(const Big &o) const { return !(o < *this); }
+    bool operator>=(const Big &o) const { return !(*this < o); }
     Big operator+(const Big &o) const {
         Big r;
         for (int i = 0, c = 0; i < max(sz(d), sz(o.d)) || c; i++) {
