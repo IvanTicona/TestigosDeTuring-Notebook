@@ -1,7 +1,8 @@
 /**
  * Usage: necklaces(n, k)          -> exact #colorings of an n-cycle with k
  *                                   colors up to rotation (__int128)
- *        necklaces_mod(n, k, p)   -> same mod prime p (n < p), n up to ~1e12
+ *        necklaces_mod(n, k, p)   -> same mod prime p, p NOT dividing n
+ *                                   (n up to ~1e12)
  *        bracelets(n, k)          -> up to rotation AND reflection (exact)
  *        burnside(cycles, k)      -> Polya: (1/|G|) sum_g k^cycles(g), exact;
  *                                   cycles[i] = #cycles of the i-th symmetry
