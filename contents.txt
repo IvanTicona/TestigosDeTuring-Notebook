@@ -137,3 +137,4 @@ src/geometry/closest_pair.cpp | Closest Pair of Points
 src/geometry/circles.cpp | Circles (Intersections, Tangents, MEC, Lens)
 src/geometry/half_plane.cpp | Half-Plane Intersection
 src/geometry/minkowski.cpp | Minkowski Sum
+src/geometry/point3d.cpp | 3D Basics (Volumes, Planes, Sphere)
