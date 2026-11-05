@@ -127,3 +127,6 @@ src/strings/suffix_automaton.cpp | Suffix Automaton
 src/strings/aho_corasick.cpp | Aho-Corasick
 src/strings/eertree.cpp | Palindromic Tree (Eertree)
 src/strings/lyndon.cpp | Lyndon Factorization and Minimal Rotation
+
+[Geometry]
+src/geometry/point.cpp | Point (Vectors, Angular Sort)
