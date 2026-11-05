@@ -1,6 +1,7 @@
 /**
  * Usage: generators for brute-force vs solution stress tests (uses rng /
- *        randint from the template; seed it with argv for reproducibility)
+ *        randint from the template; reproducible: in main of the
+ *        generator call rng.seed(atoi(argv[1])) before anything else)
  *        rand_perm(n)            -> random permutation of 0..n-1
  *        rand_distinct(k, lo, hi)-> k distinct values in [lo, hi] (sorted)
  *        rand_tree(n)            -> n - 1 edges of a uniform-ish random tree

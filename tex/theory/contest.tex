@@ -12,8 +12,9 @@ for i in $(seq 1 2000); do
 done
 \end{lstlisting}
 Debug build: \texttt{-DLOCAL -fsanitize=address,undefined -D\_GLIBCXX\_DEBUG
--g} (catches out of bounds, overflow, bad iterators). Seed the generator:
-\texttt{mt19937\_64 rng(atoi(argv[1]))}.
+-g} (catches out of bounds, overflow, bad iterators). Seed the template's
+generator first thing in the gen's main: \texttt{rng.seed(atoi(argv[1]))}
+(declaring another \texttt{rng} clashes with the template one).
 
 \textbf{Python} (big integers are native; use when C++ precision fails):
 \begin{lstlisting}[language=Python]
