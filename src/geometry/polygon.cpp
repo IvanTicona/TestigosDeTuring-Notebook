@@ -1,6 +1,7 @@
 /**
  * Usage: polygon = vector<Pt<T>> in order (CW or CCW), no repeated last
  *        area2(poly)            -> 2 * signed area (> 0 if CCW), exact for ll
+ *                                  while n * 2 max|coord|^2 < ~9e18
  *        in_polygon(poly, p)    -> 1 inside, 0 on the boundary, -1 outside
  *                                  (any simple polygon, O(n))
  *        in_convex(poly, p)     -> same for a CCW convex polygon (no 3
