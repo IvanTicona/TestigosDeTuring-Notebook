@@ -18,7 +18,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 4 | Dynamic Programming (incl. optimizations) | done (review) |
 | 5 | Data Structures | done (review) |
 | 6 | Graphs | done (review) |
-| 7 | Flows & Matching | pending |
+| 7 | Flows & Matching | done (review) |
 | 8 | Trees | pending |
 | 9 | Strings | pending |
 | 10 | Geometry | pending |
@@ -143,6 +143,24 @@ rope (U: slower than the treap), KD tree (P: geometry), link-cut / HLD / centroi
 
 Not added: Yen's k shortest SIMPLE paths (P, rare), SPFA (BF is safer), Johnson (note in dijkstra).
 
+## 7. Flows & Matching (topics chosen by Claude on user delegation, 2026-11-05)
+
+| # | Topic / file | Sources | Done |
+|---|---|---|---|
+| 1 | dinic.cpp: edge ids, edge flows, min cut side, incremental | P Dinic (code/), U Max Flow, old dinic (did not compile), P isc graph_dinic (wrong return) | done (review) |
+| 2 | push_relabel.cpp: highest label + gap | P PushRelabel, KACTL | done (review) |
+| 3 | mcmf.cpp: potentials (negative costs via Bellman-Ford), flow limit, edge flows | P MinCostMaxFlowPotentials, P MinCostMaxFlow, P isc mincost, U MCMF (did not compile) | done (review) |
+| 4 | hungarian.cpp: n <= m assignment, 0-indexed | U Hungarian, P Hungarian, P MinCostMatching | done (review) |
+| 5 | bipartite_matching.cpp: Hopcroft-Karp, König cover, DAG path cover | P HopcroftKarp, P isc HK (dist reset), P MaxBipartiteMatching, T konig / path cover | done (review) |
+| 6 | global_min_cut.cpp: Stoer-Wagner with side | P MinCut (int), U Min Cut (unit s-t only) | done (review) |
+| 7 | gomory_hu.cpp: Gusfield flow tree + path query | P GomoryHuTree | done (review) |
+| 8 | lower_bounds.cpp: max flow with lower bounds, circulations | own (gap) | done (review) |
+| 9 | general_matching.cpp: Edmonds blossom O(V^3) | own (gap) | done (review) |
+| 10 | tex/theory/flows.tex: modeling sheet (gadgets, Menger, closure, König, Hall, Dilworth, Tutte, lower bounds, min cost) | T konig / path cover, own | done (review) |
+
+Not added: weighted general matching (too long), P GraphCutInference (= closure model in the sheet),
+P DinicScaling (Dinic is enough).
+
 ## Deferred to later sections (do not lose)
 
 ### 2. Combinatorics
@@ -164,9 +182,6 @@ Not added: Yen's k shortest SIMPLE paths (P, rare), SPFA (BF is safer), Johnson 
 ### 11. Misc
 - old: backtracking_template, n_queens
 - Template extras not used: possible()/impossible(), max3/min4, Python decimal precision (U)
-
-### 7. Flows
-- old: dinic (quarantined, Benq macros)
 
 ## Snippet conventions
 - Each snippet ends with `void example_<name>()`: short usage demo; every `cout` line
