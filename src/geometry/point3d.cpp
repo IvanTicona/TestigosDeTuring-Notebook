@@ -1,14 +1,15 @@
 /**
  * Usage: P3<ll> / P3<ld>: + - * /, dot, cross, norm2, len
  *        vol6(a, b, c, d)        -> 6 * signed volume of tetrahedron (exact
- *                                   for ll; > 0 if d is on the side of
- *                                   (b - a) x (c - a))
+ *                                   for ll if |coords| <= ~5e5; > 0 if d
+ *                                   is on the side of (b - a) x (c - a))
  *        plane_dist(a, b, c, p)  -> signed distance from p to plane abc
  *        line_plane(a, b, c, p, q) -> {1, X} point where line pq meets the
  *                                   plane, {0, _} if parallel
  *        poly_volume(faces)      -> volume of a closed polyhedron, faces as
  *                                   vertex lists oriented outwards (CCW
- *                                   seen from outside)
+ *                                   seen from outside); with ll the
+ *                                   products need |coords| <= ~1e6
  *        sphere_dist(lat1, lon1, lat2, lon2, R) -> great-circle distance
  *                                   (radians)
  * Complexity: O(1); poly_volume O(total vertices)
