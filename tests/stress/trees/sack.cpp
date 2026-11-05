@@ -14,17 +14,23 @@ int main() {
         vector<vi> g(n);
         vi perm(n);
         iota(all(perm), 0), shuffle(all(perm), stress::rng);
+        bool forest = stress::rnd(0, 2) == 0;  // the old version crashed
         for (int i = 1; i < n; i++) {
+            if (forest && stress::rnd(0, 3) == 0) continue;
             int p = stress::rnd(0, i - 1);
             g[perm[i]].pb(perm[p]), g[perm[p]].pb(perm[i]);
         }
         vi col(n);
         for (int &c : col) c = stress::rnd(0, C - 1);
-        vi par(n, -1), q = {root};
+        vi par(n, -1), q;
         vector<char> seen(n, 0);
-        seen[root] = 1;
-        for (int i = 0; i < sz(q); i++)
-            for (int v : g[q[i]]) if (!seen[v]) seen[v] = 1, par[v] = q[i], q.pb(v);
+        for (int r0 = -1; r0 < n; r0++) {
+            int r = r0 < 0 ? root : r0;
+            if (seen[r]) continue;
+            seen[r] = 1, q.pb(r);
+            for (int i = sz(q) - 1; i < sz(q); i++)
+                for (int v : g[q[i]]) if (!seen[v]) seen[v] = 1, par[v] = q[i], q.pb(v);
+        }
         auto in_sub = [&](int x, int v) {
             for (int z = x; z >= 0; z = par[z]) if (z == v) return true;
             return false;

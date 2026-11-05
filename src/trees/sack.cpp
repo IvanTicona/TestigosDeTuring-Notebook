@@ -9,52 +9,63 @@
  * Note: "small to large": keep the heavy child's data, re-add light
  *       subtrees. Typical: #distinct colors / most frequent color / count
  *       of nodes at depth d in each subtree. Alternative: merge sets small
- *       into large (O(n log^2 n)).
+ *       into large (O(n log^2 n)). Forests: every tree is solved (root's
+ *       tree first); the structure is empty when a new tree starts.
  * Status: untested
  */
 template <class A, class R, class Q>
 void sack(const vector<vi> &g, int root, A add, R rem, Q ans) {
     int n = sz(g);
-    vi par(n, -1), ord = {root}, sub(n, 1), big(n, -1), tin(n), tout(n);
-    vi ver;
-    for (int i = 0; i < sz(ord); i++)
-        for (int v : g[ord[i]])
-            if (v != par[ord[i]]) par[v] = ord[i], ord.pb(v);
-    for (int i = n - 1; i > 0; i--) sub[par[ord[i]]] += sub[ord[i]];
+    vi par(n, -1), ord, sub(n, 1), big(n, -1), tin(n), tout(n), ver, roots;
+    vector<char> seen(n, 0);
+    for (int k = -1; k < n; k++) {  // forest: root first, then other trees
+        int r = k < 0 ? root : k;
+        if (r >= n || seen[r]) continue;
+        seen[r] = 1, roots.pb(r), ord.pb(r);
+        for (int i = sz(ord) - 1; i < sz(ord); i++)
+            for (int v : g[ord[i]])
+                if (!seen[v]) seen[v] = 1, par[v] = ord[i], ord.pb(v);
+    }
+    for (int i = n - 1; i >= 0; i--)
+        if (par[ord[i]] >= 0) sub[par[ord[i]]] += sub[ord[i]];
     for (int v : ord)
         for (int c : g[v])
             if (c != par[v] && (big[v] < 0 || sub[c] > sub[big[v]])) big[v] = c;
-    vi st = {root};  // preorder: subtree of v = ver[tin[v] .. tout[v]]
-    while (!st.empty()) {
-        int v = st.back();
-        st.pop_back();
-        tin[v] = sz(ver), tout[v] = tin[v] + sub[v] - 1, ver.pb(v);
-        for (int c : g[v]) if (c != par[v]) st.pb(c);
+    for (int r : roots) {  // preorder: subtree of v = ver[tin[v] .. tout[v]]
+        vi st = {r};
+        while (!st.empty()) {
+            int v = st.back();
+            st.pop_back();
+            tin[v] = sz(ver), tout[v] = tin[v] + sub[v] - 1, ver.pb(v);
+            for (int c : g[v]) if (c != par[v]) st.pb(c);
+        }
     }
     struct F { int v, i; bool keep, heavy_done; };
-    vector<F> s = {{root, 0, true, false}};
-    while (!s.empty()) {
-        int v = s.back().v;
-        if (!s.back().heavy_done) {
-            int &i = s.back().i;  // next light child to solve (and drop)
-            while (i < sz(g[v]) && (g[v][i] == par[v] || g[v][i] == big[v]))
-                i++;
-            if (i < sz(g[v])) {
-                int c = g[v][i++];
-                s.pb({c, 0, false, false});
-                continue;
+    for (int r : roots) {  // keep = false: empty between trees
+        vector<F> s = {{r, 0, false, false}};
+        while (!s.empty()) {
+            int v = s.back().v;
+            if (!s.back().heavy_done) {
+                int &i = s.back().i;  // next light child to solve (and drop)
+                while (i < sz(g[v]) && (g[v][i] == par[v] || g[v][i] == big[v]))
+                    i++;
+                if (i < sz(g[v])) {
+                    int c = g[v][i++];
+                    s.pb({c, 0, false, false});
+                    continue;
+                }
+                s.back().heavy_done = true;
+                if (big[v] >= 0) { s.pb({big[v], 0, true, false}); continue; }
             }
-            s.back().heavy_done = true;
-            if (big[v] >= 0) { s.pb({big[v], 0, true, false}); continue; }
+            for (int c : g[v])
+                if (c != par[v] && c != big[v])
+                    for (int p = tin[c]; p <= tout[c]; p++) add(ver[p]);
+            add(v), ans(v);
+            bool keep = s.back().keep;
+            s.pop_back();
+            if (!keep)
+                for (int p = tin[v]; p <= tout[v]; p++) rem(ver[p]);
         }
-        for (int c : g[v])
-            if (c != par[v] && c != big[v])
-                for (int p = tin[c]; p <= tout[c]; p++) add(ver[p]);
-        add(v), ans(v);
-        bool keep = s.back().keep;
-        s.pop_back();
-        if (!keep)
-            for (int p = tin[v]; p <= tout[v]; p++) rem(ver[p]);
     }
 }
 

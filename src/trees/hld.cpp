@@ -14,34 +14,46 @@
  * Note: ranges come in no particular order: for NON-commutative ops,
  *       split the walk into the u side and the v side. Subtree ranges and
  *       path ranges use the same positions (subtree + path in one tree).
+ *       Forests work; path / lca need u and v in the same tree.
  * Status: untested
  */
 struct HLD {
     vi par, dep, heavy, head, pos, sub;
-    HLD(const vector<vi> &g, int root = 0) {
-        int n = sz(g);
+    HLD(const vector<vi> &g, int root = 0) {  // forest: root first, then
+        int n = sz(g);                         // the other trees by index
         par.assign(n, -1), dep.assign(n, 0), heavy.assign(n, -1);
-        head.assign(n, root), pos.assign(n, 0), sub.assign(n, 1);
-        vi ord = {root};
-        for (int i = 0; i < sz(ord); i++)
-            for (int v : g[ord[i]])
-                if (v != par[ord[i]])
-                    par[v] = ord[i], dep[v] = dep[ord[i]] + 1, ord.pb(v);
-        for (int i = n - 1; i > 0; i--) sub[par[ord[i]]] += sub[ord[i]];
+        head.assign(n, 0), pos.assign(n, 0), sub.assign(n, 1);
+        vi ord, roots;
+        vector<char> seen(n, 0);
+        for (int k = -1; k < n; k++) {
+            int r = k < 0 ? root : k;
+            if (r >= n || seen[r]) continue;
+            seen[r] = 1, roots.pb(r), ord.pb(r);
+            for (int i = sz(ord) - 1; i < sz(ord); i++)
+                for (int v : g[ord[i]])
+                    if (!seen[v])
+                        seen[v] = 1, par[v] = ord[i],
+                        dep[v] = dep[ord[i]] + 1, ord.pb(v);
+        }
+        for (int i = n - 1; i >= 0; i--)
+            if (par[ord[i]] >= 0) sub[par[ord[i]]] += sub[ord[i]];
         for (int u : ord) {
             int best = 0;
             for (int v : g[u])
                 if (v != par[u] && sub[v] > best) best = sub[v], heavy[u] = v;
         }
-        vi st = {root};
         int cur = 0;
-        while (!st.empty()) {  // preorder, heavy child right after its parent
-            int u = st.back();
-            st.pop_back();
-            pos[u] = cur++;
-            for (int v : g[u])
-                if (v != par[u] && v != heavy[u]) head[v] = v, st.pb(v);
-            if (heavy[u] >= 0) head[heavy[u]] = head[u], st.pb(heavy[u]);
+        for (int r : roots) {
+            vi st = {r};
+            head[r] = r;
+            while (!st.empty()) {  // preorder, heavy child right after parent
+                int u = st.back();
+                st.pop_back();
+                pos[u] = cur++;
+                for (int v : g[u])
+                    if (v != par[u] && v != heavy[u]) head[v] = v, st.pb(v);
+                if (heavy[u] >= 0) head[heavy[u]] = head[u], st.pb(heavy[u]);
+            }
         }
     }
     template <class F>
