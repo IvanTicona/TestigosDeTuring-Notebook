@@ -111,3 +111,4 @@ src/trees/lca.cpp | LCA (Binary Lifting, k-th on Path, Path Max)
 src/trees/euler_tour.cpp | Euler Tour (Subtrees, O(1) LCA)
 src/trees/hld.cpp | Heavy-Light Decomposition
 src/trees/centroid.cpp | Centroid Decomposition
+src/trees/sack.cpp | DSU on Tree (Sack)
