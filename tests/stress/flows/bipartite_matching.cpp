@@ -57,5 +57,14 @@ int main() {
         }
         CHECK(path_cover(n, E) == best, "path cover");
     }
+    {  // phase 1 matches L_i - R_{i+1}; phase 2 needs one alternating path
+       // of length ~2n from L_{n-1} to R_0 (old recursive dfs: stack overflow)
+        int n = 200000;
+        HopcroftKarp hk(n, n);
+        for (int i = 0; i + 1 < n; i++) hk.add_edge(i, i + 1), hk.add_edge(i, i);
+        hk.add_edge(n - 1, n - 1);
+        CHECK(hk.solve() == n, "long alternating path");
+        for (int i = 0; i < n; i++) CHECK(hk.ml[i] == i && hk.mr[i] == i, "long path result");
+    }
     puts("OK");
 }

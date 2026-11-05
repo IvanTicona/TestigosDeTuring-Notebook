@@ -57,5 +57,15 @@ int main() {
         ll f2 = f + d.maxflow(s, t);
         CHECK(f2 == min_cut(), "incremental maxflow");
     }
+    {  // 2e5-long augmenting path: the old recursive dfs blew the stack
+        int n = 200000;
+        Dinic d(n);
+        ll mn = INFL;
+        for (int i = 0; i + 1 < n; i++) {
+            ll c = stress::rnd(5, (ll)1e12);
+            mn = min(mn, c), d.add_edge(i, i + 1, c);
+        }
+        CHECK(d.maxflow(0, n - 1) == mn, "long chain");
+    }
     puts("OK");
 }

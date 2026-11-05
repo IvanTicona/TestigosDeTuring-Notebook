@@ -17,7 +17,7 @@
 struct HopcroftKarp {
     int nl, nr;
     vector<vi> g;
-    vi ml, mr, dist;
+    vi ml, mr, dist, ip, st;
     HopcroftKarp(int nl_, int nr_)
         : nl(nl_), nr(nr_), g(nl_), ml(nl_, -1), mr(nr_, -1) {}
     void add_edge(int u, int v) { g[u].pb(v); }
@@ -37,21 +37,31 @@ struct HopcroftKarp {
         }
         return found;
     }
-    bool dfs(int u) {
-        for (int v : g[u]) {
-            int w = mr[v];
-            if (w < 0 || (dist[w] == dist[u] + 1 && dfs(w))) {
-                ml[u] = v, mr[v] = u;
+    bool dfs(int r) {  // iterative: alternating paths can be ~n long
+        st = {r};
+        while (!st.empty()) {
+            int u = st.back();
+            if (ip[u] == sz(g[u])) {  // dead end for this phase
+                dist[u] = -1, st.pop_back();
+                if (!st.empty()) ip[st.back()]++;
+                continue;
+            }
+            int w = mr[g[u][ip[u]]];
+            if (w < 0) {  // free right vertex: flip the whole path
+                for (int x : st) ml[x] = g[x][ip[x]], mr[ml[x]] = x;
                 return true;
             }
+            if (dist[w] == dist[u] + 1) st.pb(w);
+            else ip[u]++;
         }
-        dist[u] = -1;  // dead end for this phase
         return false;
     }
     int solve() {
         int k = 0;
-        while (bfs())
+        while (bfs()) {
+            ip.assign(nl, 0);
             for (int u = 0; u < nl; u++) if (ml[u] < 0 && dfs(u)) k++;
+        }
         return k;
     }
     pair<vi, vi> cover() {  // call after solve()

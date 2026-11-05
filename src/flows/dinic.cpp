@@ -37,23 +37,30 @@ struct Dinic {
         }
         return lvl[t] >= 0;
     }
-    ll dfs(int u, int t, ll f) {
-        if (u == t) return f;
-        for (int &i = it[u]; i < sz(g[u]); i++) {
-            int id = g[u][i], v = e[id].to;
-            if (e[id].cap > 0 && lvl[v] == lvl[u] + 1)
-                if (ll d = dfs(v, t, min(f, e[id].cap))) {
-                    e[id].cap -= d, e[id ^ 1].cap += d;
-                    return d;
-                }
+    vi path;  // edge ids from s; iterative: no stack overflow on long paths
+    ll augment(int s, int t) {
+        path.clear();
+        for (int u = s;;) {
+            if (u == t) {
+                ll d = LLONG_MAX;
+                for (int id : path) d = min(d, e[id].cap);
+                for (int id : path) e[id].cap -= d, e[id ^ 1].cap += d;
+                return d;
+            }
+            int &i = it[u];
+            while (i < sz(g[u]) &&
+                   !(e[g[u][i]].cap > 0 && lvl[e[g[u][i]].to] == lvl[u] + 1))
+                i++;
+            if (i < sz(g[u])) path.pb(g[u][i]), u = e[g[u][i]].to;
+            else if (path.empty()) return 0;
+            else u = e[path.back() ^ 1].to, path.pop_back(), it[u]++;
         }
-        return 0;
     }
     ll maxflow(int s, int t) {
         ll f = 0;
         while (bfs(s, t)) {
             it.assign(sz(g), 0);
-            while (ll d = dfs(s, t, LLONG_MAX)) f += d;
+            while (ll d = augment(s, t)) f += d;
         }
         return f;
     }
