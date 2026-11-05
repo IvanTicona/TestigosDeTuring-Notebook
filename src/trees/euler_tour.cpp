@@ -1,5 +1,5 @@
 /**
- * Usage: EulerTour et(g, root);  g = tree adjacency (vector<vi>)
+ * Usage: EulerTour et(g, root);  g = CONNECTED tree adjacency (vector<vi>)
  *        et.tin[v], et.tout[v] -> subtree of v = preorder positions
  *          [tin, tout] (tout = tin + size - 1); et.ord[pos] = vertex
  *        et.is_anc(u, v) (u ancestor of v, u == v counts)

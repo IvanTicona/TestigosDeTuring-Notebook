@@ -1,5 +1,5 @@
 /**
- * Usage: Centroid cd(g);  g = tree adjacency
+ * Usage: Centroid cd(g);  g = tree adjacency, n >= 1 (connected)
  *        cd.cpar[v] = parent of v in the centroid tree (-1 for the top)
  *        cd.anc[v]  = {(c, dist(v, c))} for every centroid ancestor c of v
  *                     (including v itself), from the top down

@@ -1,5 +1,5 @@
 /**
- * Usage: g[u] = {(v, w)} weighted tree (w = 1 for plain trees)
+ * Usage: g[u] = {(v, w)} weighted tree, n >= 1 (w = 1 for plain trees)
  *        diameter(g) -> {length, path of vertices}
  *        centers(g)  -> 1 or 2 vertices minimizing the max distance (by
  *                       #edges; uses w = 1 semantics)
