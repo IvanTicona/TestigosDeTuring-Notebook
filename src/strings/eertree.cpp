@@ -11,7 +11,7 @@
  * Note: node 0 = root of length -1, node 1 = root of length 0. Longest
  *       palindromic suffix after each character = last. Palindromic
  *       factorization / series links: not here.
- * Status: untested
+ * Status: ok
  */
 struct Eertree {
     static const int K = 26;

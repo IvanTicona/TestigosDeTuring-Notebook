@@ -11,7 +11,7 @@
  * Note: path min / sum / gcd: same table as mx with another operation.
  *       Minimax path between two nodes of a graph: MST + path_max.
  *       Forest: build from every root (or add a virtual root).
- * Status: untested
+ * Status: ok
  */
 struct LCA {
     int L = 1;

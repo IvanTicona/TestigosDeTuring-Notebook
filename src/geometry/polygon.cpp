@@ -18,7 +18,7 @@
  *       vertices on the ray). Area of a union of polygons: sweep instead.
  * Depends: src/geometry/point.cpp
  * Depends: src/geometry/segments.cpp
- * Status: untested
+ * Status: ok
  */
 template <class T>
 T area2(const vector<Pt<T>> &p) {

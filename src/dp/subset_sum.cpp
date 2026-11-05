@@ -12,7 +12,7 @@
  * Note: coin_ways loops coins outside (each multiset once); coin_seqs
  *       loops sums outside (orders count). Values >= 0 (coins >= 1).
  *       Partition into 2 equal halves: subset_sums has bit total / 2.
- * Status: untested
+ * Status: ok
  */
 template <int N>
 bitset<N> subset_sums(const vl &a) {

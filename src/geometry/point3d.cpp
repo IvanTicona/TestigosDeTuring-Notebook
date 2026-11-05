@@ -16,7 +16,7 @@
  * Source: UPB Geom3D (Java) + UMSS Some Formulas (glass volume); own C++
  * Note: 3D convex hull (O(n^2) incremental) is not included. Point in
  *       tetrahedron: four vol6 with the same sign. Coplanar check: vol6 = 0.
- * Status: untested
+ * Status: ok
  */
 template <class T>
 struct P3 {

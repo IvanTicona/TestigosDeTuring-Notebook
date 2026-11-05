@@ -11,7 +11,7 @@
  *       pi(p) | p-1 if p = +-1 (mod 5), | 2(p+1) if p = +-2 (mod 5).
  *       F_(F_n) mod m: inner index mod pisano(m).
  * Depends: src/number_theory/modular_arithmetic.cpp
- * Status: untested
+ * Status: ok
  */
 pll fib(ll n, ll m = MOD) {
     if (n == 0) return {0, 1 % m};

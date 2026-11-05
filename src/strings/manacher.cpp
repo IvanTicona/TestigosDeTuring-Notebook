@@ -10,7 +10,7 @@
  * Note: distinct palindromes: eertree.cpp. Palindromic prefix of
  *       max length: is_pal(0, r) for r from n - 1 down. Min insertions to
  *       make a palindrome: |s| - LPS (DP / LCS with reverse).
- * Status: untested
+ * Status: ok
  */
 struct Manacher {
     vi d1, d2;

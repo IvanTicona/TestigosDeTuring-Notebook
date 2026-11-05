@@ -17,7 +17,7 @@
  *       (and w monotone on inclusion for Knuth). Aliens: "exactly k
  *       items" -> pay lambda per item, binary search lambda; ties MUST
  *       return the fewest items. hi = max |slope| of g (e.g. max cost).
- * Status: untested
+ * Status: ok
  */
 template <class F>
 void dnc_rec(int l, int r, int ol, int orr, const vl &prev, vl &cur, F &C) {

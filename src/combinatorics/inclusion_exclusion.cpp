@@ -12,7 +12,7 @@
  * Note: |A1 u ... u Am| = sum_{j>=1} (-1)^(j+1) S_j;
  *       exactly k = sum_{j>=k} (-1)^(j-k) C(j, k) S_j.
  * Depends: src/combinatorics/binomial.cpp
- * Status: untested
+ * Status: ok
  */
 ll count_not_divisible(ll N, const vl &d) {
     int m = sz(d);

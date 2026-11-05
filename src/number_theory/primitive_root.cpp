@@ -9,7 +9,7 @@
  *       g is a generator iff g^((p-1)/q) != 1 for every prime q | p - 1.
  *       Known roots: 998244353 -> 3, 1e9+7 -> 5, 2^31-1 -> 7.
  * Depends: src/number_theory/modular_arithmetic.cpp
- * Status: untested
+ * Status: ok
  */
 vl distinct_prime_factors(ll n) {  // distinct primes, trial division
     vl f;

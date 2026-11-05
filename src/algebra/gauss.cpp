@@ -14,7 +14,7 @@
  *       det of the Laplacian (deg - adj) without one row and column.
  *       XOR systems: xor_basis.cpp (bitset elimination).
  * Depends: src/number_theory/modular_arithmetic.cpp
- * Status: untested
+ * Status: ok
  */
 typedef vector<double> vd;  // same as fft.cpp (repeating a typedef is fine)
 

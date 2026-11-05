@@ -8,7 +8,7 @@
  * Note: costs may be negative; |cost| * n must fit in ll. Forbidden pair:
  *       a big cost (check the answer). n > m: transpose. Perfect matching
  *       of min cost on general graphs needs blossom, not this.
- * Status: untested
+ * Status: ok
  */
 pair<ll, vi> hungarian(const vector<vl> &a) {
     int n = sz(a), m = sz(a[0]);

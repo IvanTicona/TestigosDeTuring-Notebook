@@ -10,7 +10,7 @@
  * Note: necklace canonical form = min rotation (compare cyclic strings).
  *       Smallest suffix of s = last Lyndon factor start (after merging
  *       equal factors).
- * Status: untested
+ * Status: ok
  */
 vi duval(const string &s) {
     int n = sz(s), i = 0;

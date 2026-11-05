@@ -13,7 +13,7 @@
  *       Infinite range: substitute x = t / (1 - t^2), or cut where f ~ 0.
  *       2D: integrate([&](double x) { return integrate([&](double y) {
  *       return g(x, y); }, c(x), d(x)); }, a, b).
- * Status: untested
+ * Status: ok
  */
 template <class F>
 double simpson(F f, double a, double b, int n = 1000) {

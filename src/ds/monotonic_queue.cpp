@@ -10,7 +10,7 @@
  * Note: DP dp[i] = c_i + min_{i-K<=j<i} dp[j]: push dp[j], pop when j
  *       leaves. Next smaller element / histogram: monotonic STACK, same
  *       pop rule. Swag fold order = push order (front first).
- * Status: untested
+ * Status: ok
  */
 template <class C = less<ll>>
 vl window_min(const vl &a, int k, C cmp = C()) {

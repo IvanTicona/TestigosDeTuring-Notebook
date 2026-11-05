@@ -9,7 +9,7 @@
  *       occurrences: z[i] >= |pat|. Number of distinct substrings
  *       incrementally, string compression (smallest period p with
  *       p | n and z[p] == n - p).
- * Status: untested
+ * Status: ok
  */
 vi z_function(const string &s) {
     int n = sz(s);

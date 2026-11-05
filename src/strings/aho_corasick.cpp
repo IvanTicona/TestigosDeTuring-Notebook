@@ -13,7 +13,7 @@
  *       push counts up the links (done here, in reverse BFS order) or keep
  *       an output link to the next terminal node. DP "strings of length L
  *       containing no pattern": forbid nodes whose chain has a terminal.
- * Status: untested
+ * Status: ok
  */
 struct Aho {
     static const int K = 26;

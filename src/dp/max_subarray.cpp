@@ -11,7 +11,7 @@
  *       length in [L, R]: prefix sums + monotonic deque / sparse table.
  *       Circular array: max(kadane(a), total - min subarray), unless all
  *       elements are negative.
- * Status: untested
+ * Status: ok
  */
 array<ll, 3> kadane(const vl &a) {
     array<ll, 3> best = {a[0], 0, 0};

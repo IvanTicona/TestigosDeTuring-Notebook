@@ -10,7 +10,7 @@
  * Note: min cut edges = edges u -> v with cut_side(u) && !cut_side(v).
  *       Call maxflow again after adding edges: it continues from the
  *       current flow. Capacities up to ~1e18 (ll).
- * Status: untested
+ * Status: ok
  */
 struct Dinic {
     struct E { int to; ll cap; };

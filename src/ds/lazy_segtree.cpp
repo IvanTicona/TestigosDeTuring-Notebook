@@ -11,7 +11,7 @@
  *       Law: apply_tag(apply_tag(x, f), g) == apply_tag(x, compose(f, g)).
  *       Affine maps x -> b x + c (sum needs len): compose = (b1 b2,
  *       c1 b2 + c2). Range flip of bits: Tag = xor flag, sum = len - sum.
- * Status: untested
+ * Status: ok
  */
 struct Node { ll sum = 0, mn = INFL, len = 0; };
 struct Tag { bool set = false; ll val = 0, add = 0; };  // set first, then add

@@ -6,7 +6,7 @@
  *         mod_sum: own, from (x mod m) = x - m*floor(x/m)
  * Note: 0 <= n < 2^32, 1 <= m < 2^32, any a, b (negatives ok). The result
  *       is exact if it fits in ll, otherwise it is correct modulo 2^64.
- * Status: untested
+ * Status: ok
  */
 ull floor_sum_unsigned(ull n, ull m, ull a, ull b) {
     ull ans = 0;

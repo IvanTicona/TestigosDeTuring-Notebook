@@ -11,7 +11,7 @@
  *       tree). Sum over pairs of min cut: process tree edges in decreasing
  *       weight with DSU (each edge is the min for |A| * |B| pairs).
  * Depends: src/flows/dinic.cpp
- * Status: untested
+ * Status: ok
  */
 vector<pair<int, ll>> gomory_hu(int n, const vector<array<ll, 3>> &E) {
     vector<pair<int, ll>> t(n, {0, 0});

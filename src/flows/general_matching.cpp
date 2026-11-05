@@ -8,7 +8,7 @@
  *       bipartite graphs. Min edge cover = n - max matching (no isolated
  *       vertices). Perfect matching exists iff size == n / 2 (Tutte).
  *       Weighted general matching: not here (very long).
- * Status: untested
+ * Status: ok
  */
 vi general_matching(int n, const vector<pii> &E) {
     vector<vi> g(n);

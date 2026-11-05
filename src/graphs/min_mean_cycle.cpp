@@ -9,7 +9,7 @@
  *       v (from anywhere); answer = min_v max_k (D[n][v] - D[k][v]) /
  *       (n - k). Max mean: negate weights. Ratio problems (sum a / sum b
  *       over a cycle): binary search lambda + negative cycle check.
- * Status: untested
+ * Status: ok
  */
 pll min_mean_cycle(int n, const vector<array<ll, 3>> &E) {
     vector<vl> D(n + 1, vl(n, INFL));

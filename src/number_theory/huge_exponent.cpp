@@ -9,7 +9,7 @@
  *       printed 1 instead of 0 when p | a and (p-1) | b^c.
  * Depends: src/number_theory/modular_arithmetic.cpp
  * Depends: src/number_theory/multiplicative_functions.cpp
- * Status: untested
+ * Status: ok
  */
 ll powmod_str(ll a, const string &E, ll m) {
     ll ph = phi(m), r = 0;

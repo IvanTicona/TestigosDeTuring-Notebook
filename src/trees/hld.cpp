@@ -15,7 +15,7 @@
  *       split the walk into the u side and the v side. Subtree ranges and
  *       path ranges use the same positions (subtree + path in one tree).
  *       Forests work; path / lca need u and v in the same tree.
- * Status: untested
+ * Status: ok
  */
 struct HLD {
     vi par, dep, heavy, head, pos, sub;

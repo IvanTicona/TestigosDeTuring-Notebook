@@ -10,7 +10,7 @@
  *         edit_distance (CP4); weighted costs: own
  * Note: LCS of two permutations in O(n log n): lis.cpp on positions.
  *       Only the length with O(|b|) memory: keep two rows.
- * Status: untested
+ * Status: ok
  */
 template <class S>
 S lcs(const S &a, const S &b) {

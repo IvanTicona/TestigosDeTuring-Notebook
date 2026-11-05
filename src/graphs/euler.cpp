@@ -11,7 +11,7 @@
  *       the start, -1 at the end, 0 elsewhere; plus all edges connected
  *       (checked through the length). De Bruijn sequence: Euler circuit on
  *       the (k-1)-mers.
- * Status: untested
+ * Status: ok
  */
 pair<vi, vi> euler(int n, const vector<pii> &E, bool directed, int src = -1) {
     int m = sz(E);

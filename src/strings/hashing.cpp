@@ -11,7 +11,7 @@
  * Note: collision probability ~ n / 2^61 per comparison. Palindrome check:
  *       hash of s and of reversed s. Multiset hashing: sum of rnd(x).
  *       2D: hash rows, then hash the column of row hashes (other base).
- * Status: untested
+ * Status: ok
  */
 struct Hash {
     static constexpr ull M = (1ULL << 61) - 1;

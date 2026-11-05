@@ -14,7 +14,7 @@
  * Note: C = 0 if k < 0 or k > n. binom_big_n uses Lucas with k < p:
  *       C(n, k) == C(n mod p, k) (mod p).
  * Depends: src/number_theory/modular_arithmetic.cpp
- * Status: untested
+ * Status: ok
  */
 struct Comb {
     ll p;

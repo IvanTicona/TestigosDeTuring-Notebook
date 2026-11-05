@@ -9,7 +9,7 @@
  * Note: all solutions: x + k*(b/g), y - k*(a/g). If b != 0, the x returned
  *       is the smallest non-negative one. |a|, |b|, |c| up to ~1e18 (__int128).
  * Depends: src/number_theory/extended_euclid.cpp
- * Status: untested
+ * Status: ok
  */
 bool diophantine(ll a, ll b, ll c, ll &x, ll &y, ll &g) {
     if (a == 0 && b == 0) { x = y = g = 0; return c == 0; }

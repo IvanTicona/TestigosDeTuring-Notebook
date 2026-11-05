@@ -12,7 +12,7 @@
  *       min edges among shortest: relax with == too. Dense graph (m ~ n^2):
  *       O(n^2) array version is faster. Potentials (Johnson) for negative
  *       edges without negative cycles: w'(u,v) = w + h(u) - h(v).
- * Status: untested
+ * Status: ok
  */
 pair<vl, vi> dijkstra(const vector<vector<pll>> &g, const vi &src) {
     vl d(sz(g), INFL);

@@ -11,7 +11,7 @@
  * Note: n / i takes < 2 sqrt(n) distinct values; inside a block,
  *       r = n / (n / l). Ceil: ceil(n / i) = (n - 1) / i + 1 (blocks of n-1).
  *       sum_sigma and sum_mod overflow ll for n > ~3e9 (use __int128).
- * Status: untested
+ * Status: ok
  */
 template <class F> void for_floor_blocks(ll n, F f) {
     for (ll l = 1, r; l <= n; l = r + 1) {

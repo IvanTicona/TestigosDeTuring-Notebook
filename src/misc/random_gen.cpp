@@ -14,7 +14,7 @@
  * Note: stress loop (bash): for i in $(seq 1 1000); do ./gen $i > in;
  *       ./sol < in > a; ./brute < in > b; cmp -s a b || break; done
  *       (see the contest sheet). Small inputs find bugs faster.
- * Status: untested
+ * Status: ok
  */
 vi rand_perm(int n) {
     vi p(n);

@@ -9,7 +9,7 @@
  *         DisjointSparseTable (std::function: slow); templates: own
  * Note: static arrays only (no updates). Also: argmin (compare indices by
  *       value), LCA via Euler tour + RMQ (trees section).
- * Status: untested
+ * Status: ok
  */
 template <class T, class F>
 struct Sparse {

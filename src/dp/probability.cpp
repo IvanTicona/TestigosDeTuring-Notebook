@@ -15,7 +15,7 @@
  *       same DP with 1/f = invmod(f). E[x] = 1 + sum p_i E[y_i] with
  *       cycles -> linear system (absorb_steps / gauss.cpp).
  * Depends: src/algebra/gauss.cpp
- * Status: untested
+ * Status: ok
  */
 vd dice_pmf(int n, int f) {
     vd p = {1};  // sum of 0 dice

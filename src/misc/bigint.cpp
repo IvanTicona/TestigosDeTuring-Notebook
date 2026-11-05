@@ -8,7 +8,7 @@
  * Note: signed numbers: keep a sign flag outside. Big / Big: binary search
  *       on each base-1e9 digit or use Python. Factorials of 1000 (2568
  *       digits) are fine with * small.
- * Status: untested
+ * Status: ok
  */
 struct Big {
     static const int B = 1000000000;

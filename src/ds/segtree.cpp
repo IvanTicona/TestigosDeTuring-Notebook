@@ -12,7 +12,7 @@
  * Note: op need NOT be commutative (left and right parts kept apart):
  *       matrices, (sum, best prefix, best suffix, best) for max subarray
  *       sum on ranges, string hashes. Point add: set(i, op(get(i), v)).
- * Status: untested
+ * Status: ok
  */
 struct SumM {
     typedef ll T;

@@ -9,7 +9,7 @@
  *         Stern-Brocot / continued fractions (own)
  * Note: results must fit in ll after reduction. For probabilities mod p
  *       use Mint instead. Fractions as map keys: compare with operator<.
- * Status: untested
+ * Status: ok
  */
 struct Frac {
     ll p, q;

@@ -14,7 +14,7 @@
  *       Edge e is in SOME MST iff it is not the unique max on a cycle:
  *       process equal weights as a group. Manhattan MST: 4 sweeps, O(n log).
  * Depends: src/ds/dsu.cpp
- * Status: untested
+ * Status: ok
  */
 pair<ll, vi> kruskal(int n, const vector<array<ll, 3>> &E) {
     vi ord(sz(E));

@@ -14,7 +14,7 @@
  *       BIT on differences (rb.sum(i, i) also works). Inversions: iterate,
  *       sum of values greater than a[i] seen so far. Coordinates up to 1e9:
  *       compress first.
- * Status: untested
+ * Status: ok
  */
 struct BIT {
     int n;

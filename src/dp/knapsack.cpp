@@ -12,7 +12,7 @@
  *         items, by_value: own
  * Note: exactly W instead of <= W: init dp = -INFL except dp[0] = 0.
  *       Weights / values >= 0. Count ways / subset sums: subset_sum.cpp.
- * Status: untested
+ * Status: ok
  */
 ll knap01(const vl &w, const vl &v, int W) {
     vl dp(W + 1, 0);

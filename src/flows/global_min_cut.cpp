@@ -8,7 +8,7 @@
  *         (s-t cut via flow, unit capacities only); ll + side recovery: own
  * Note: s-t min cut in a directed graph: max flow (dinic.cpp). Undirected
  *       all-pairs min cuts: gomory_hu.cpp.
- * Status: untested
+ * Status: ok
  */
 pair<ll, vi> global_min_cut(vector<vl> W) {
     int n = sz(W);

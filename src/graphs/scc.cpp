@@ -10,7 +10,7 @@
  * Note: a node is in a cycle iff its component has size > 1 or a self
  *       loop. Min edges to make the graph strongly connected: with c > 1
  *       components, max(#sources, #sinks) of the condensation.
- * Status: untested
+ * Status: ok
  */
 struct SCC {
     int ncomp = 0;

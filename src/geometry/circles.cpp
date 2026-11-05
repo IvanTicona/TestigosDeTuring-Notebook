@@ -14,7 +14,7 @@
  *       / perimeter, r = 2 area / perimeter. Area of a circle cut by a
  *       polygon: triangle-wise (not here).
  * Depends: src/geometry/point.cpp
- * Status: untested
+ * Status: ok
  */
 typedef Pt<ld> PD;
 

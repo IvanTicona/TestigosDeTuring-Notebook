@@ -10,7 +10,7 @@
  *       half-planes of its CCW edges. Feasibility of linear 2D constraints:
  *       non-empty result.
  * Depends: src/geometry/point.cpp
- * Status: untested
+ * Status: ok
  */
 struct HP {
     Pt<ld> p, d;  // point and UNIT direction: EPS is a distance, whatever

@@ -12,7 +12,7 @@
  *       Difference constraints x_v - x_u <= w: edge u -> v with weight w,
  *       add a source with 0-edges to all; infeasible iff negative cycle;
  *       x = dist. Longest path: negate.
- * Status: untested
+ * Status: ok
  */
 vl bellman_ford(int n, const vector<array<ll, 3>> &E, int s) {
     vl d(n, INFL);

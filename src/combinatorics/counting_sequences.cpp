@@ -16,7 +16,7 @@
  *       S2(n,k) = (1/k!) sum_j (-1)^j C(k,j) (k-j)^n.
  * Depends: src/number_theory/modular_arithmetic.cpp
  * Depends: src/combinatorics/binomial.cpp
- * Status: untested
+ * Status: ok
  */
 vl derangements(int N, ll m) {
     vl d(N + 1, 0);

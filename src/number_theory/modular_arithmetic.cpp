@@ -7,7 +7,7 @@
  *             batch_inv O(n + log p), Mint ops O(1), / and inv O(log M)
  * Source: UPB ModularArithmetic + UTP "mod integer" (consolidated)
  * Note: m up to ~2^63 (__int128); Mint modulus < 2^31, prime for / and inv
- * Status: untested
+ * Status: ok
  */
 // ---- 64-bit helpers (any modulus m >= 1) ----
 ull mulmod(ull a, ull b, ull m) { return (unsigned __int128)a * b % m; }

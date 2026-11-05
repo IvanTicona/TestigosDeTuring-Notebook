@@ -11,7 +11,7 @@
  *       non-commutative ops must also keep the reversed aggregate. Edge
  *       values: add a vertex per edge. Subtree aggregates need "virtual
  *       children" sums (not here).
- * Status: untested
+ * Status: ok
  */
 struct LinkCut {
     vector<array<int, 2>> c;  // nodes 1..n (0 = null)

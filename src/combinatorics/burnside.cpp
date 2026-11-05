@@ -16,7 +16,7 @@
  *       Cube faces, 24 rotations: cycles 6, 3 x6, 4 x3, 2 x8, 3 x6.
  * Depends: src/number_theory/modular_arithmetic.cpp
  * Depends: src/number_theory/multiplicative_functions.cpp
- * Status: untested
+ * Status: ok
  */
 i128 ipow128(i128 b, ll e) { i128 r = 1; while (e--) r *= b; return r; }
 

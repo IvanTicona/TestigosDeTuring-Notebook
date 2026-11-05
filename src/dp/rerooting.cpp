@@ -11,7 +11,7 @@
  * Note: sum of distances: T = {size, sum}, fin(a) = {a.size + 1, a.sum},
  *       lift(x) = {x.size, x.sum + x.size}. Eccentricity: T = ll, merge
  *       max, lift = x + 1. Edge weights: lift(x, c, p) can read w(c, p).
- * Status: untested
+ * Status: ok
  */
 template <class T, class M, class Fn, class Lf>
 vector<T> reroot(const vector<vi> &g, T id, M merge, Fn fin, Lf lift) {

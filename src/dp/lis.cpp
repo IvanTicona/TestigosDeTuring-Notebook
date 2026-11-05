@@ -12,7 +12,7 @@
  *       pos_in_b[a[i]]. Min #non-increasing subsequences covering a
  *       (Dilworth) = LIS strict length. Box nesting: sort by (w asc, h desc),
  *       then strict LIS on h.
- * Status: untested
+ * Status: ok
  */
 vi lis(const vl &a, bool strict = true) {
     int n = sz(a);

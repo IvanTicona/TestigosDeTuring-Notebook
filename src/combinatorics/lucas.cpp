@@ -12,7 +12,7 @@
  * Depends: src/number_theory/crt.cpp
  * Depends: src/number_theory/legendre.cpp
  * Depends: src/combinatorics/binomial.cpp
- * Status: untested
+ * Status: ok
  */
 struct Lucas {
     ll p;

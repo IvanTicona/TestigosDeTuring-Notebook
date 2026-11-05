@@ -11,7 +11,7 @@
  * Note: block-cut tree: node per BCC + node per cut vertex, edge if the cut
  *       vertex is in the BCC (paths between vertices -> cut vertices
  *       crossed). Bridge tree: contract ecomp, bridges become tree edges.
- * Status: untested
+ * Status: ok
  */
 struct LowLink {
     vector<char> bridge, cut;

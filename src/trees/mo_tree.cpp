@@ -12,7 +12,7 @@
  *       the Euler tour ranges directly.
  * Depends: src/ds/mo.cpp
  * Depends: src/trees/euler_tour.cpp
- * Status: untested
+ * Status: ok
  */
 template <class T, class G>
 vl mo_tree(const vector<vi> &g, int root, const vector<pii> &qs, T toggle,

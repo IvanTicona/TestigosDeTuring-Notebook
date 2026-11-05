@@ -13,7 +13,7 @@
  * Note: parity / bipartite checks: WeightedDSU with d = 1 and potentials
  *       mod 2 (or xor). Kruskal: sort edges, unite. Rollback DSU is used by
  *       dynamic_connectivity.cpp (segment tree over time).
- * Status: untested
+ * Status: ok
  */
 struct DSU {
     vi p;  // p[x] < 0: x is a root of size -p[x]

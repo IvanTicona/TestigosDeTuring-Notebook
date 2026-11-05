@@ -6,7 +6,7 @@
  * Note: p must be an odd prime or 2.
  *       Euler's criterion: a is a residue iff a^((p-1)/2) == 1 (mod p).
  * Depends: src/number_theory/modular_arithmetic.cpp
- * Status: untested
+ * Status: ok
  */
 ll sqrtmod(ll a, ll p) {
     a %= p; if (a < 0) a += p;

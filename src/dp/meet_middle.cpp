@@ -9,7 +9,7 @@
  * Note: values may be negative. Same idea for XOR (hash map of one half),
  *       4-SUM (pairs), and for counting paths in grids (split at the
  *       anti-diagonal, map of (cell, value)).
- * Status: untested
+ * Status: ok
  */
 vl subset_sums_sorted(const vl &a) {
     vl s = {0};

@@ -17,7 +17,7 @@
  *       mod p: change the += (fwht.cpp has the mod-p versions and subset
  *       convolution). Counting Hamiltonian paths: same DP with + instead
  *       of min.
- * Status: untested
+ * Status: ok
  */
 pair<ll, vi> held_karp(const vector<vl> &d, bool cycle) {
     int n = sz(d), N = 1 << n;

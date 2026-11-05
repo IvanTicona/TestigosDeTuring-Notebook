@@ -10,7 +10,7 @@
  * Note: max xor of a subarray: insert prefix xors, query each prefix.
  *       Min xor over all pairs = min over adjacent pairs of the sorted
  *       array. Persistent version: clone nodes on insert (like PST).
- * Status: untested
+ * Status: ok
  */
 struct XorTrie {
     int B;

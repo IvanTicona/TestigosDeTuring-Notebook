@@ -10,7 +10,7 @@
  *       then shrink, so the window is never "negative". Mo on trees: run
  *       on the Euler tour (trees section). With updates: add a time
  *       dimension, blocks of n^(2/3).
- * Status: untested
+ * Status: ok
  */
 ll hilbert(int x, int y, int pw = 21, int rot = 0) {  // 2^pw > n
     if (pw == 0) return 0;

@@ -11,7 +11,7 @@
  *       a[i], 1); answer = kth(root[l], root[r + 1], k) (k 0-indexed).
  *       Count of values <= x in a[l..r]: sum(root[r+1]) - sum(root[l]).
  *       Reserve: ~ (q + 1) * (log2 n + 2) nodes.
- * Status: untested
+ * Status: ok
  */
 struct PST {
     int n;

@@ -11,7 +11,7 @@
  *       of nodes at depth d in each subtree. Alternative: merge sets small
  *       into large (O(n log^2 n)). Forests: every tree is solved (root's
  *       tree first); the structure is empty when a new tree starts.
- * Status: untested
+ * Status: ok
  */
 template <class A, class R, class Q>
 void sack(const vector<vi> &g, int root, A add, R rem, Q ans) {

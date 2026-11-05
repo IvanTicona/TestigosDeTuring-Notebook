@@ -14,7 +14,7 @@
  *       bit = __builtin_ctzll(y). Mask of n ones: (1LL << n) - 1 (n < 63).
  *       bitset<N>: _Find_first(), _Find_next(i), count(), shifts for DP.
  *       All submasks of all masks: 3^n total.
- * Status: untested
+ * Status: ok
  */
 ull next_comb(ull x) {  // x != 0
     ull c = x & -x, r = x + c;

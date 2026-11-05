@@ -12,7 +12,7 @@
  *       the all-collinear case). Width / min-area rectangle: calipers with
  *       the edge directions. Integer hull: area2 exact with ll.
  * Depends: src/geometry/point.cpp
- * Status: untested
+ * Status: ok
  */
 template <class T>
 vector<Pt<T>> hull(vector<Pt<T>> p) {

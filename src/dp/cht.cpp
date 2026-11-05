@@ -10,7 +10,7 @@
  * Note: dp[i] = min_j (dp[j] + b_j a_i) -> line (b_j, dp[j]), query a_i.
  *       Values k x + m must fit in ll. Li Chao (li_chao.cpp) also adds
  *       segments and needs no division.
- * Status: untested
+ * Status: ok
  */
 struct CLine {  // (not "Line": geometry uses that name)
     mutable ll k, m, p;  // p = last x where this line is the best

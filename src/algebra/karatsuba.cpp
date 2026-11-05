@@ -5,7 +5,7 @@
  *         behavior; int buffers), rewritten with vectors
  * Note: exact integer arithmetic, no precision issues (vs FFT) and no
  *       prime needed (vs NTT). Prefer conv_mod / conv_any for n > ~5e4.
- * Status: untested
+ * Status: ok
  */
 vl kara_rec(const vl &a, const vl &b, ll m) {  // sz(a) == sz(b)
     int n = sz(a);

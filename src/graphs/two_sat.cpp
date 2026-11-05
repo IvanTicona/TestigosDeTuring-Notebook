@@ -10,7 +10,7 @@
  *       Assignment: x true iff comp(x) comes AFTER comp(~x) in the
  *       topological order of the implication graph.
  * Depends: src/graphs/scc.cpp
- * Status: untested
+ * Status: ok
  */
 struct TwoSat {
     int n;

@@ -9,7 +9,7 @@
  *       Edges whose removal disconnects (bridges of a flow graph): split
  *       each edge with a middle node. Undirected articulation points
  *       relative to a root: bridges.cpp instead.
- * Status: untested
+ * Status: ok
  */
 vi dominators(const vector<vi> &g, int root) {
     int n = sz(g), cnt = 0;

@@ -17,7 +17,7 @@
  *       u = (L + y - x) / 2 up-steps.
  * Depends: src/number_theory/modular_arithmetic.cpp
  * Depends: src/combinatorics/binomial.cpp
- * Status: untested
+ * Status: ok
  */
 ll catalan(const Comb &cb, ll n) {
     if (n < 0) return 0;

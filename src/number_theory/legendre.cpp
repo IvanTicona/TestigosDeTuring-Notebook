@@ -10,7 +10,7 @@
  * Note: vp_fact(n, p) = sum_{k>=1} floor(n / p^k) = (n - s_p(n)) / (p - 1),
  *       s_p = digit sum in base p. Kummer: vp_binom = number of carries
  *       when adding k and n - k in base p.
- * Status: untested
+ * Status: ok
  */
 ll vp_fact(ll n, ll p) {
     ll e = 0;

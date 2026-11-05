@@ -11,7 +11,7 @@
  *       Path root -> v sums with point updates: BIT range-add +x on
  *       [tin[v], tout[v]] when a[v] += x, then point query at tin[u].
  *       Path u - v = f(u) + f(v) - 2 f(lca) + a[lca].
- * Status: untested
+ * Status: ok
  */
 struct EulerTour {
     vi tin, tout, ord, dep, first, eul;

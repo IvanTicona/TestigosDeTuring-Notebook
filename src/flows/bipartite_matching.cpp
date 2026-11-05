@@ -12,7 +12,7 @@
  *       edge cover = V - max matching (no isolated vertices). Path cover
  *       allowing shared vertices: run path_cover on the transitive
  *       closure (= max antichain, Dilworth).
- * Status: untested
+ * Status: ok
  */
 struct HopcroftKarp {
     int nl, nr;

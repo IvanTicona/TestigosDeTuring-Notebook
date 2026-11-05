@@ -13,7 +13,7 @@
  *       cnt[pi[i-1]] += cnt[i] going down, then +1 each. String period
  *       divides |s| iff s is a power of a shorter string. Automaton + DP:
  *       count strings of length L avoiding a pattern.
- * Status: untested
+ * Status: ok
  */
 vi prefix_function(const string &s) {
     int n = sz(s);

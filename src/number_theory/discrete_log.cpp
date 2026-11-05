@@ -10,7 +10,7 @@
  *       x0 * g^(i * (p-1) / gcd(k, p-1)), g = primitive_root(p).
  * Depends: src/number_theory/modular_arithmetic.cpp
  * Depends: src/number_theory/primitive_root.cpp
- * Status: untested
+ * Status: ok
  */
 ll discrete_log(ll a, ll b, ll m) {
     if (m == 1) return 0;

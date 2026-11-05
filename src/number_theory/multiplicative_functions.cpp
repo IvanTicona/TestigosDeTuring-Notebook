@@ -12,7 +12,7 @@
  *   Mobius inversion: g(n) = sum_{d|n} f(d) <=> f(n) = sum_{d|n} mu(d) g(n/d)
  *   sum_{i=1..n} gcd(i, n) = sum_{d|n} d * phi(n/d)
  *   #{1<=i<=n : gcd(i, n) = 1} = phi(n); sum of those i = n*phi(n)/2 (n>1)
- * Status: untested
+ * Status: ok
  */
 // ---- Single n, trial division ----
 ll phi(ll n) {

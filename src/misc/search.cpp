@@ -17,7 +17,7 @@
  * Note: integer ternary with plateaus away from the max is WRONG: use
  *       the slope f(m) < f(m + 1) only when it is strictly unimodal.
  *       Golden section saves evaluations when f is expensive.
- * Status: untested
+ * Status: ok
  */
 template <class F>
 ll first_true(ll lo, ll hi, F f) {

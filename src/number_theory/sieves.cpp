@@ -9,7 +9,7 @@
  *         SegmentedSieve, UPB Primes (table); odd_sieve and tables: own
  * Note: primes_in_range needs a base sieve up to sqrt(R) and R - L + 1
  *       bytes: R ~1e14 and R - L ~1e7 is fine (UPB's "R up to 1e18" is not).
- * Status: untested
+ * Status: ok
  */
 // ---- Linear sieve: smallest prime factor of every x <= n ----
 struct Sieve {

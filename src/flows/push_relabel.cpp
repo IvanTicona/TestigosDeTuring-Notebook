@@ -7,7 +7,7 @@
  * Note: calc() once per object (it leaves preflow state). Only the flow
  *       VALUE and the cut are reliable (edge flows may still route excess
  *       back to s); use Dinic when the flow decomposition is needed.
- * Status: untested
+ * Status: ok
  */
 struct PushRelabel {
     struct Edge { int to, back; ll f, c; };

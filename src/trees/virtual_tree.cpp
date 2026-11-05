@@ -10,7 +10,7 @@
  *       O(sum k log k) instead of O(n q). Edge weights of the compressed
  *       tree: dep[child] - dep[parent] (or weighted depths).
  * Depends: src/trees/euler_tour.cpp
- * Status: untested
+ * Status: ok
  */
 pair<vi, vector<pii>> virtual_tree(const EulerTour &et, vi keys) {
     auto by_tin = [&](int a, int b) { return et.tin[a] < et.tin[b]; };

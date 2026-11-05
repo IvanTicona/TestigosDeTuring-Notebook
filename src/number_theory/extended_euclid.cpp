@@ -6,7 +6,7 @@
  * Note: works with negatives and zeros; extgcd(0, 0) = 0 (x = 1, y = 0).
  *       Bounds: |x| <= |b| / g and |y| <= |a| / g, so no overflow.
  *       lcm overflows ll if it is > 9.2e18: compute as a / g * b.
- * Status: untested
+ * Status: ok
  */
 ll extgcd(ll a, ll b, ll &x, ll &y) {
     ll x1 = 0, y1 = 1;  // invariants: a == a0*x + b0*y, b == a0*x1 + b0*y1

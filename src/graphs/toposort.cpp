@@ -11,7 +11,7 @@
  * Note: DP on a DAG: process in topological order (paths count, longest
  *       weighted path: dp[v] = max(dp[u] + w)). Undirected cycle: DSU or a
  *       DFS that skips the parent edge.
- * Status: untested
+ * Status: ok
  */
 vi toposort(const vector<vi> &g, bool lex = false) {
     int n = sz(g);

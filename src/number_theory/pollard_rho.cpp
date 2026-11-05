@@ -11,7 +11,7 @@
  *       UPB bases {2..17} fail at 341550071728321; the 7 bases below are
  *       deterministic for all 64-bit n.
  * Depends: src/number_theory/modular_arithmetic.cpp
- * Status: untested
+ * Status: ok
  */
 bool is_prime(ll n) {
     if (n < 2) return false;

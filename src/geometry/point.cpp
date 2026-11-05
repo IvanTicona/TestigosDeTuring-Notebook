@@ -11,7 +11,7 @@
  * Note: with ll keep |coords| <= 1e9 so cross products fit (< 9.2e18).
  *       sgn(x) from the template compares with EPS (also fine for ll).
  *       Angle between u, v: atan2(|u x v|, u . v).
- * Status: untested
+ * Status: ok
  */
 template <class T>
 struct Pt {

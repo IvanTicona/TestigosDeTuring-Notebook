@@ -11,7 +11,7 @@
  *       excess lo at v, deficit lo at u; t -> s edge of capacity INF turns
  *       the s-t flow into a circulation.
  * Depends: src/flows/dinic.cpp
- * Status: untested
+ * Status: ok
  */
 ll flow_lower(int n, const vector<array<ll, 4>> &E, int s, int t, vl &f) {
     Dinic d(n + 2);

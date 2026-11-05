@@ -14,7 +14,7 @@
  * Note: diameter: farthest from any vertex, then farthest from that one
  *       (needs w >= 0). Center = middle of a diameter. Rerooting gives
  *       all eccentricities (dp/rerooting.cpp).
- * Status: untested
+ * Status: ok
  */
 pair<vl, vi> far_from(const vector<vector<pll>> &g, int s) {  // dist, par
     vl d(sz(g), -1);

@@ -9,7 +9,7 @@
  * Note: min c^T x -> max -c^T x. a x >= b -> -a x <= -b. Equality ->
  *       both inequalities. Free variable x -> x' - x''. b may be negative
  *       (phase 1 finds a feasible start). Integer LP is NOT solved by this.
- * Status: untested
+ * Status: ok
  */
 typedef double lpd;
 typedef vector<lpd> lpv;

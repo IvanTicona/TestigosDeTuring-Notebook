@@ -7,7 +7,7 @@
  * Note: duplicates give d2 = 0. Farthest pair: convex_hull.cpp diameter2.
  *       For doubles use the same code with Pt<ld> and sqrt for the window.
  * Depends: src/geometry/point.cpp
- * Status: untested
+ * Status: ok
  */
 pair<ll, pii> closest_pair(const vector<Pt<ll>> &p) {
     int n = sz(p);

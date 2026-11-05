@@ -11,7 +11,7 @@
  * Note: ordered set by key: split by value instead of size (or use oset
  *       from the template). Nodes live in vectors (node 0 = empty).
  *       Rope (__gnu_cxx::rope) is ~2x slower than this treap.
- * Status: untested
+ * Status: ok
  */
 struct Treap {
     vi L = {0}, R = {0}, cnt = {0};

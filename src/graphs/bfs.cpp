@@ -11,7 +11,7 @@
  * Note: grids: node = r * C + c, neighbors with dx / dy from the template.
  *       0-1 BFS also covers "cost 1 to change direction / break a wall".
  *       Shortest cycle through BFS from every node: O(n m).
- * Status: untested
+ * Status: ok
  */
 pair<vi, vi> bfs(const vector<vi> &g, const vi &src) {
     vi d(sz(g), -1), par(sz(g), -1);

@@ -17,7 +17,7 @@
  *       pillai(n) = sum_{d|n} d*phi(n/d).
  * Depends: src/number_theory/multiplicative_functions.cpp
  * Depends: src/number_theory/floor_blocks.cpp
- * Status: untested
+ * Status: ok
  */
 struct MobiusPrefix {
     vl pre;  // pre[x] = mu(1) + ... + mu(x)

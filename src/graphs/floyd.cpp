@@ -12,7 +12,7 @@
  *         minimax_all_pairs (unreachable pairs were 0); paths: own
  * Note: loop order k, i, j. Maximin (widest path): swap min / max.
  *       Minimax for one pair or many: MST paths (Kruskal) are optimal too.
- * Status: untested
+ * Status: ok
  */
 void floyd(vector<vl> &d, vector<vi> &nxt) {
     int n = sz(d);

@@ -14,7 +14,7 @@
  * Note: a != b and c != d where a direction is needed (project, line_inter).
  *       Sign tests use the template's sgn (EPS for ld, exact for ll).
  * Depends: src/geometry/point.cpp
- * Status: untested
+ * Status: ok
  */
 template <class T>
 Pt<ld> to_ld(Pt<T> p) { return {(ld)p.x, (ld)p.y}; }

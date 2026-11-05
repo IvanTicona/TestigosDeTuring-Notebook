@@ -9,7 +9,7 @@
  * Note: d(n) <= 103680 for n <= 1e18 (see MAX_DIVISORS_POW10 in sieves).
  * Depends: src/number_theory/modular_arithmetic.cpp
  * Depends: src/number_theory/pollard_rho.cpp
- * Status: untested
+ * Status: ok
  */
 vl divisors_from(const vector<pll> &pe) {
     vl ds = {1};

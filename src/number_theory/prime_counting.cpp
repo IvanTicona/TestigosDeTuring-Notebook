@@ -12,7 +12,7 @@
  *       Lucy ~4 sqrt(n) ll; PrimeCounter sieves to y = n^0.64 with an
  *       int per value: 1e12 ~200 MB, 1e13 ~850 MB (too much: lower 0.64,
  *       slower, or use Lucy).
- * Status: untested
+ * Status: ok
  */
 struct Lucy {
     ll n;

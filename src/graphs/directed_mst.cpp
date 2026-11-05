@@ -8,7 +8,7 @@
  *       of weight BIG to every node, answer - BIG (if answer < 2 BIG the
  *       root is the node whose super edge was used). Reconstructing the
  *       edges needs the O(m log n) version (KACTL, rollback DSU + heaps).
- * Status: untested
+ * Status: ok
  */
 ll directed_mst(int n, int root, vector<array<ll, 3>> E) {
     ll res = 0;

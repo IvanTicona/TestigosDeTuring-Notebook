@@ -9,7 +9,7 @@
  * Note: crt needs l = lcm(mi) <= ~9.2e18; if it can be larger, use garner.
  *       Typical use of garner: combine 3 NTT primes to get a result mod 1e9+7.
  * Depends: src/number_theory/extended_euclid.cpp
- * Status: untested
+ * Status: ok
  */
 // merge x == a1 (mod m1) and x == a2 (mod m2) into x == a (mod lcm)
 pair<ll, ll> crt_merge(ll a1, ll m1, ll a2, ll m2) {

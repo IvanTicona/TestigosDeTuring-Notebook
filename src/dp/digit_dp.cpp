@@ -12,7 +12,7 @@
  *       No two equal adjacent digits: S = 11, s0 = 10, step = d == s ? -1 : d.
  *       Sum of a function over [0, N] (not a count): add a second array
  *       carrying sums next to the counts.
- * Status: untested
+ * Status: ok
  */
 template <class Step, class Acc>
 ll digit_dp(ll N, int S, int s0, Step step, Acc acc) {

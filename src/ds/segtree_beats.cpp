@@ -11,7 +11,7 @@
  *       for min. chmin only touches nodes where 2nd max < x < max (then
  *       only the max values change). Other "beats" ops: range mod, range
  *       sqrt (stop when max == min), range gcd with point updates.
- * Status: untested
+ * Status: ok
  */
 struct Beats {
     int n;

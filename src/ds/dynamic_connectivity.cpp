@@ -11,7 +11,7 @@
  *       trick for any "add-only + undo" structure (e.g. bipartiteness
  *       with a parity DSU, xor basis copies).
  * Depends: src/ds/dsu.cpp
- * Status: untested
+ * Status: ok
  */
 struct DynCon {
     int n;

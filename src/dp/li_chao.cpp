@@ -10,7 +10,7 @@
  * Note: no precision issues and no sorted slopes needed (vs CHT). k x + m
  *       must fit in ll over [lo, hi]. Also works for any functions where
  *       two of them cross at most once (e.g. a (x - b)^2 + c with equal a).
- * Status: untested
+ * Status: ok
  */
 struct LiChao {
     struct Fn { ll k, m; ll operator()(ll x) const { return k * x + m; } };

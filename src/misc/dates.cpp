@@ -11,7 +11,7 @@
  *         dates; floor-based civil-from-days (Howard Hinnant): own
  * Note: add k days: from_day(day_num(...) + k). Day number 0 = 1970-01-01
  *       (a Thursday). Julian calendar: other leap rule (y % 4 == 0).
- * Status: untested
+ * Status: ok
  */
 bool leap(ll y) { return (y % 4 == 0 && y % 100 != 0) || y % 400 == 0; }
 int days_in(ll y, int m) {

@@ -13,7 +13,7 @@
  *       substring ending in state v. k-th lexicographic substring: count
  *       paths from each state (DP on the DAG in decreasing len). First
  *       occurrence: store firstpos when creating / cloning.
- * Status: untested
+ * Status: ok
  */
 struct SAM {
     static const int K = 26;

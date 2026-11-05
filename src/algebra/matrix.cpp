@@ -13,7 +13,7 @@
  *       add a row/col "sink" or use [[A, I], [0, I]]. For k > ~60 use
  *       Kitamasa / Berlekamp-Massey (linear_recurrence.cpp).
  *       mp: INFL = no edge; mp_pow(W, 0) = identity (0 diagonal).
- * Status: untested
+ * Status: ok
  */
 typedef vector<vl> Mat;
 

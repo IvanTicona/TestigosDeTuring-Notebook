@@ -10,7 +10,7 @@
  *       to A + (-B) (0 if it contains the origin). Collision of a moving
  *       convex shape: Minkowski sum with the reflected obstacle.
  * Depends: src/geometry/point.cpp
- * Status: untested
+ * Status: ok
  */
 template <class T>
 vector<Pt<T>> minkowski(vector<Pt<T>> A, vector<Pt<T>> B) {

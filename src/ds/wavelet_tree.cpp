@@ -10,7 +10,7 @@
  *       Same queries online with a persistent segment tree. Memory
  *       O(n log V) ints + nodes: with a huge value range compress to
  *       0..n-1 first (2e5 raw ll values: ~260 MB; compressed: ~20 MB).
- * Status: untested
+ * Status: ok
  */
 struct Wavelet {
     struct Nd { ll lo, hi; int l = -1, r = -1; vi b; };  // b[i]: #left in

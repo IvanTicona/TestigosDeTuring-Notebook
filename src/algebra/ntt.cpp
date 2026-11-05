@@ -12,7 +12,7 @@
  *       Inputs must be in [0, P). conv_any is exact while
  *       n * (m-1)^2 < P1*P2*P3 ~ 7.9e25 (n = min size).
  * Depends: src/number_theory/modular_arithmetic.cpp
- * Status: untested
+ * Status: ok
  */
 template <ll P = MOD2, ll G = 3>
 void ntt(vl &a, bool inv = false) {

@@ -12,7 +12,7 @@
  *       c[0] of XOR self-convolution counts pairs with a[i] == a[j]; to
  *       count pairs i < j from a frequency array: (c[k] - [k == 0] n) / 2.
  * Depends: src/number_theory/modular_arithmetic.cpp
- * Status: untested
+ * Status: ok
  */
 void fwht(vl &a, int op, bool inv, ll p = MOD) {
     int n = sz(a);

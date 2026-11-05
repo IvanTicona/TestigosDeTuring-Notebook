@@ -15,7 +15,7 @@
  *       gives sum_j a[(i+j) % n] a[j] for i = 0..n.
  *       Wildcard matching: sum p_j t_{i+j} (p_j - t_{i+j})^2 with 0 = '?'
  *       = 3 correlations.
- * Status: untested
+ * Status: ok
  */
 typedef complex<double> cpx;
 typedef vector<double> vd;

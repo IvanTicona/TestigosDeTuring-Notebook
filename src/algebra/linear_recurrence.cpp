@@ -13,7 +13,7 @@
  *       #paths in a fixed graph, counts with small transfer matrices).
  *       Kitamasa = x^n mod the characteristic polynomial (Cayley-Hamilton).
  * Depends: src/number_theory/modular_arithmetic.cpp
- * Status: untested
+ * Status: ok
  */
 vl berlekamp_massey(const vl &s, ll p = MOD) {
     int n = sz(s), L = 0, m = 0;

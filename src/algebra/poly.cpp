@@ -16,7 +16,7 @@
  *       1/(1-A), subset sum counts of distinct items = exp(sum ln(1+x^w)).
  * Depends: src/number_theory/modular_arithmetic.cpp
  * Depends: src/algebra/ntt.cpp
- * Status: untested
+ * Status: ok
  */
 vl poly_inv(const vl &a, int n) {
     vl b = {invmod_prime(a[0], MOD2)};

@@ -12,7 +12,7 @@
  *       on sa, O(m log n). Longest repeated substring: max lcp. LCS of
  *       a and b: s = a + sep + b, max lcp over adjacent pairs from
  *       different sides.
- * Status: untested
+ * Status: ok
  */
 vi suffix_array(const string &s) {
     int n = sz(s) + 1, K = max(257, n);

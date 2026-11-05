@@ -11,7 +11,7 @@
  *       some DP counts) -> compute d + 1 values by brute force, then
  *       lagrange_seq. P(x) mod p depends only on x mod p (p > deg).
  * Depends: src/number_theory/modular_arithmetic.cpp
- * Status: untested
+ * Status: ok
  */
 ll lagrange_seq(const vl &y, ll x, ll p = MOD) {
     int n = sz(y) - 1;

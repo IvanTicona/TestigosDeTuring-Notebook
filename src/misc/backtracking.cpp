@@ -8,7 +8,7 @@
  *       possible (feasibility bounds, symmetry: count half and double).
  *       Branch and bound: keep the best answer and cut when the optimistic
  *       bound cannot beat it. Exact cover (sudoku): Dancing Links.
- * Status: untested
+ * Status: ok
  */
 ll queens_rec(int n, int row, int cols, int d1, int d2) {
     if (row == n) return 1;

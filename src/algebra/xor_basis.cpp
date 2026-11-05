@@ -12,7 +12,7 @@
  * Note: #subsets with XOR v (n numbers) = 2^(n-r) if contains(v) else 0.
  *       Max XOR of a path in a graph: xor of any path + basis of cycle
  *       xors (DFS, insert d[u] ^ d[v] ^ w for each non-tree edge).
- * Status: untested
+ * Status: ok
  */
 struct XorBasis {
     ull b[64] = {};  // b[i] has highest bit i

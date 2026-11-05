@@ -12,7 +12,7 @@
  *       negate. Min cost for EVERY flow value k: record cost after each
  *       augmentation (cost per unit is non-decreasing). Assignment with
  *       n <= ~500: hungarian.cpp is faster.
- * Status: untested
+ * Status: ok
  */
 struct MCMF {
     struct E { int to; ll cap, cost; };

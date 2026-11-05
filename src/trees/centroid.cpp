@@ -12,7 +12,7 @@
  *       best[c] = min d(x, c) over marked x in c's part; query v = min over
  *       (c, d) in anc[v] of best[c] + d. Counting paths with a property:
  *       solve at c, subtract pairs inside the same child part.
- * Status: untested
+ * Status: ok
  */
 struct Centroid {
     vi cpar;
