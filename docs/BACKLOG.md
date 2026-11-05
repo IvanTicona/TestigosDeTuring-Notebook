@@ -22,7 +22,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 8 | Trees | done (review) |
 | 9 | Strings | done (review) |
 | 10 | Geometry | done (review) |
-| 11 | Misc | pending |
+| 11 | Misc | done (review) |
 
 ## 1. Number Theory (approved topics)
 
@@ -213,21 +213,24 @@ wildcard matching (fft.cpp correlate note).
 Not added: 3D convex hull, Delaunay / Voronoi (P Delaunay O(n^4)), KD tree (P), CDQ (P), union of
 circles / polygons areas (sweeps), polygon triangulation.
 
+## 11. Misc (topics chosen by Claude on user delegation, 2026-11-05)
+
+| # | Topic / file | Sources | Done |
+|---|---|---|---|
+| 1 | dates.cpp: day numbers (proleptic Gregorian, any year), inverse, weekday, leap | P Dates (int Julian days), P Dates.java, T dates | done (review) |
+| 2 | bit_tricks.cpp: Gosper next combination, Gray code + inverse, submask iteration, builtin notes | U Bit Tricks, P BitmaskTricks | done (review) |
+| 3 | search.cpp: first_true, real search, integer / real ternary, compression, inversions | U Ternary Search | done (review) |
+| 4 | fraction.cpp: exact reduced fractions (i128 middle steps), best rational approximation | T fraction, U Fraction Modular (mixed % MOD) | done (review) |
+| 5 | bigint.cpp: base 1e9 non-negative + - *, / and % by small | own (gap) | done (review) |
+| 6 | backtracking.cpp: N-queens with bitmasks (count + one solution) | old backtracking_template, old n_queens | done (review) |
+| 7 | random_gen.cpp: permutations, distinct values, trees, connected simple graphs, strings | U Randoms, P RandomSTL | done (review) |
+| 8 | tex/theory/contest.tex: stress loop (bash), debug flags, Python recipes (all run) | U Decimal Precision Python | done (review) |
+
+Template already covers: __int128 I/O, rng / randint, pragmas, custom hash, oset, debug macro.
+
 ## Deferred to later sections (do not lose)
 
-### 2. Combinatorics
-- nCr mod p with factorials: U Modular Combinatorics, P CombinatoricsMod
-- Exact nCk (no modulus): U Combinatorics
-- Lucas theorem: T
-- Catalan numbers: U Catalan (BUG: fact written out of bounds), U Catalan Convolution
-- Derangements / subfactorial: U SubFactorial
-- Inclusion-exclusion patterns: P InclusionExclusion
-- Pascal triangle: P BinomialDP_Pascal
-- Counting formulas: T counting, T fibonacci properties
-
-### 11. Misc
-- old: backtracking_template, n_queens
-- Template extras not used: possible()/impossible(), max3/min4, Python decimal precision (U)
+All deferred items were handled (or explicitly left out) in their sections.
 
 ## Snippet conventions
 - Each snippet ends with `void example_<name>()`: short usage demo; every `cout` line
