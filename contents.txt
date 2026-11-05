@@ -119,3 +119,4 @@ src/trees/mo_tree.cpp | Mo's Algorithm on Tree Paths
 
 [Strings]
 src/strings/prefix_function.cpp | Prefix Function (KMP, Automaton, Period)
+src/strings/z_function.cpp | Z-Function
