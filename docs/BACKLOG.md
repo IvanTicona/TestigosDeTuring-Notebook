@@ -21,7 +21,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 7 | Flows & Matching | done (review) |
 | 8 | Trees | done (review) |
 | 9 | Strings | done (review) |
-| 10 | Geometry | pending |
+| 10 | Geometry | done (review) |
 | 11 | Misc | pending |
 
 ## 1. Number Theory (approved topics)
@@ -194,6 +194,24 @@ are solved with centroid.cpp / sack.cpp.
 
 Not added: Ukkonen suffix tree (P isc, SA / SAM cover it), trie (trivial; see xor_trie / aho),
 wildcard matching (fft.cpp correlate note).
+
+## 10. Geometry (topics chosen by Claude on user delegation, 2026-11-05)
+
+| # | Topic / file | Sources | Done |
+|---|---|---|---|
+| 1 | point.cpp: Pt<T> (ll exact / ld), cross / dot / rot / perp, exact angular sort | P Geometry.cpp (Stanford), U Convex Hull pt, P JavaGeometry | done (review) |
+| 2 | segments.cpp: on_segment, seg_intersect, seg_inter (point / overlap), line_inter, projection, distances | P Geometry.cpp, U Segment Intersection (slopes, printed, wrong), KACTL | done (review) |
+| 3 | polygon.cpp: area2, in_polygon (any simple), in_convex O(log n), Pick, convex cut, centroid | U Point In General / Convex Polygon, P Geometry.cpp, U Some Formulas | done (review) |
+| 4 | convex_hull.cpp: monotone chain (no collinear), rotating calipers diameter | U Convex Hull (empty when all equal), P ConvexHull, U / P Polygon Diameter | done (review) |
+| 5 | closest_pair.cpp: O(n log n) sweep with set | U Closest Pair (O(n^2) on equal x, TLE), T closest pair | done (review) |
+| 6 | circles.cpp: circle-line, circle-circle, tangents, circumcircle, Welzl MEC, lens area | P Geometry.cpp, T circle formulas | done (review) |
+| 7 | half_plane.cpp: deque HPI with bounding box, degenerate results -> {} | P HalfPlaneIntersection (parallel decided with the origin) | done (review) |
+| 8 | minkowski.cpp: convex Minkowski sum | P MinkowskiSum, P ConvexPolygonIntersection (-> HPI) | done (review) |
+| 9 | point3d.cpp: P3, vol6, plane distance, line-plane, polyhedron volume, haversine | P Geom3D (Java), U glass volume | done (review) |
+| 10 | tex/theory/geometry.tex: triangle / polygon / circle / solids / vectors / precision (verified) | U Some Formulas, T triangles | done (review) |
+
+Not added: 3D convex hull, Delaunay / Voronoi (P Delaunay O(n^4)), KD tree (P), CDQ (P), union of
+circles / polygons areas (sweeps), polygon triangulation.
 
 ## Deferred to later sections (do not lose)
 
