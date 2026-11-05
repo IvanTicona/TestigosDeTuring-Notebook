@@ -30,5 +30,10 @@ int main() {
     CHECK(fabs(circ - PI * r * r) < 1e-5 * r * r, "circle area");
     double dbl = integrate([](double x) { return integrate([&](double y) { return exp(x) * cos(y); }, 0, 1); }, 0, 2);
     CHECK(fabs(dbl - (exp(2) - 1) * sin(1)) < 1e-7, "2D separable");
+    // periodic integrands vanishing at the first 5 samples (old: returned 0)
+    for (int k = 1; k <= 3; k++) {
+        double v = integrate([&](double x) { return sin(4 * k * x) * sin(4 * k * x); }, 0, PI);
+        CHECK(fabs(v - PI / 2) < 1e-7, "periodic k=" + to_string(k));
+    }
     puts("OK");
 }

@@ -4,7 +4,7 @@
  *                                    (relative 1e-14 floor for huge f)
  *        f: any callable double -> double (lambda)
  * Complexity: simpson O(n) calls; integrate adapts to f (smooth: few
- *             hundred calls), depth capped at 50
+ *             hundred calls), depth capped at 50, at least 16 pieces
  * Source: UPB NumericalIntegration (std::function, recomputes every f
  *         value 2-3 times, depth cap 20) + KACTL; reuse of f values: own
  * Note: Simpson is exact for cubics; error O(h^4 f''''). Split the
@@ -29,7 +29,9 @@ double simpson_rec(F &f, double a, double b, double eps, double fa,
     double L = (m - a) / 6 * (fa + 4 * lm + fm);
     double R = (b - m) / 6 * (fm + 4 * rm + fb), T = L + R;
     // relative floor: a halved eps below rounding error would recurse forever
-    if (d <= 0 || fabs(T - S) <= 15 * max(eps, 1e-14 * fabs(T)))
+    // d < 46: always split 4 levels (periodic f can match the first samples:
+    // sin(4x)^2 on [0, pi] is 0 at all 5 of them)
+    if (d <= 0 || (d < 46 && fabs(T - S) <= 15 * max(eps, 1e-14 * fabs(T))))
         return T + (T - S) / 15;
     return simpson_rec(f, a, m, eps / 2, fa, lm, fm, L, d - 1) +
            simpson_rec(f, m, b, eps / 2, fm, rm, fb, R, d - 1);
