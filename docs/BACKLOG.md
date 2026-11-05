@@ -19,7 +19,7 @@ Catalog of every reference file: `D:/Active Projects/teambook-refs/analysis/`
 | 5 | Data Structures | done (review) |
 | 6 | Graphs | done (review) |
 | 7 | Flows & Matching | done (review) |
-| 8 | Trees | pending |
+| 8 | Trees | done (review) |
 | 9 | Strings | pending |
 | 10 | Geometry | pending |
 | 11 | Misc | pending |
@@ -161,6 +161,23 @@ Not added: Yen's k shortest SIMPLE paths (P, rare), SPFA (BF is safer), Johnson 
 Not added: weighted general matching (too long), P GraphCutInference (= closure model in the sheet),
 P DinicScaling (Dinic is enough).
 
+## 8. Trees (topics chosen by Claude on user delegation, 2026-11-05)
+
+| # | Topic / file | Sources | Done |
+|---|---|---|---|
+| 1 | lca.cpp: binary lifting (BFS build), dist, k-th ancestor, k-th on path, path max | U LCA, U K-th Parent, P LCA, P BinaryLiftingExtras, old lca_binary_lifting, old minimax_mst_path | done (review) |
+| 2 | euler_tour.cpp: subtree ranges, O(1) LCA (Euler + sparse table), iterative | U Euler Tour - Sum, P EulerTour, P EulerTour_Queries, old lca_euler_segtree | done (review) |
+| 3 | hld.cpp: path ranges (vertex / edge mode), subtree, lca, iterative | U Heavy-Light, P HLD, P isc HLD, T heavy light | done (review) |
+| 4 | centroid.cpp: centroid tree + distances to centroid ancestors, iterative | U Centroid, U Online Centroid, P CentroidDecomposition, P isc centroid | done (review) |
+| 5 | sack.cpp: generic DSU on tree, explicit stack | P DSU_On_Tree_Sack (vertex 0 as "no heavy child") | done (review) |
+| 6 | virtual_tree.cpp: keys + LCAs, parent edges | P isc misc_virtual_tree (globals, problem code) | done (review) |
+| 7 | tree_misc.cpp: weighted diameter, centers, AHU isomorphism, Prufer encode / decode | own (gaps) | done (review) |
+| 8 | link_cut.cpp: link / cut / connected / path sum / rooted lca | P LinkCutTree, P isc ds_link_cut_tree (connected wrong) | done (review) |
+| 9 | mo_tree.cpp: Mo on paths with entry / exit flattening + lca | U Mo's in Trees, P MosOnTree_Hilbert (Z-order, not Hilbert), T Mo's on trees | done (review) |
+
+Rerooting DP lives in section 4 (dp/rerooting.cpp); tree knapsack and "count paths of length k" patterns
+are solved with centroid.cpp / sack.cpp.
+
 ## Deferred to later sections (do not lose)
 
 ### 2. Combinatorics
@@ -172,9 +189,6 @@ P DinicScaling (Dinic is enough).
 - Inclusion-exclusion patterns: P InclusionExclusion
 - Pascal triangle: P BinomialDP_Pascal
 - Counting formulas: T counting, T fibonacci properties
-
-### 8. Trees
-- old: lca_euler_segtree, lca_binary_lifting (quarantined), minimax_all_pairs (BUG unreachable=0), minimax_mst_path (unused mst_cost)
 
 ### 9. Strings
 - old: z_function, kmp (BUG: empty pattern), rabin_karp (BUGS: empty pattern, bytes >= 128)
