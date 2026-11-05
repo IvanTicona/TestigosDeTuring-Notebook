@@ -1,5 +1,5 @@
 /**
- * Usage: auto [cost, mt] = hungarian(a);  a = n x m cost matrix, n <= m
+ * Usage: auto [cost, mt] = hungarian(a);  a = n x m, 1 <= n <= m
  *        every row gets a DIFFERENT column, minimizing the total;
  *        mt[i] = column of row i. Max weight: negate the costs.
  * Complexity: O(n^2 m)
